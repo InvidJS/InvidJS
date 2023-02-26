@@ -1,0 +1,23 @@
+{
+  "name": "invidious-js",
+  "version": "0.0.1",
+  "description": "An attempt to add Invidious support to Node.js",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexavil/invidious-js.git"
+  },
+  "author": "alexavil",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexavil/invidious-js/issues"
+  },
+  "homepage": "https://github.com/alexavil/invidious-js#readme",
+  "dependencies": {
+    "ffmpeg-static": "^5.1.0",
+    "fs-extra": "^11.1.0"
+  }
+}
