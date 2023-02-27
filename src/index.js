@@ -22,16 +22,12 @@ let InvidJS = {
 
     getInstance: async function(uri) {
         if (!uri) throw new Error("You must provide a valid instance!");
-        let info = new InstanceInfo();
+        let info = undefined;
         await fetch("https://api.invidious.io/instances.json").then(res => res.json().then(json => {
             let found = json.filter((instance) => instance[1].uri === uri);
             if (!found) throw new Error("You must provide a valid instance!");
             let instance = found[0][1];
-            info.region = instance.region;
-            info.cors_active = instance.cors;
-            info.api_active = instance.api;
-            info.type = instance.type;
-            info.uri = instance.uri;
+            info = new InstanceInfo(instance.region, instance.cors, instance.api, instance.type, instance.uri);
         }));
         return info;
     },
@@ -40,18 +36,12 @@ let InvidJS = {
         if (!instance) throw new Error("You must provide an instance to fetch videos!")
         if (!id) throw new Error("You must provide a video ID to fetch it!")
         if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests!")
-        let info = new VideoInfo();
+        let info = undefined;
         await fetch(`${instance}/api/v1/videos/${id}`).then(res => res.json().then(json => {
-            info.title = json.title;
-            info.description = json.description;
-            info.published = json.publishedText;
-            info.views = json.viewCount;
-            info.likes = json.likeCount;
-            info.dislikes = json.dislikeCount;
-            info.length = json.lengthSeconds;
+            info = new VideoInfo(json.title, json.description, json.publishedText, json.viewCount, json.likeCount, json.dislikeCount, json.lengthSeconds);
         }))
         return info;
     }
 }
 
-module.exports = InvidJS;
+console.log(await InvidJS.getInstance("https://yewtu.be"))
