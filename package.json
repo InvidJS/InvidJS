@@ -1,5 +1,6 @@
 {
   "name": "invidious-js",
+  "type": "module",
   "version": "0.0.1",
   "description": "An attempt to add Invidious support to Node.js",
   "main": "src/index.js",
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/alexavil/invidious-js#readme",
   "dependencies": {
     "ffmpeg-static": "^5.1.0",
-    "fs-extra": "^11.1.0"
+    "fs-extra": "^11.1.0",
+    "node-fetch": "^3.3.0"
   }
 }
