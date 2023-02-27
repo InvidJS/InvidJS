@@ -8,7 +8,7 @@ let Constants = {
     allowedTypes: ["https", "i2p", "onion", "all"]
 }
 
-let InvJS = {
+let InvidJS = {
     fetchInstanceLinks: async function(type) {
         if (!Constants.allowedTypes.includes(type)) throw new Error("Invalid type!");
         let instances = [];
@@ -53,3 +53,5 @@ let InvJS = {
         return info;
     }
 }
+
+module.exports = InvidJS;
