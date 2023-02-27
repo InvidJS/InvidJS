@@ -1,4 +1,4 @@
-export class InstanceInfo {
+export class Instance {
     constructor(region, cors_active, api_active, type, uri) {
         this.region = region;
         this.cors_active = cors_active;
