@@ -1,5 +1,4 @@
-import { VideoInfo } from '../classes/videoInfo.js';
-import { InstanceInfo } from '../classes/instanceInfo.js';
+import { Video, Playlist, Instance } from "../classes/index.js";
 import * as fs from "fs-extra";
 import * as ffmpeg from "ffmpeg-static";
 import fetch from "node-fetch";
@@ -27,21 +26,33 @@ let InvidJS = {
             let found = json.filter((instance) => instance[1].uri === uri);
             if (!found) throw new Error("You must provide a valid instance!");
             let instance = found[0][1];
-            info = new InstanceInfo(instance.region, instance.cors, instance.api, instance.type, instance.uri);
+            info = new Instance(instance.region, instance.cors, instance.api, instance.type, instance.uri);
         }));
         return info;
     },
 
-    fetchVideoInfo: async function(instance, id) {
+    fetchVideo: async function(instance, id) {
         if (!instance) throw new Error("You must provide an instance to fetch videos!")
         if (!id) throw new Error("You must provide a video ID to fetch it!")
         if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests!")
         let info = undefined;
         await fetch(`${instance}/api/v1/videos/${id}`).then(res => res.json().then(json => {
-            info = new VideoInfo(json.title, json.description, json.publishedText, json.viewCount, json.likeCount, json.dislikeCount, json.lengthSeconds);
+            info = new Video(json.title, json.description, json.publishedText, json.viewCount, json.likeCount, json.dislikeCount, json.lengthSeconds);
+        }))
+        return info;
+    },
+
+    fetchPlaylist: async function(instance, id) {
+        if (!instance) throw new Error("You must provide an instance to fetch videos!")
+        if (!id) throw new Error("You must provide a video ID to fetch it!")
+        if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests!")
+        let info = undefined;
+        let videos = [];
+        await fetch(`${instance}/api/v1/playlists/${id}`).then(res => res.json().then(json => {
+            info = new Playlist(json.title, json.author, json.description, json.videos.length, json.videos);
         }))
         return info;
     }
 }
 
-console.log(await InvidJS.getInstance("https://yewtu.be"))
+console.log(await InvidJS.fetchPlaylist("https://y.com.sb", "PLjb_xEAm3nXU_6rkI6Cdi_fOf4CHrDkpe"))

@@ -9,11 +9,3 @@ export class Video {
         this.length = length;
     }
 }
-
-export class PlaylistVideo {
-    constructor(title, id, length) {
-        this.title = title;
-        this.id = id;
-        this.length = length;
-    }
-}
