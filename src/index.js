@@ -24,7 +24,7 @@ let InvidJS = {
         let info = undefined;
         await fetch("https://api.invidious.io/instances.json").then(res => res.json().then(json => {
             let found = json.filter((instance) => instance[1].uri === uri);
-            if (!found) throw new Error("You must provide a valid instance!");
+            if (!found) throw new Error("Error fetching instance: instance does not exist or is not online!");
             let instance = found[0][1];
             info = new Instance(instance.region, instance.cors, instance.api, instance.type, instance.uri);
         }));
@@ -34,7 +34,7 @@ let InvidJS = {
     fetchVideo: async function(instance, id) {
         if (!instance) throw new Error("You must provide an instance to fetch videos!")
         if (!id) throw new Error("You must provide a video ID to fetch it!")
-        if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests!")
+        if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests or is offline!")
         let info = undefined;
         await fetch(`${instance}/api/v1/videos/${id}`).then(res => res.json().then(json => {
             info = new Video(json.title, json.description, json.publishedText, json.viewCount, json.likeCount, json.dislikeCount, json.lengthSeconds);
@@ -45,7 +45,7 @@ let InvidJS = {
     fetchPlaylist: async function(instance, id) {
         if (!instance) throw new Error("You must provide an instance to fetch videos!")
         if (!id) throw new Error("You must provide a video ID to fetch it!")
-        if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests!")
+        if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests or is offline!")
         let info = undefined;
         let videos = [];
         await fetch(`${instance}/api/v1/playlists/${id}`).then(res => res.json().then(json => {
