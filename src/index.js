@@ -32,7 +32,7 @@ let InvidJS = {
     },
 
     fetchVideo: async function(instance, id) {
-        if (!instance) throw new Error("You must provide an instance to fetch videos!")
+        if (!instance) throw new Error("You must provide an instance to fetch videos from!")
         if (!id) throw new Error("You must provide a video ID to fetch it!")
         if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests or is offline!")
         let info = undefined;
@@ -43,7 +43,7 @@ let InvidJS = {
     },
 
     fetchPlaylist: async function(instance, id) {
-        if (!instance) throw new Error("You must provide an instance to fetch videos!")
+        if (!instance) throw new Error("You must provide an instance to fetch videos from!")
         if (!id) throw new Error("You must provide a video ID to fetch it!")
         if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests or is offline!")
         let info = undefined;
