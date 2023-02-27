@@ -24,17 +24,14 @@ let InvJS = {
         if (!uri) throw new Error("You must provide a valid instance!");
         let info = new InstanceInfo();
         await fetch("https://api.invidious.io/instances.json").then(res => res.json().then(json => {
-            let found = json.some((instance) => instance[1].uri === uri);
+            let found = json.filter((instance) => instance[1].uri === uri);
             if (!found) throw new Error("You must provide a valid instance!");
-            json.forEach(element => {
-                if (uri === element[1].uri) {
-                    info.region = element[1].region;
-                    info.cors_active = element[1].cors;
-                    info.api_active = element[1].api;
-                    info.type = element[1].type;
-                    info.uri = element[1].uri;
-                }
-            });
+            let instance = found[0][1];
+            info.region = instance.region;
+            info.cors_active = instance.cors;
+            info.api_active = instance.api;
+            info.type = instance.type;
+            info.uri = instance.uri;
         }));
         return info;
     },
