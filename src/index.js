@@ -9,7 +9,7 @@ let Constants = {
 
 let InvidJS = {
     fetchInstanceLinks: async function(type) {
-        if (!Constants.allowedTypes.includes(type)) throw new Error("Invalid type!");
+        if (!Constants.allowedTypes.includes(type)) throw new Error("Invalid type! Valid types are: https, i2p, onion, all.");
         let instances = [];
         await fetch("https://api.invidious.io/instances.json").then(res => res.json().then(json => {
             json.forEach(element => {
