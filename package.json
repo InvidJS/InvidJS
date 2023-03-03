@@ -1,5 +1,5 @@
 {
-  "name": "invid-js",
+  "name": "@alexavil/invid-js",
   "type": "module",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/alexavil"
