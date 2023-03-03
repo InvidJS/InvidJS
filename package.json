@@ -1,6 +1,9 @@
 {
   "name": "invid-js",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/alexavil"
+  },
   "version": "0.0.1",
   "description": "An attempt to add Invidious support to Node.js",
   "main": "src/index.js",
