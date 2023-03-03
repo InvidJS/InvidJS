@@ -2,6 +2,8 @@ import { Video, Playlist, Instance } from "../classes/index.js";
 import * as fs from "fs-extra";
 import * as ffmpeg from "ffmpeg-static";
 import fetch from "node-fetch";
+import got from "got";
+import player from 'play-sound';
 
 let Constants = {
     allowedTypes: ["https", "i2p", "onion", "all"]
@@ -37,7 +39,7 @@ let InvidJS = {
         if ((await this.getInstance(instance)).api_active === false) throw new Error("The instance you provided does not support API requests or is offline!")
         let info = undefined;
         await fetch(`${instance}/api/v1/videos/${id}`).then(res => res.json().then(json => {
-            info = new Video(json.title, json.description, json.publishedText, json.viewCount, json.likeCount, json.dislikeCount, json.lengthSeconds);
+            info = new Video(json.title, json.description, json.publishedText, json.viewCount, json.likeCount, json.dislikeCount, json.lengthSeconds, json.formatStreams, json.adaptiveFormats);
         }))
         return info;
     },
@@ -52,7 +54,21 @@ let InvidJS = {
             info = new Playlist(json.title, json.author, json.description, json.videos.length, json.videos);
         }))
         return info;
+    },
+
+    getVideoStream: async function(instance, id) {
+        if (!instance) throw new Error("You must provide an instance to fetch videos from!")
+        if (!id) throw new Error("You must provide a video ID to fetch it!")
+        if ((await this.getInstance(instance)).api_active === false)
+          throw new Error(
+            "The instance you provided does not support API requests or is offline!"
+          );
+        let stream = undefined;
+        let video = await this.fetchVideo(instance, id);
+
     }
 }
+    
 
-console.log(await InvidJS.fetchPlaylist("https://y.com.sb", "PLjb_xEAm3nXU_6rkI6Cdi_fOf4CHrDkpe"))
+
+console.log(await InvidJS.fetchVideo("https://invidious.weblibre.org", "7L2tr8oU1TY"))
