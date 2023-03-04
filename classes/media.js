@@ -47,3 +47,44 @@ export class BasicVideo {
     this.formats = formats;
   }
 }
+
+/**
+ * @class VideoFormat - Video Format
+ */
+export class VideoFormat {
+  /**
+   *
+   * @param {string} url - Video URL
+   * @param {string} itag - Format ID
+   * @param {string} type - Format Type
+   */
+  constructor(url, itag, type) {
+    this.url = url;
+    this.itag = itag;
+    this.type = type;
+  }
+}
+
+/**
+ * @class AudioFormat - Audio Format
+ */
+export class AudioFormat {
+  /**
+   *
+   * @param {string} url - Video URL
+   * @param {string} itag - Format ID
+   * @param {string} type - Format Type
+   * @param {string} quality - Audio Quality
+   * @param {number} sampleRate -  Audio Sample Rate
+   * @param {number} channels - Audio Channels
+   */
+  constructor(url, itag, type, quality, sampleRate, channels) {
+    this.url = url;
+    this.itag = itag;
+    this.type = type;
+    this.quality = quality;
+    this.sampleRate = sampleRate;
+    this.channels = channels;
+  }
+}
+
