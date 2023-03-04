@@ -85,8 +85,7 @@ let InvidJS = {
           json.likeCount,
           json.dislikeCount,
           json.lengthSeconds,
-          json.formatStreams,
-          json.adaptiveFormats
+          json.formatStreams.concat(json.adaptiveFormats)
         );
       })
     );
@@ -114,8 +113,7 @@ let InvidJS = {
       res.json().then((json) => {
         info = new BasicVideo(
           json.title,
-          json.formatStreams,
-          json.adaptiveFormats
+          json.formatStreams.concat(json.adaptiveFormats)
         );
       })
     );
@@ -139,7 +137,6 @@ let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    let videos = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json) => {
         info = new FullPlaylist(
@@ -171,7 +168,6 @@ let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    let videos = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json) => {
         info = new BasicPlaylist(json.title, json.videos);
@@ -207,3 +203,6 @@ let InvidJS = {
     return stream;
   },
 };
+
+let instance = await InvidJS.fetchInstance("https://y.com.sb");
+console.log(await InvidJS.fetchBasicVideo(instance, "hqFoKHE95Eg"));

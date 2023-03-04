@@ -10,8 +10,7 @@ export class FullVideo {
    * @param {number} likes - Number of likes
    * @param {number} dislikes - Number of dislikes
    * @param {number} length - Length of the video
-   * @param {Array} formats - List of formats
-   * @param {Array} adaptiveFormats - List of adaptive formats
+   * @param {Array} formats - List of available formats
    */
   constructor(
     title,
@@ -21,8 +20,7 @@ export class FullVideo {
     likes,
     dislikes,
     length,
-    formats,
-    adaptiveFormats
+    formats
   ) {
     this.title = title;
     this.description = description;
@@ -32,7 +30,6 @@ export class FullVideo {
     this.dislikes = dislikes;
     this.length = length;
     this.formats = formats;
-    this.adaptiveFormats = adaptiveFormats;
   }
 }
 
@@ -42,13 +39,11 @@ export class FullVideo {
 export class BasicVideo {
   /**
    *
-   * @param {string} title
-   * @param {Array} formats
-   * @param {Array} adaptiveFormats
+   * @param {string} title - Title of the video
+   * @param {Array} formats - List of available formats
    */
-  constructor(title, formats, adaptiveFormats) {
+  constructor(title, formats) {
     this.title = title;
     this.formats = formats;
-    this.adaptiveFormats = adaptiveFormats;
   }
 }
