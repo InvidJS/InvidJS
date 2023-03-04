@@ -16,4 +16,12 @@ export class Instance {
     this.type = type;
     this.uri = uri;
   }
+
+  checkAPIAccess() {
+    return this.api_allowed;
+  }
+
+  getURL() {
+    return this.uri;
+  }
 }
