@@ -14,7 +14,7 @@ import got from "got";
 let InvidJS = {
   //Fetches all active instance links.
   /**
-   * @param {string} [type] - Instance type. Allowed types are: https, i2p, onion, all.
+   * @param {string} [type] - Instance type. Allowed types are: "https", "i2p", "onion", "all". Default is "all".
    */
   fetchInstanceLinks: async function (type = "all") {
     if (!Constants.allowedTypes.includes(type))
@@ -60,19 +60,22 @@ let InvidJS = {
 
   //Fetches a video and converts it into an object.
   /**
-   * @param {string} instance - Instance URL.
+   * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
    */
   fetchFullVideo: async function (instance, id) {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if ((await this.fetchInstance(instance)).api_allowed === false)
+    if (
+      instance.checkAPIAccess() === false ||
+      instance.checkAPIAccess() === null
+    )
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    await fetch(`${instance}/api/v1/videos/${id}`).then((res) =>
+    await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
       res.json().then((json) => {
         info = new FullVideo(
           json.title,
@@ -92,19 +95,22 @@ let InvidJS = {
 
   //Fetches a barebones video and converts it into an object.
   /**
-   * @param {string} instance - Instance URL.
+   * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
    */
   fetchBasicVideo: async function (instance, id) {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if ((await this.fetchInstance(instance)).api_allowed === false)
+    if (
+      instance.checkAPIAccess() === false ||
+      instance.checkAPIAccess() === null
+    )
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    await fetch(`${instance}/api/v1/videos/${id}`).then((res) =>
+    await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
       res.json().then((json) => {
         info = new BasicVideo(
           json.title,
@@ -118,20 +124,23 @@ let InvidJS = {
 
   //Fetches a playlist and converts it into an object.
   /**
-   * @param {string} instance - Instance URL.
+   * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
    */
   fetchFullPlaylist: async function (instance, id) {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if ((await this.fetchInstance(instance)).api_allowed === false)
+    if (
+      instance.checkAPIAccess() === false ||
+      instance.checkAPIAccess() === null
+    )
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
     let videos = [];
-    await fetch(`${instance}/api/v1/playlists/${id}`).then((res) =>
+    await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json) => {
         info = new FullPlaylist(
           json.title,
@@ -145,17 +154,25 @@ let InvidJS = {
     return info;
   },
 
+  //Fetches a basic playlist and converts it into an object.
+  /**
+   * @param {Instance} instance - Instance.
+   * @param {string} id - Playlist ID.
+   */
   fetchBasicPlaylist: async function (instance, id) {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if ((await this.fetchInstance(instance)).api_allowed === false)
+    if (
+      instance.checkAPIAccess() === false ||
+      instance.checkAPIAccess() === null
+    )
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
     let videos = [];
-    await fetch(`${instance}/api/v1/playlists/${id}`).then((res) =>
+    await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json) => {
         info = new BasicPlaylist(json.title, json.videos);
       })
@@ -165,14 +182,17 @@ let InvidJS = {
 
   //Fetches a video stream and allows its playback.
   /**
-   * @param {string} instance - Instance URL.
+   * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
    */
   getVideoStream: async function (instance, id) {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if ((await this.fetchInstance(instance)).api_allowed === false)
+    if (
+      instance.checkAPIAccess() === false ||
+      instance.checkAPIAccess() === null
+    )
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
@@ -182,10 +202,8 @@ let InvidJS = {
     let streams = video.adaptiveFormats;
     streamtag = streams[0].itag;
     stream = got.stream(
-      `${instance}/latest_version?id=${id}&itag=${streamtag}`
+      `${instance.getURL()}/latest_version?id=${id}&itag=${streamtag}`
     );
     return stream;
   },
 };
-
-console.log(await InvidJS.fetchInstanceLinks());
