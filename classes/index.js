@@ -1,5 +1,5 @@
-import { Video } from "../classes/video.js";
+import { FullVideo, BasicVideo } from "../classes/video.js";
 import { Instance } from "../classes/instance.js";
-import { Playlist } from "../classes/playlist.js";
+import { FullPlaylist, BasicPlaylist } from "../classes/playlist.js";
 import { Constants } from "../classes/constants.js";
-export { Video, Instance, Playlist, Constants };
+export { FullVideo, BasicVideo, FullPlaylist, BasicPlaylist, Instance, Constants };
