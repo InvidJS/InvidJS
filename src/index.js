@@ -5,6 +5,8 @@ import {
   BasicPlaylist,
   Instance,
   Constants,
+  VideoFormat,
+  AudioFormat,
 } from "../classes/index.js";
 import * as fs from "fs-extra";
 import * as ffmpeg from "ffmpeg-static";
@@ -75,8 +77,31 @@ let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
+    let formats = [];
     await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
       res.json().then((json) => {
+        json.formatStreams.concat(json.adaptiveFormats).forEach((format) => {
+          if (!format.type.startsWith("audio")) {
+            formats.push(
+              new VideoFormat(
+                format.url,
+                format.itag,
+                format.type,
+              )
+            );
+          } else {
+            formats.push(
+              new AudioFormat(
+                format.url,
+                format.itag,
+                format.type,
+                format.audioQuality,
+                format.audioSampleRate,
+                format.audioChannels
+              )
+            );
+          }
+        });
         info = new FullVideo(
           json.title,
           json.description,
@@ -85,7 +110,7 @@ let InvidJS = {
           json.likeCount,
           json.dislikeCount,
           json.lengthSeconds,
-          json.formatStreams.concat(json.adaptiveFormats)
+          formats
         );
       })
     );
@@ -109,12 +134,32 @@ let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
+    let formats = [];
     await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
       res.json().then((json) => {
-        info = new BasicVideo(
-          json.title,
-          json.formatStreams.concat(json.adaptiveFormats)
-        );
+        json.formatStreams.concat(json.adaptiveFormats).forEach((format) => {
+          if (!format.type.startsWith("audio")) {
+            formats.push(
+              new VideoFormat(
+                format.url,
+                format.itag,
+                format.type,
+              )
+            );
+          } else {
+            formats.push(
+              new AudioFormat(
+                format.url,
+                format.itag,
+                format.type,
+                format.audioQuality,
+                format.audioSampleRate,
+                format.audioChannels
+              )
+            );
+          }
+        });
+        info = new BasicVideo(json.title, formats);
       })
     );
     return info;
@@ -203,6 +248,3 @@ let InvidJS = {
     return stream;
   },
 };
-
-let instance = await InvidJS.fetchInstance("https://y.com.sb");
-console.log(await InvidJS.fetchBasicVideo(instance, "hqFoKHE95Eg"));
