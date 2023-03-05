@@ -18,6 +18,7 @@ let InvidJS = {
   //Fetches all active instance links.
   /**
    * @param {string} [type] - Instance type. Allowed types are: "https", "i2p", "onion", "all". Default is "all".
+   * @returns {Promise<string[]>} Array of instance URLs.
    */
   fetchInstanceLinks: async function (type = "all") {
     if (!Constants.allowedTypes.includes(type))
@@ -37,6 +38,7 @@ let InvidJS = {
   //Fetches a single instance and converts it into an object.
   /**
    * @param {string} uri - Instance URL.
+   * @returns {Promise<Instance>} Instance object.
    */
   fetchInstance: async function (uri) {
     if (!uri) throw new Error("You must provide a valid instance!");
@@ -65,6 +67,7 @@ let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
+   * @returns {Promise<FullVideo>} FullVideo object.
    */
   fetchFullVideo: async function (instance, id) {
     if (!instance)
@@ -116,6 +119,7 @@ let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
+   * @returns {Promise<BasicVideo>} BasicVideo object.
    */
   fetchBasicVideo: async function (instance, id) {
     if (!instance)
@@ -158,6 +162,7 @@ let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
+   * @returns {Promise<FullPlaylist>} FullPlaylist object.
    */
   fetchFullPlaylist: async function (instance, id) {
     if (!instance)
@@ -193,6 +198,7 @@ let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
+   * @returns {Promise<BasicPlaylist>} BasicPlaylist object.
    */
   fetchBasicPlaylist: async function (instance, id) {
     if (!instance)
@@ -216,6 +222,25 @@ let InvidJS = {
       })
     );
     return info;
+  },
+
+  //Fetches all videos from a playlist and converts them into an array.
+  /**
+   *
+   * @param {Instance} instance - Instance.
+   * @param {FullPlaylist | BasicPlaylist} playlist - Playlist to fetch videos from.
+   * @returns {Promise<BasicVideo[]>} Array of BasicVideo objects.
+   */
+  fetchVideosFromPlaylist: async function (instance, playlist) {
+    if (!playlist)
+      throw new Error(
+        "You must provide a valid playlist to fetch videos from!"
+      );
+    let videos = [];
+    for (const video of playlist.videos) {
+      videos.push(await this.fetchBasicVideo(instance, video.id));
+    }
+    return videos;
   },
 
   //Fetches a video stream and allows its playback.
