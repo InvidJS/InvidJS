@@ -4,7 +4,7 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/alexavil"
   },
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "An attempt to add Invidious support to Node.js",
   "main": "src/index.js",
   "scripts": {

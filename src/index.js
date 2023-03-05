@@ -13,7 +13,6 @@ import streams from 'memory-streams';
 import fs from "fs-extra";
 import fetch from "node-fetch";
 import got from "got";
-import portAudio from "naudiodon";
 
 let InvidJS = {
   //Fetches all active instance links.
@@ -258,4 +257,4 @@ let InvidJS = {
   },
 };
 
-export { InvidJS };
+export default InvidJS;
