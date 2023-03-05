@@ -14,7 +14,7 @@ import fs from "fs-extra";
 import fetch from "node-fetch";
 import got from "got";
 
-let InvidJS = {
+export let InvidJS = {
   //Fetches all active instance links.
   /**
    * @param {string} [type] - Instance type. Allowed types are: "https", "i2p", "onion", "all". Default is "all".
@@ -256,5 +256,3 @@ let InvidJS = {
     return got.stream(`${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`).pipe(stream);
   },
 };
-
-export default InvidJS;
