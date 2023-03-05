@@ -17,10 +17,18 @@ export class Instance {
     this.uri = uri;
   }
 
+  /**
+   * 
+   * @returns {boolean} Is API allowed?
+   */
   checkAPIAccess() {
     return this.api_allowed;
   }
 
+  /**
+   * 
+   * @returns {string} Instance URL.
+   */
   getURL() {
     return this.uri;
   }
