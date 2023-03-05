@@ -21,9 +21,9 @@
   },
   "homepage": "https://github.com/alexavil/InvidJS#readme",
   "dependencies": {
-    "ffmpeg-static": "^5.1.0",
     "fs-extra": "^11.1.0",
     "got": "^12.5.3",
+    "memory-streams": "^0.1.3",
     "node-fetch": "^3.3.0"
   }
 }
