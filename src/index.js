@@ -245,28 +245,16 @@ let InvidJS = {
 
   //Fetches a video stream and allows its playback.
   /**
-   * @param {Instance} instance - Instance.
-   * @param {string} id - Video ID.
+   * @param {VideoFormat} video - Video to fetch stream from.
+   * @returns {Promise<Readable>} Readable stream.
    */
-  getVideoStream: async function (instance, id) {
-    if (!instance)
-      throw new Error("You must provide an instance to fetch videos from!");
-    if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if (
-      instance.checkAPIAccess() === false ||
-      instance.checkAPIAccess() === null
-    )
-      throw new Error(
-        "The instance you provided does not support API requests or is offline!"
-      );
-    let streamtag = undefined;
-    let stream = undefined;
-    let video = await this.fetchBasicVideo(instance, id);
-    let streams = video.adaptiveFormats;
-    streamtag = streams[0].itag;
-    stream = got.stream(
-      `${instance.getURL()}/latest_version?id=${id}&itag=${streamtag}`
-    );
-    return stream;
-  },
+  getVideoStream: async function (video) {},
+
+  //Fetches an audio stream and allows its playback.
+  /**
+   *
+   * @param {AudioFormat} audio - Audio to fetch stream from.
+   * @returns {Promise<Readable>} Readable stream.
+   */
+  getAudioStream: async function (audio) {},
 };
