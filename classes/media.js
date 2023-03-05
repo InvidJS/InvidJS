@@ -48,6 +48,22 @@ export class BasicVideo {
   }
 }
 
+
+/**
+ * @class  PlaylistVideo - Playlist Video Info
+ */
+export class PlaylistVideo {
+  /**
+   * 
+   * @param {string} title 
+   * @param {string} id 
+   */
+  constructor(title, id) {
+    this.title = title;
+    this.id = id;
+  }
+}
+
 /**
  * @class VideoFormat - Video Format
  */

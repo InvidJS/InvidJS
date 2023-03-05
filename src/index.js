@@ -1,6 +1,7 @@
 import {
   FullVideo,
   BasicVideo,
+  PlaylistVideo,
   FullPlaylist,
   BasicPlaylist,
   Instance,
@@ -82,13 +83,7 @@ let InvidJS = {
       res.json().then((json) => {
         json.formatStreams.concat(json.adaptiveFormats).forEach((format) => {
           if (!format.type.startsWith("audio")) {
-            formats.push(
-              new VideoFormat(
-                format.url,
-                format.itag,
-                format.type,
-              )
-            );
+            formats.push(new VideoFormat(format.url, format.itag, format.type));
           } else {
             formats.push(
               new AudioFormat(
@@ -139,13 +134,7 @@ let InvidJS = {
       res.json().then((json) => {
         json.formatStreams.concat(json.adaptiveFormats).forEach((format) => {
           if (!format.type.startsWith("audio")) {
-            formats.push(
-              new VideoFormat(
-                format.url,
-                format.itag,
-                format.type,
-              )
-            );
+            formats.push(new VideoFormat(format.url, format.itag, format.type));
           } else {
             formats.push(
               new AudioFormat(
@@ -182,14 +171,18 @@ let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
+    let videos = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json) => {
+        json.videos.forEach((video) => {
+          videos.push(new PlaylistVideo(video.title, video.videoId));
+        });
         info = new FullPlaylist(
           json.title,
           json.author,
           json.description,
           json.videos.length,
-          json.videos
+          videos
         );
       })
     );
@@ -213,9 +206,13 @@ let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
+    let videos = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json) => {
-        info = new BasicPlaylist(json.title, json.videos);
+        json.videos.forEach((video) => {
+          videos.push(new PlaylistVideo(video.title, video.videoId));
+        });
+        info = new BasicPlaylist(json.title, videos);
       })
     );
     return info;
