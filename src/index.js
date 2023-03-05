@@ -257,3 +257,5 @@ let InvidJS = {
     return got.stream(`${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`).pipe(stream);
   },
 };
+
+export { InvidJS };
