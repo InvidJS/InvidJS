@@ -4,6 +4,7 @@
 export class FullVideo {
   /**
    * @param {string} title - Title of the video
+   * @param {string} id - Video ID
    * @param {string} description - Description of the video
    * @param {string} published - Date of publishing
    * @param {number} views - Number of views
@@ -14,6 +15,7 @@ export class FullVideo {
    */
   constructor(
     title,
+    id,
     description,
     published,
     views,
@@ -23,6 +25,7 @@ export class FullVideo {
     formats
   ) {
     this.title = title;
+    this.id = id;
     this.description = description;
     this.published = published;
     this.views = views;
@@ -40,10 +43,12 @@ export class BasicVideo {
   /**
    *
    * @param {string} title - Title of the video
+   * @param {string} id - Video ID
    * @param {Array} formats - List of available formats
    */
-  constructor(title, formats) {
+  constructor(title, id, formats) {
     this.title = title;
+    this.id = id;
     this.formats = formats;
   }
 }
@@ -74,9 +79,9 @@ export class VideoFormat {
    * @param {string} itag - Format ID
    * @param {string} type - Format Type
    */
-  constructor(url, itag, type) {
+  constructor(url, tag, type) {
     this.url = url;
-    this.itag = itag;
+    this.tag = tag;
     this.type = type;
   }
 }
@@ -88,15 +93,15 @@ export class AudioFormat {
   /**
    *
    * @param {string} url - Video URL
-   * @param {string} itag - Format ID
+   * @param {string} tag - Format ID
    * @param {string} type - Format Type
    * @param {string} quality - Audio Quality
    * @param {number} sampleRate -  Audio Sample Rate
    * @param {number} channels - Audio Channels
    */
-  constructor(url, itag, type, quality, sampleRate, channels) {
+  constructor(url, tag, type, quality, sampleRate, channels) {
     this.url = url;
-    this.itag = itag;
+    this.tag = tag;
     this.type = type;
     this.quality = quality;
     this.sampleRate = sampleRate;
