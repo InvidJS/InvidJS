@@ -9,10 +9,11 @@ import {
   VideoFormat,
   AudioFormat,
 } from "../classes/index.js";
-import * as fs from "fs-extra";
-import * as ffmpeg from "ffmpeg-static";
+import streams from 'memory-streams';
+import fs from "fs-extra";
 import fetch from "node-fetch";
 import got from "got";
+import portAudio from "naudiodon";
 
 let InvidJS = {
   //Fetches all active instance links.
@@ -102,6 +103,7 @@ let InvidJS = {
         });
         info = new FullVideo(
           json.title,
+          id,
           json.description,
           json.publishedText,
           json.viewCount,
@@ -152,7 +154,7 @@ let InvidJS = {
             );
           }
         });
-        info = new BasicVideo(json.title, formats);
+        info = new BasicVideo(json.title, id, formats);
       })
     );
     return info;
@@ -245,16 +247,13 @@ let InvidJS = {
 
   //Fetches a video stream and allows its playback.
   /**
-   * @param {VideoFormat} video - Video to fetch stream from.
+   * @param {VideoFormat || AudioFormat} source - Video to fetch stream from.
    * @returns {Promise<Readable>} Readable stream.
    */
-  getVideoStream: async function (video) {},
-
-  //Fetches an audio stream and allows its playback.
-  /**
-   *
-   * @param {AudioFormat} audio - Audio to fetch stream from.
-   * @returns {Promise<Readable>} Readable stream.
-   */
-  getAudioStream: async function (audio) {},
+  getStream: async function (instance, video, source) {
+    if (!source)
+      throw new Error("You must provide a valid video or audio source to fetch a stream from!");
+    let stream = new streams.WritableStream();
+    return got.stream(`${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`).pipe(stream);
+  },
 };
