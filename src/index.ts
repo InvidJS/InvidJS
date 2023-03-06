@@ -9,9 +9,7 @@ import {
   VideoFormat,
   AudioFormat,
 } from "../classes/index.js";
-import streams from 'memory-streams';
-import fs from "fs-extra";
-import fetch from "node-fetch";
+import streams from "memory-streams";
 import got from "got";
 
 export let InvidJS = {
@@ -20,13 +18,13 @@ export let InvidJS = {
    * @param {string} [type] - Instance type. Allowed types are: "https", "i2p", "onion", "all". Default is "all".
    * @returns {Promise<string[]>} Array of instance URLs.
    */
-  fetchInstanceLinks: async function (type = "all") {
+  fetchInstanceLinks: async function (type: string = "all"): Promise<string[]> {
     if (!Constants.allowedTypes.includes(type))
       throw new Error("Invalid type! Valid types are: https, i2p, onion, all.");
-    let instances = [];
+    let instances: Array<string> = [];
     await fetch("https://api.invidious.io/instances.json").then((res) =>
-      res.json().then((json) => {
-        json.forEach((element) => {
+      res.json().then((json: any) => {
+        json.forEach((element: any) => {
           if (type === element[1].type || type === "all")
             instances.push(element[1].uri);
         });
@@ -38,14 +36,14 @@ export let InvidJS = {
   //Fetches a single instance and converts it into an object.
   /**
    * @param {string} uri - Instance URL.
-   * @returns {Promise<Instance>} Instance object.
+   * @returns {Promise<Instance | undefined>} Instance object.
    */
-  fetchInstance: async function (uri) {
+  fetchInstance: async function (uri: string): Promise<Instance | undefined> {
     if (!uri) throw new Error("You must provide a valid instance!");
     let info = undefined;
     await fetch("https://api.invidious.io/instances.json").then((res) =>
-      res.json().then((json) => {
-        let found = json.filter((instance) => instance[1].uri === uri);
+      res.json().then((json: any) => {
+        let found = json.filter((instance: any) => instance[1].uri === uri);
         if (!found)
           throw new Error(
             "Error fetching instance: instance does not exist or is not online!"
@@ -67,9 +65,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
-   * @returns {Promise<FullVideo>} FullVideo object.
+   * @returns {Promise<FullVideo | undefined>} FullVideo object.
    */
-  fetchFullVideo: async function (instance, id) {
+  fetchFullVideo: async function (
+    instance: Instance,
+    id: string
+  ): Promise<FullVideo | undefined> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -81,25 +82,29 @@ export let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    let formats = [];
+    let formats: Array<AudioFormat | VideoFormat> = [];
     await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
-      res.json().then((json) => {
-        json.formatStreams.concat(json.adaptiveFormats).forEach((format) => {
-          if (!format.type.startsWith("audio")) {
-            formats.push(new VideoFormat(format.url, format.itag, format.type));
-          } else {
-            formats.push(
-              new AudioFormat(
-                format.url,
-                format.itag,
-                format.type,
-                format.audioQuality,
-                format.audioSampleRate,
-                format.audioChannels
-              )
-            );
-          }
-        });
+      res.json().then((json: any) => {
+        json.formatStreams
+          .concat(json.adaptiveFormats)
+          .forEach((format: any) => {
+            if (!format.type.startsWith("audio")) {
+              formats.push(
+                new VideoFormat(format.url, format.itag, format.type)
+              );
+            } else {
+              formats.push(
+                new AudioFormat(
+                  format.url,
+                  format.itag,
+                  format.type,
+                  format.audioQuality,
+                  format.audioSampleRate,
+                  format.audioChannels
+                )
+              );
+            }
+          });
         info = new FullVideo(
           json.title,
           id,
@@ -120,9 +125,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
-   * @returns {Promise<BasicVideo>} BasicVideo object.
+   * @returns {Promise<BasicVideo | undefined>} BasicVideo object.
    */
-  fetchBasicVideo: async function (instance, id) {
+  fetchBasicVideo: async function (
+    instance: Instance,
+    id: string
+  ): Promise<BasicVideo | undefined> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -134,25 +142,29 @@ export let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    let formats = [];
+    let formats: Array<AudioFormat | VideoFormat> = [];
     await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
-      res.json().then((json) => {
-        json.formatStreams.concat(json.adaptiveFormats).forEach((format) => {
-          if (!format.type.startsWith("audio")) {
-            formats.push(new VideoFormat(format.url, format.itag, format.type));
-          } else {
-            formats.push(
-              new AudioFormat(
-                format.url,
-                format.itag,
-                format.type,
-                format.audioQuality,
-                format.audioSampleRate,
-                format.audioChannels
-              )
-            );
-          }
-        });
+      res.json().then((json: any) => {
+        json.formatStreams
+          .concat(json.adaptiveFormats)
+          .forEach((format: any) => {
+            if (!format.type.startsWith("audio")) {
+              formats.push(
+                new VideoFormat(format.url, format.itag, format.type)
+              );
+            } else {
+              formats.push(
+                new AudioFormat(
+                  format.url,
+                  format.itag,
+                  format.type,
+                  format.audioQuality,
+                  format.audioSampleRate,
+                  format.audioChannels
+                )
+              );
+            }
+          });
         info = new BasicVideo(json.title, id, formats);
       })
     );
@@ -163,9 +175,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
-   * @returns {Promise<FullPlaylist>} FullPlaylist object.
+   * @returns {Promise<FullPlaylist | undefined>} FullPlaylist object.
    */
-  fetchFullPlaylist: async function (instance, id) {
+  fetchFullPlaylist: async function (
+    instance: Instance,
+    id: string
+  ): Promise<FullPlaylist | undefined> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -177,10 +192,10 @@ export let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    let videos = [];
+    let videos: Array<PlaylistVideo> = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
-      res.json().then((json) => {
-        json.videos.forEach((video) => {
+      res.json().then((json: any) => {
+        json.videos.forEach((video: any) => {
           videos.push(new PlaylistVideo(video.title, video.videoId));
         });
         info = new FullPlaylist(
@@ -199,9 +214,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
-   * @returns {Promise<BasicPlaylist>} BasicPlaylist object.
+   * @returns {Promise<BasicPlaylist | undefined>} BasicPlaylist object.
    */
-  fetchBasicPlaylist: async function (instance, id) {
+  fetchBasicPlaylist: async function (
+    instance: Instance,
+    id: string
+  ): Promise<BasicPlaylist | undefined> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -213,10 +231,10 @@ export let InvidJS = {
         "The instance you provided does not support API requests or is offline!"
       );
     let info = undefined;
-    let videos = [];
+    let videos: Array<PlaylistVideo> = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
-      res.json().then((json) => {
-        json.videos.forEach((video) => {
+      res.json().then((json: any) => {
+        json.videos.forEach((video: any) => {
           videos.push(new PlaylistVideo(video.title, video.videoId));
         });
         info = new BasicPlaylist(json.title, videos);
@@ -232,12 +250,15 @@ export let InvidJS = {
    * @param {FullPlaylist | BasicPlaylist} playlist - Playlist to fetch videos from.
    * @returns {Promise<BasicVideo[]>} Array of BasicVideo objects.
    */
-  fetchVideosFromPlaylist: async function (instance, playlist) {
+  fetchVideosFromPlaylist: async function (
+    instance: Instance,
+    playlist: FullPlaylist | BasicPlaylist
+  ): Promise<BasicVideo[] | undefined> {
     if (!playlist)
       throw new Error(
         "You must provide a valid playlist to fetch videos from!"
       );
-    let videos = [];
+    let videos: any = [];
     for (const video of playlist.videos) {
       videos.push(await this.fetchBasicVideo(instance, video.id));
     }
@@ -246,13 +267,23 @@ export let InvidJS = {
 
   //Fetches a video stream and allows its playback.
   /**
-   * @param {VideoFormat || AudioFormat} source - Video to fetch stream from.
-   * @returns {Promise<Readable>} Readable stream.
+   * @param {VideoFormat | AudioFormat} source - Video to fetch stream from.
+   * @returns {Promise<any>} Readable stream.
    */
-  getStream: async function (instance, video, source) {
+  getStream: async function (
+    instance: Instance,
+    video: FullVideo | BasicVideo | PlaylistVideo,
+    source: VideoFormat | AudioFormat
+  ): Promise<any> {
     if (!source)
-      throw new Error("You must provide a valid video or audio source to fetch a stream from!");
+      throw new Error(
+        "You must provide a valid video or audio source to fetch a stream from!"
+      );
     let stream = new streams.WritableStream();
-    return got.stream(`${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`).pipe(stream);
+    return got
+      .stream(
+        `${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`
+      )
+      .pipe(stream);
   },
 };
