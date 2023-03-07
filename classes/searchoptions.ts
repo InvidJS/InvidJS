@@ -1,5 +1,7 @@
 export type InstanceSearchOptions = {
+  url?: string;
   type?: "https" | "onion" | "i2p" | "all";
-  region?: any;
+  region?: string;
+  api_allowed?: boolean | "any";
   limit?: number;
 };
