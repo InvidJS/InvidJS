@@ -10,7 +10,7 @@ export class FullVideo {
   likes: number;
   dislikes: number;
   length: number;
-  formats: any[];
+  formats: Array<VideoFormat | AudioFormat>;
   /**
    * @param {string} title - Title of the video
    * @param {string} id - Video ID
@@ -20,7 +20,7 @@ export class FullVideo {
    * @param {number} likes - Number of likes
    * @param {number} dislikes - Number of dislikes
    * @param {number} length - Length of the video
-   * @param {Array} formats - List of available formats
+   * @param {Array<VideoFormat | AudioFormat>} formats - List of available formats
    */
   constructor(
     title: string,
@@ -31,7 +31,7 @@ export class FullVideo {
     likes: number,
     dislikes: number,
     length: number,
-    formats: Array<any>
+    formats: Array<VideoFormat | AudioFormat>
   ) {
     this.title = title;
     this.id = id;
@@ -51,14 +51,14 @@ export class FullVideo {
 export class BasicVideo {
   title: string;
   id: string;
-  formats: any[];
+  formats: Array<VideoFormat | AudioFormat>;
   /**
    *
    * @param {string} title - Title of the video
    * @param {string} id - Video ID
-   * @param {Array} formats - List of available formats
+   * @param {Array<VideoFormat | AudioFormat>} formats - List of available formats
    */
-  constructor(title: string, id: string, formats: Array<any>) {
+  constructor(title: string, id: string, formats: Array<VideoFormat | AudioFormat>) {
     this.title = title;
     this.id = id;
     this.formats = formats;

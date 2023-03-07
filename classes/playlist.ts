@@ -13,7 +13,7 @@ export class FullPlaylist {
    * @param {string} author
    * @param {string} description
    * @param {number} videoCount
-   * @param {Array} videos
+   * @param {Array<any>} videos
    */
   constructor(
     title: string,
@@ -36,11 +36,11 @@ export class FullPlaylist {
 
 export class BasicPlaylist {
   title: any;
-  videos: any;
+  videos: Array<any>;
   /**
    *
    * @param {string} title
-   * @param {Array} videos
+   * @param {Array<any>} videos
    */
   constructor(title: string, videos: Array<any>) {
     this.title = title;

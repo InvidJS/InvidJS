@@ -63,12 +63,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
-   * @returns {Promise<FullVideo | undefined>} FullVideo object.
+   * @returns {Promise<FullVideo>} FullVideo object.
    */
   fetchFullVideo: async function (
     instance: Instance,
     id: string
-  ): Promise<FullVideo | undefined> {
+  ): Promise<FullVideo> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -79,7 +79,7 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info = undefined;
+    let info!: FullVideo;
     let formats: Array<AudioFormat | VideoFormat> = [];
     await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
       res.json().then((json: any) => {
@@ -123,12 +123,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Video ID.
-   * @returns {Promise<BasicVideo | undefined>} BasicVideo object.
+   * @returns {Promise<BasicVideo>} BasicVideo object.
    */
   fetchBasicVideo: async function (
     instance: Instance,
     id: string
-  ): Promise<BasicVideo | undefined> {
+  ): Promise<BasicVideo> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -139,7 +139,7 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info = undefined;
+    let info!: BasicVideo;
     let formats: Array<AudioFormat | VideoFormat> = [];
     await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
       res.json().then((json: any) => {
@@ -173,12 +173,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
-   * @returns {Promise<FullPlaylist | undefined>} FullPlaylist object.
+   * @returns {Promise<FullPlaylist>} FullPlaylist object.
    */
   fetchFullPlaylist: async function (
     instance: Instance,
     id: string
-  ): Promise<FullPlaylist | undefined> {
+  ): Promise<FullPlaylist> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -189,7 +189,7 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info = undefined;
+    let info!: FullPlaylist;
     let videos: Array<PlaylistVideo> = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json: any) => {
@@ -212,12 +212,12 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
-   * @returns {Promise<BasicPlaylist | undefined>} BasicPlaylist object.
+   * @returns {Promise<BasicPlaylist>} BasicPlaylist object.
    */
   fetchBasicPlaylist: async function (
     instance: Instance,
     id: string
-  ): Promise<BasicPlaylist | undefined> {
+  ): Promise<BasicPlaylist> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -228,7 +228,7 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info = undefined;
+    let info!: BasicPlaylist;
     let videos: Array<PlaylistVideo> = [];
     await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
       res.json().then((json: any) => {
@@ -251,7 +251,7 @@ export let InvidJS = {
   fetchVideosFromPlaylist: async function (
     instance: Instance,
     playlist: FullPlaylist | BasicPlaylist
-  ): Promise<BasicVideo[] | undefined> {
+  ): Promise<BasicVideo[]> {
     if (!playlist)
       throw new Error(
         "You must provide a valid playlist to fetch videos from!"
