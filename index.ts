@@ -19,8 +19,10 @@ export let InvidJS = {
    */
   fetchInstances: async function (
     opts: InstanceSearchOptions = {
+      url: undefined,
       type: "all",
       region: "all",
+      api_allowed: "any",
       limit: 0,
     }
   ): Promise<Instance[]> {
@@ -31,12 +33,14 @@ export let InvidJS = {
         json.forEach((instance: any) => {
           //It is possible the user only provides some of the options.
           if (
+            (!opts.url || opts.url === instance[1].uri) &&
             (!opts.type ||
               opts.type === "all" ||
               instance[1].type === opts.type) &&
             (!opts.region ||
               opts.region === "all" ||
               instance[1].region === opts.region) &&
+            (opts.api_allowed === undefined || opts.api_allowed === "any" || instance[1].api === opts.api_allowed) &&
             (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
           ) {
             instances.push(
@@ -53,34 +57,6 @@ export let InvidJS = {
       })
     );
     return instances;
-  },
-
-  //Fetches a single instance and converts it into an object.
-  /**
-   * @param {string} uri - Instance URL.
-   * @returns {Promise<Instance | undefined>} Instance object.
-   */
-  fetchInstance: async function (uri: string): Promise<Instance | undefined> {
-    if (!uri) throw new Error("You must provide a valid instance!");
-    let info = undefined;
-    await fetch("https://api.invidious.io/instances.json").then((res) =>
-      res.json().then((json: any) => {
-        let found = json.filter((instance: any) => instance[1].uri === uri);
-        if (!found)
-          throw new Error(
-            "Error fetching instance: instance does not exist or is not online!"
-          );
-        let instance = found[0][1];
-        info = new Instance(
-          instance.region,
-          instance.cors,
-          instance.api,
-          instance.type,
-          instance.uri
-        );
-      })
-    );
-    return info;
   },
 
   //Fetches a video and converts it into an object.
