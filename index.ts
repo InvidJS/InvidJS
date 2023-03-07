@@ -5,28 +5,50 @@ import {
   FullPlaylist,
   BasicPlaylist,
   Instance,
-  Constants,
+  InstanceSearchOptions,
   VideoFormat,
   AudioFormat,
 } from "./classes/index.js";
-import streams from "memory-streams";
 import got from "got";
 
 export let InvidJS = {
   //Fetches all active instance links.
   /**
-   * @param {string} [type] - Instance type. Allowed types are: "https", "i2p", "onion", "all". Default is "all".
-   * @returns {Promise<string[]>} Array of instance URLs.
+   * @param {InstanceSearchOptions} [opts] - Search options.
+   * @returns {Promise<Instance[]>} Array of instance objects.
    */
-  fetchInstanceLinks: async function (type: string = "all"): Promise<string[]> {
-    if (!Constants.allowedTypes.includes(type))
-      throw new Error("Invalid type! Valid types are: https, i2p, onion, all.");
-    let instances: Array<string> = [];
+  fetchInstances: async function (
+    opts: InstanceSearchOptions = {
+      type: "all",
+      region: "all",
+      limit: 0,
+    }
+  ): Promise<Instance[]> {
+    let instances: Array<Instance> = [];
     await fetch("https://api.invidious.io/instances.json").then((res) =>
       res.json().then((json: any) => {
-        json.forEach((element: any) => {
-          if (type === element[1].type || type === "all")
-            instances.push(element[1].uri);
+        //Only push instances that meet the search criteria.
+        json.forEach((instance: any) => {
+          //It is possible the user only provides some of the options.
+          if (
+            (!opts.type ||
+              opts.type === "all" ||
+              instance[1].type === opts.type) &&
+            (!opts.region ||
+              opts.region === "all" ||
+              instance[1].region === opts.region) &&
+            (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
+          ) {
+            instances.push(
+              new Instance(
+                instance[1].region,
+                instance[1].cors,
+                instance[1].api,
+                instance[1].type,
+                instance[1].uri
+              )
+            );
+          } else return false;
         });
       })
     );
@@ -279,11 +301,11 @@ export let InvidJS = {
       throw new Error(
         "You must provide a valid video or audio source to fetch a stream from!"
       );
-    let stream = new streams.WritableStream();
-    return got
-      .stream(
-        `${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`
-      )
-      .pipe(stream);
+    let stream = got.stream(
+      `${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`
+    );
+    stream.on("data", (data) => {
+      console.log(data);
+    });
   },
 };
