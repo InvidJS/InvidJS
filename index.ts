@@ -28,35 +28,35 @@ export let InvidJS = {
     }
   ): Promise<Instance[]> {
     let instances: Array<Instance> = [];
-    await fetch("https://api.invidious.io/instances.json").then((res) =>
-      res.json().then((json: any) => {
-        //Only push instances that meet the search criteria.
-        json.forEach((instance: any) => {
-          //It is possible the user only provides some of the options.
-          if (
-            (!opts.url || opts.url === instance[1].uri) &&
-            (!opts.type ||
-              opts.type === "all" ||
-              instance[1].type === opts.type) &&
-            (!opts.region ||
-              opts.region === "all" ||
-              instance[1].region === opts.region) &&
-            (opts.api_allowed === undefined || opts.api_allowed === "any" || instance[1].api === opts.api_allowed) &&
-            (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
-          ) {
-            instances.push(
-              new Instance(
-                instance[1].region,
-                instance[1].cors,
-                instance[1].api,
-                instance[1].type,
-                instance[1].uri
-              )
-            );
-          } else return false;
-        });
-      })
-    );
+    await axios.get("https://api.invidious.io/instances.json").then((res) => {
+      //Only push instances that meet the search criteria.
+      res.data.forEach((instance: any) => {
+        //It is possible the user only provides some of the options.
+        if (
+          (!opts.url || opts.url === instance[1].uri) &&
+          (!opts.type ||
+            opts.type === "all" ||
+            instance[1].type === opts.type) &&
+          (!opts.region ||
+            opts.region === "all" ||
+            instance[1].region === opts.region) &&
+          (opts.api_allowed === undefined ||
+            opts.api_allowed === "any" ||
+            instance[1].api === opts.api_allowed) &&
+          (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
+        ) {
+          instances.push(
+            new Instance(
+              instance[1].region,
+              instance[1].cors,
+              instance[1].api,
+              instance[1].type,
+              instance[1].uri
+            )
+          );
+        } else return false;
+      });
+    });
     return instances;
   },
 
@@ -82,42 +82,45 @@ export let InvidJS = {
       );
     let info!: FullVideo;
     let formats: Array<AudioFormat | VideoFormat> = [];
-    await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
-      res.json().then((json: any) => {
-        json.formatStreams
-          .concat(json.adaptiveFormats)
-          .forEach((format: any) => {
-            if (!format.type.startsWith("audio")) {
-              formats.push(
-                new VideoFormat(format.url, format.itag, format.type, format.contaner)
-              );
-            } else {
-              formats.push(
-                new AudioFormat(
-                  format.url,
-                  format.itag,
-                  format.type,
-                  format.container,
-                  format.audioQuality,
-                  format.audioSampleRate,
-                  format.audioChannels
-                )
-              );
-            }
-          });
-        info = new FullVideo(
-          json.title,
-          id,
-          json.description,
-          json.publishedText,
-          json.viewCount,
-          json.likeCount,
-          json.dislikeCount,
-          json.lengthSeconds,
-          formats
-        );
-      })
-    );
+    await axios.get(`${instance.getURL()}/api/v1/videos/${id}`).then((res) => {
+      res.data.formatStreams
+        .concat(res.data.adaptiveFormats)
+        .forEach((format: any) => {
+          if (!format.type.startsWith("audio")) {
+            formats.push(
+              new VideoFormat(
+                format.url,
+                format.itag,
+                format.type,
+                format.contaner
+              )
+            );
+          } else {
+            formats.push(
+              new AudioFormat(
+                format.url,
+                format.itag,
+                format.type,
+                format.container,
+                format.audioQuality,
+                format.audioSampleRate,
+                format.audioChannels
+              )
+            );
+          }
+        });
+      info = new FullVideo(
+        res.data.title,
+        id,
+        res.data.description,
+        res.data.publishedText,
+        res.data.viewCount,
+        res.data.likeCount,
+        res.data.dislikeCount,
+        res.data.lengthSeconds,
+        formats
+      );
+    });
     return info;
   },
 
@@ -143,32 +146,35 @@ export let InvidJS = {
       );
     let info!: BasicVideo;
     let formats: Array<AudioFormat | VideoFormat> = [];
-    await fetch(`${instance.getURL()}/api/v1/videos/${id}`).then((res) =>
-      res.json().then((json: any) => {
-        json.formatStreams
-          .concat(json.adaptiveFormats)
-          .forEach((format: any) => {
-            if (!format.type.startsWith("audio")) {
-              formats.push(
-                new VideoFormat(format.url, format.itag, format.type, format.container)
-              );
-            } else {
-              formats.push(
-                new AudioFormat(
-                  format.url,
-                  format.itag,
-                  format.type,
-                  format.container,
-                  format.audioQuality,
-                  format.audioSampleRate,
-                  format.audioChannels
-                )
-              );
-            }
-          });
-        info = new BasicVideo(json.title, id, formats);
-      })
-    );
+    await axios.get(`${instance.getURL()}/api/v1/videos/${id}`).then((res) => {
+      res.data.formatStreams
+        .concat(res.data.adaptiveFormats)
+        .forEach((format: any) => {
+          if (!format.type.startsWith("audio")) {
+            formats.push(
+              new VideoFormat(
+                format.url,
+                format.itag,
+                format.type,
+                format.container
+              )
+            );
+          } else {
+            formats.push(
+              new AudioFormat(
+                format.url,
+                format.itag,
+                format.type,
+                format.container,
+                format.audioQuality,
+                format.audioSampleRate,
+                format.audioChannels
+              )
+            );
+          }
+        });
+      info = new BasicVideo(res.data.title, id, formats);
+    });
     return info;
   },
 
@@ -194,20 +200,20 @@ export let InvidJS = {
       );
     let info!: FullPlaylist;
     let videos: Array<PlaylistVideo> = [];
-    await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
-      res.json().then((json: any) => {
-        json.videos.forEach((video: any) => {
+    await axios
+      .get(`${instance.getURL()}/api/v1/playlists/${id}`)
+      .then((res) => {
+        res.data.videos.forEach((video: any) => {
           videos.push(new PlaylistVideo(video.title, video.videoId));
         });
         info = new FullPlaylist(
-          json.title,
-          json.author,
-          json.description,
-          json.videos.length,
+          res.data.title,
+          res.data.author,
+          res.data.description,
+          res.data.videos.length,
           videos
         );
-      })
-    );
+      });
     return info;
   },
 
@@ -233,18 +239,19 @@ export let InvidJS = {
       );
     let info!: BasicPlaylist;
     let videos: Array<PlaylistVideo> = [];
-    await fetch(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) =>
-      res.json().then((json: any) => {
-        json.videos.forEach((video: any) => {
+    await axios
+      .get(`${instance.getURL()}/api/v1/playlists/${id}`)
+      .then((res) => {
+        res.data.videos.forEach((video: any) => {
           videos.push(new PlaylistVideo(video.title, video.videoId));
         });
-        info = new BasicPlaylist(json.title, videos);
-      })
-    );
+        info = new BasicPlaylist(res.data.title, videos);
+      });
     return info;
   },
 
   //Fetches all videos from a playlist and converts them into an array.
+  //This is utterly fucking retarded.
   /**
    *
    * @param {Instance} instance - Instance.
@@ -286,7 +293,9 @@ export let InvidJS = {
         responseType: "stream",
       }
     );
-    let stream = response.data.pipe(fs.createWriteStream(`tmp.${source.container}`))
+    let stream = response.data.pipe(
+      fs.createWriteStream(`tmp.${source.container}`)
+    );
     return stream;
   },
 };
