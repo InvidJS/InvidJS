@@ -89,16 +89,19 @@ export class VideoFormat {
   url: string;
   tag: any;
   type: string;
+  container: string;
   /**
    *
    * @param {string} url - Video URL
    * @param {string} tag - Format ID
    * @param {string} type - Format Type
+   * @param {string} container - Container Format
    */
-  constructor(url: string, tag: string, type: string) {
+  constructor(url: string, tag: string, type: string, container: string) {
     this.url = url;
     this.tag = tag;
     this.type = type;
+    this.container = container;
   }
 }
 
@@ -109,6 +112,7 @@ export class AudioFormat {
   url: string;
   tag: string;
   type: string;
+  container: string;
   quality: string;
   sampleRate: number;
   channels: number;
@@ -117,6 +121,7 @@ export class AudioFormat {
    * @param {string} url - Video URL
    * @param {string} tag - Format ID
    * @param {string} type - Format Type
+   * @param {string} container - Container Format
    * @param {string} quality - Audio Quality
    * @param {number} sampleRate -  Audio Sample Rate
    * @param {number} channels - Audio Channels
@@ -125,6 +130,7 @@ export class AudioFormat {
     url: string,
     tag: string,
     type: string,
+    container: string,
     quality: string,
     sampleRate: number,
     channels: number
@@ -132,6 +138,7 @@ export class AudioFormat {
     this.url = url;
     this.tag = tag;
     this.type = type;
+    this.container = container;
     this.quality = quality;
     this.sampleRate = sampleRate;
     this.channels = channels;
