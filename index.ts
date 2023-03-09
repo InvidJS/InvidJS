@@ -8,7 +8,7 @@ import {
   InstanceSearchOptions,
   VideoFormat,
   AudioFormat,
-} from "./classes/index.js";
+} from "./classes/index";
 import got from "got";
 
 export let InvidJS = {
@@ -279,9 +279,7 @@ export let InvidJS = {
       );
     let stream = got.stream(
       `${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`
-    );
-    stream.on("data", (data) => {
-      console.log(data);
-    });
+    )
+    return stream;
   },
 };

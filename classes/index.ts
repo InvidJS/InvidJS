@@ -4,10 +4,10 @@ import {
   PlaylistVideo,
   VideoFormat,
   AudioFormat,
-} from "./media.js";
-import { Instance } from "./instance.js";
-import { FullPlaylist, BasicPlaylist } from "./playlist.js";
-import { InstanceSearchOptions } from "./searchoptions.js";
+} from "./media";
+import { Instance } from "./instance";
+import { FullPlaylist, BasicPlaylist } from "./playlist";
+import { InstanceSearchOptions } from "./searchoptions";
 export {
   FullVideo,
   BasicVideo,
