@@ -9,7 +9,8 @@ import {
   VideoFormat,
   AudioFormat,
 } from "./classes/index";
-import got from "got";
+import axios from "axios";
+import { fs } from "memfs";
 
 export let InvidJS = {
   //Fetches all active instance links.
@@ -88,7 +89,7 @@ export let InvidJS = {
           .forEach((format: any) => {
             if (!format.type.startsWith("audio")) {
               formats.push(
-                new VideoFormat(format.url, format.itag, format.type)
+                new VideoFormat(format.url, format.itag, format.type, format.contaner)
               );
             } else {
               formats.push(
@@ -96,6 +97,7 @@ export let InvidJS = {
                   format.url,
                   format.itag,
                   format.type,
+                  format.container,
                   format.audioQuality,
                   format.audioSampleRate,
                   format.audioChannels
@@ -148,7 +150,7 @@ export let InvidJS = {
           .forEach((format: any) => {
             if (!format.type.startsWith("audio")) {
               formats.push(
-                new VideoFormat(format.url, format.itag, format.type)
+                new VideoFormat(format.url, format.itag, format.type, format.container)
               );
             } else {
               formats.push(
@@ -156,6 +158,7 @@ export let InvidJS = {
                   format.url,
                   format.itag,
                   format.type,
+                  format.container,
                   format.audioQuality,
                   format.audioSampleRate,
                   format.audioChannels
@@ -277,9 +280,13 @@ export let InvidJS = {
       throw new Error(
         "You must provide a valid video or audio source to fetch a stream from!"
       );
-    let stream = got.stream(
-      `${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`
-    )
+    let response = await axios.get(
+      `${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`,
+      {
+        responseType: "stream",
+      }
+    );
+    let stream = response.data.pipe(fs.createWriteStream(`tmp.${source.container}`))
     return stream;
   },
 };
