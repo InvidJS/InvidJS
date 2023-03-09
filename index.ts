@@ -250,29 +250,6 @@ export let InvidJS = {
     return info;
   },
 
-  //Fetches all videos from a playlist and converts them into an array.
-  //This is utterly fucking retarded.
-  /**
-   *
-   * @param {Instance} instance - Instance.
-   * @param {FullPlaylist | BasicPlaylist} playlist - Playlist to fetch videos from.
-   * @returns {Promise<BasicVideo[]>} Array of BasicVideo objects.
-   */
-  fetchVideosFromPlaylist: async function (
-    instance: Instance,
-    playlist: FullPlaylist | BasicPlaylist
-  ): Promise<BasicVideo[]> {
-    if (!playlist)
-      throw new Error(
-        "You must provide a valid playlist to fetch videos from!"
-      );
-    let videos: any = [];
-    for (const video of playlist.videos) {
-      videos.push(await this.fetchBasicVideo(instance, video.id));
-    }
-    return videos;
-  },
-
   //Fetches a video stream and allows its playback.
   /**
    * @param {VideoFormat | AudioFormat} source - Video to fetch stream from.
