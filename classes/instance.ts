@@ -44,3 +44,43 @@ export class Instance {
     return this.uri;
   }
 }
+
+/**
+ * @class InstanceStats - Instance Stats
+ */
+export class InstanceStats {
+  software_name: string;
+  software_version: string;
+  software_branch: string;
+  users_total: number;
+  users_active_halfyear: number;
+  users_active_month: number;
+  registrations: boolean;
+  /**
+   *
+   * @param {string} software_name - Software Name
+   * @param {string} software_version - Software Version
+   * @param {string} software_branch - Software Branch
+   * @param {number} users_total - Total Users
+   * @param {number} users_active_halfyear - Users active in the last 6 months
+   * @param {number} users_active_month - Users active in the last month
+   * @param {boolean} registrations - Is registration allowed?
+   */
+  constructor(
+    software_name: string,
+    software_version: string,
+    software_branch: string,
+    users_total: number,
+    users_active_halfyear: number,
+    users_active_month: number,
+    registrations: boolean,
+  ) {
+    this.software_name = software_name;
+    this.software_version = software_version;
+    this.software_branch = software_branch;
+    this.users_total = users_total;
+    this.users_active_halfyear = users_active_halfyear;
+    this.users_active_month = users_active_month;
+    this.registrations = registrations;
+  }
+}
