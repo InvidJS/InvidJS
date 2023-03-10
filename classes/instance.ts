@@ -1,6 +1,12 @@
 /**
  * @name Instance
  * @description Basic information about an instance.
+ * 
+ * @param {string} region  - Region of the instance
+ * @param {boolean} cors_allowed  - Is CORS allowed?
+ * @param {boolean} api_allowed  - Is API allowed?
+ * @param {string} type  - Type of the instance
+ * @param {string} uri  - URL of the instance
  */
 export class Instance {
   region: string;
@@ -8,13 +14,6 @@ export class Instance {
   api_allowed: boolean;
   type: string;
   uri: string;
-  /**
-   * @param {string} region  - Region of the instance
-   * @param {boolean} cors_allowed  - Is CORS allowed?
-   * @param {boolean} api_allowed  - Is API allowed?
-   * @param {string} type  - Type of the instance
-   * @param {string} uri  - URL of the instance
-   */
   constructor(
     region: string,
     cors_allowed: boolean,
@@ -49,6 +48,14 @@ export class Instance {
 /**
  * @name InstanceStats
  * @description Statistics about an instance.
+ *
+ * @param {string} software_name - Software Name
+ * @param {string} software_version - Software Version
+ * @param {string} software_branch - Software Branch
+ * @param {number} users_total - Total Users
+ * @param {number} users_active_halfyear - Users active in the last 6 months
+ * @param {number} users_active_month - Users active in the last month
+ * @param {boolean} registrations - Is registration allowed?
  */
 export class InstanceStats {
   software_name: string;
@@ -58,16 +65,6 @@ export class InstanceStats {
   users_active_halfyear: number;
   users_active_month: number;
   registrations: boolean;
-  /**
-   *
-   * @param {string} software_name - Software Name
-   * @param {string} software_version - Software Version
-   * @param {string} software_branch - Software Branch
-   * @param {number} users_total - Total Users
-   * @param {number} users_active_halfyear - Users active in the last 6 months
-   * @param {number} users_active_month - Users active in the last month
-   * @param {boolean} registrations - Is registration allowed?
-   */
   constructor(
     software_name: string,
     software_version: string,
@@ -75,7 +72,7 @@ export class InstanceStats {
     users_total: number,
     users_active_halfyear: number,
     users_active_month: number,
-    registrations: boolean,
+    registrations: boolean
   ) {
     this.software_name = software_name;
     this.software_version = software_version;

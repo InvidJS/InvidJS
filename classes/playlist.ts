@@ -1,6 +1,12 @@
 /**
  * @name FullPlaylist
  * @description Playlist object with all information.
+ *
+ * @param {string} title - Title of the playlist.
+ * @param {string} author - Author of the playlist.
+ * @param {string} description - Description of the playlist.
+ * @param {number} videoCount - Number of videos in the playlist.
+ * @param {Array<any>} videos - Array of videos in the playlist.
  */
 export class FullPlaylist {
   title: string;
@@ -8,14 +14,6 @@ export class FullPlaylist {
   description: string;
   videoCount: number;
   videos: Array<any>;
-  /**
-   *
-   * @param {string} title
-   * @param {string} author
-   * @param {string} description
-   * @param {number} videoCount
-   * @param {Array<any>} videos
-   */
   constructor(
     title: string,
     author: string,
@@ -34,16 +32,12 @@ export class FullPlaylist {
 /**
  * @name BasicPlaylist
  * @description Playlist object with only basic information.
+ * @param {string} title - Title of the playlist.
+ * @param {Array<any>} videos - Array of videos in the playlist.
  */
-
 export class BasicPlaylist {
   title: any;
   videos: Array<any>;
-  /**
-   *
-   * @param {string} title
-   * @param {Array<any>} videos
-   */
   constructor(title: string, videos: Array<any>) {
     this.title = title;
     this.videos = videos;

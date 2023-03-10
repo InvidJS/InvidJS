@@ -20,6 +20,8 @@ export let InvidJS = {
    * @name fetchInstances
    * @description Fetches active instances.
    * @param {InstanceFetchOptions} [opts] - Search options.
+   * @example await InvidJS.fetchInstances();
+   * @example await InvidJS.fetchInstances({limit: 10});
    * @returns {Promise<Instance[]>} Array of instance objects.
    */
   fetchInstances: async function (
@@ -68,6 +70,7 @@ export let InvidJS = {
    * @name fetchStats
    * @description Fetches stats of an instance.
    * @param {Instance} instance - Instance to fetch stats from.
+   * @example await InvidJS.fetchStats(instance);
    * @returns {Promise<InstanceStats>} Instance stats.
    */
   fetchStats: async function (instance: Instance): Promise<InstanceStats> {
@@ -101,6 +104,7 @@ export let InvidJS = {
    * @param {Instance} instance - Instance to fetch videos from.
    * @param {string} id - Video ID.
    * @param {VideoFetchOptions} [opts] - Fetch options.
+   * @example await InvidJS.fetchVideo(instance, "id");
    * @returns {Promise<FullVideo | BasicVideo>} Video object.
    */
   fetchVideo: async function (
@@ -178,6 +182,7 @@ export let InvidJS = {
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
    * @param {PlaylistFetchOptions} [opts] - Fetch options.
+   * @example await InvidJS.fetchPlaylist(instance, "id");
    * @returns {Promise<FullPlaylist | BasicPlaylist>} Playlist object.
    */
   fetchPlaylist: async function (
