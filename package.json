@@ -20,7 +20,7 @@
   "description": "An attempt to add Invidious support to Node.js",
   "scripts": {
     "build": "tsup index.ts --format cjs,esm --dts --clean && copy package.json dist",
-    "docs:build": "documentation build ./index.ts -f html -o docs"
+    "docs:build": "documentation build ./index.ts --config documentation.yml -f html -o docs"
   },
   "repository": {
     "type": "git",

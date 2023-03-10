@@ -1,5 +1,6 @@
 /**
- * @class FullPlaylist - Full Playlist Info
+ * @name FullPlaylist
+ * @description Playlist object with all information.
  */
 export class FullPlaylist {
   title: string;
@@ -31,7 +32,8 @@ export class FullPlaylist {
 }
 
 /**
- * @class BasicPlaylist - Basic Playlist Info
+ * @name BasicPlaylist
+ * @description Playlist object with only basic information.
  */
 
 export class BasicPlaylist {

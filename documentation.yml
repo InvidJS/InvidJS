@@ -1,0 +1,30 @@
+toc:
+  - name: Classes
+    description: |
+      These classes are available in InvidJS, created by various functions.
+    children:
+      - Instance
+      - InstanceStats
+      - FullVideo
+      - BasicVideo
+      - PlaylistVideo
+      - FullPlaylist
+      - BasicPlaylist
+      - VideoFormat
+      - AudioFormat
+  - name: Types
+    description: |
+      These InvidJS types are used in certain functions.
+    children:
+      - InstanceFetchOptions
+      - VideoFetchOptions
+      - PlaylistFetchOptions
+  - name: Functions
+    description: |
+      Main functions of InvidJS.
+    children:
+      - fetchInstances
+      - fetchStats
+      - fetchVideo
+      - fetchPlaylist
+      - fetchStream  

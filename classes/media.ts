@@ -1,5 +1,6 @@
 /**
- * @class FullVideo - Full Video Info
+ * @name FullVideo
+ * @description Video object with all information.
  */
 export class FullVideo {
   title: string;
@@ -46,7 +47,8 @@ export class FullVideo {
 }
 
 /**
- * @class BasicVideo - Basic Video Info
+ * @name BasicVideo
+ * @description Video object with only basic information.
  */
 export class BasicVideo {
   title: string;
@@ -66,7 +68,8 @@ export class BasicVideo {
 }
 
 /**
- * @class  PlaylistVideo - Playlist Video Info
+ * @name PlaylistVideo
+ * @description Special video object for playlists.
  */
 export class PlaylistVideo {
   title: string;
@@ -83,7 +86,8 @@ export class PlaylistVideo {
 }
 
 /**
- * @class VideoFormat - Video Format
+ * @name VideoFormat
+ * @description Format of a video.
  */
 export class VideoFormat {
   url: string;
@@ -106,7 +110,8 @@ export class VideoFormat {
 }
 
 /**
- * @class AudioFormat - Audio Format
+ * @name AudioFormat
+ * @description Format of an audio.
  */
 export class AudioFormat {
   url: string;

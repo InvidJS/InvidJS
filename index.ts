@@ -16,8 +16,9 @@ import axios from "axios";
 import { fs } from "memfs";
 
 export let InvidJS = {
-  //Fetches active instances.
   /**
+   * @name fetchInstances
+   * @description Fetches active instances.
    * @param {InstanceFetchOptions} [opts] - Search options.
    * @returns {Promise<Instance[]>} Array of instance objects.
    */
@@ -63,9 +64,9 @@ export let InvidJS = {
     return instances;
   },
 
-  //Fetches stats of an instance.
   /**
-   *
+   * @name fetchStats
+   * @description Fetches stats of an instance.
    * @param {Instance} instance - Instance to fetch stats from.
    * @returns {Promise<InstanceStats>} Instance stats.
    */
@@ -94,8 +95,9 @@ export let InvidJS = {
     return stats;
   },
 
-  //Fetches a video and converts it into an object.
   /**
+   * @name fetchVideo
+   * @description Fetches a video and converts it into an object.
    * @param {Instance} instance - Instance to fetch videos from.
    * @param {string} id - Video ID.
    * @param {VideoFetchOptions} [opts] - Fetch options.
@@ -162,7 +164,7 @@ export let InvidJS = {
           );
           break;
         }
-        case "basic": 
+        case "basic":
         default: {
           info = new BasicVideo(res.data.title, id, formats);
           break;
@@ -172,8 +174,9 @@ export let InvidJS = {
     return info;
   },
 
-  //Fetches a playlist and converts it into an object.
   /**
+   * @name fetchPlaylist
+   * @description Fetches a playlist and converts it into an object.
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
    * @param {PlaylistFetchOptions} [opts] - Fetch options.
@@ -227,8 +230,9 @@ export let InvidJS = {
     return info;
   },
 
-  //Fetches a video stream and allows its playback.
   /**
+   * @name fetchStream
+   * @description Fetches a video stream and allows its playback.
    * @param {VideoFormat | AudioFormat} source - Video to fetch stream from.
    * @returns {Promise<any>} Readable stream.
    */

@@ -1,5 +1,6 @@
 /**
- * @class Instance - Instance Info
+ * @name Instance
+ * @description Basic information about an instance.
  */
 export class Instance {
   region: string;
@@ -46,7 +47,8 @@ export class Instance {
 }
 
 /**
- * @class InstanceStats - Instance Stats
+ * @name InstanceStats
+ * @description Statistics about an instance.
  */
 export class InstanceStats {
   software_name: string;
