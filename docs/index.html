@@ -39,9 +39,9 @@
               
                 
                 <li><a
-                  href='#fetchfullvideo'
+                  href='#fetchstats'
                   class="">
-                  fetchFullVideo
+                  fetchStats
                   
                 </a>
                 
@@ -49,9 +49,9 @@
               
                 
                 <li><a
-                  href='#fetchbasicvideo'
+                  href='#fetchvideo'
                   class="">
-                  fetchBasicVideo
+                  fetchVideo
                   
                 </a>
                 
@@ -59,9 +59,9 @@
               
                 
                 <li><a
-                  href='#fetchfullplaylist'
+                  href='#fetchplaylist'
                   class="">
-                  fetchFullPlaylist
+                  fetchPlaylist
                   
                 </a>
                 
@@ -69,19 +69,9 @@
               
                 
                 <li><a
-                  href='#fetchbasicplaylist'
+                  href='#fetchstream'
                   class="">
-                  fetchBasicPlaylist
-                  
-                </a>
-                
-                </li>
-              
-                
-                <li><a
-                  href='#getstream'
-                  class="">
-                  getStream
+                  fetchStream
                   
                 </a>
                 
@@ -173,6 +163,16 @@
               
                 
                 <li><a
+                  href='#instancestats'
+                  class="">
+                  InstanceStats
+                  
+                </a>
+                
+                </li>
+              
+                
+                <li><a
                   href='#fullplaylist'
                   class="">
                   FullPlaylist
@@ -215,7 +215,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>fetchInstances(opts: InstanceSearchOptions?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#instance">Instance</a>>></div>
+    <div class='pre p1 fill-light mt0'>fetchInstances(opts: InstanceFetchOptions?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#instance">Instance</a>>></div>
   
   
 
@@ -232,7 +232,7 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>opts</span> <code class='quiet'>(InstanceSearchOptions?
+            <span class='code bold'>opts</span> <code class='quiet'>(InstanceFetchOptions?
             = <code>{url:undefined,type:&quot;all&quot;,region:&quot;all&quot;,api_allowed:&quot;any&quot;,limit:0}</code>)</code>
 	    Search options.
 
@@ -278,8 +278,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='fetchfullvideo'>
-      fetchFullVideo
+    <h3 class='fl m0' id='fetchstats'>
+      fetchStats
     </h3>
     
     
@@ -287,7 +287,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>fetchFullVideo(instance: <a href="#instance">Instance</a>, id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#fullvideo">FullVideo</a>></div>
+    <div class='pre p1 fill-light mt0'>fetchStats(instance: <a href="#instance">Instance</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#instancestats">InstanceStats</a>></div>
   
   
 
@@ -305,16 +305,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>instance</span> <code class='quiet'>(<a href="#instance">Instance</a>)</code>
-	    Instance.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Video ID.
+	    Instance to fetch stats from.
 
           </div>
           
@@ -328,8 +319,8 @@
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#fullvideo">FullVideo</a>></code>:
-        FullVideo object.
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#instancestats">InstanceStats</a>></code>:
+        Instance stats.
 
       
     
@@ -358,8 +349,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='fetchbasicvideo'>
-      fetchBasicVideo
+    <h3 class='fl m0' id='fetchvideo'>
+      fetchVideo
     </h3>
     
     
@@ -367,7 +358,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>fetchBasicVideo(instance: <a href="#instance">Instance</a>, id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#basicvideo">BasicVideo</a>></div>
+    <div class='pre p1 fill-light mt0'>fetchVideo(instance: <a href="#instance">Instance</a>, id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, opts: VideoFetchOptions?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#fullvideo">FullVideo</a> | <a href="#basicvideo">BasicVideo</a>)></div>
   
   
 
@@ -385,7 +376,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>instance</span> <code class='quiet'>(<a href="#instance">Instance</a>)</code>
-	    Instance.
+	    Instance to fetch videos from.
 
           </div>
           
@@ -400,6 +391,16 @@
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>opts</span> <code class='quiet'>(VideoFetchOptions?
+            = <code>{type:&quot;basic&quot;}</code>)</code>
+	    Fetch options.
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -408,8 +409,8 @@
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#basicvideo">BasicVideo</a>></code>:
-        BasicVideo object.
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#fullvideo">FullVideo</a> | <a href="#basicvideo">BasicVideo</a>)></code>:
+        Video object.
 
       
     
@@ -438,8 +439,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='fetchfullplaylist'>
-      fetchFullPlaylist
+    <h3 class='fl m0' id='fetchplaylist'>
+      fetchPlaylist
     </h3>
     
     
@@ -447,7 +448,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>fetchFullPlaylist(instance: <a href="#instance">Instance</a>, id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#fullplaylist">FullPlaylist</a>></div>
+    <div class='pre p1 fill-light mt0'>fetchPlaylist(instance: <a href="#instance">Instance</a>, id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, opts: PlaylistFetchOptions?): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#fullplaylist">FullPlaylist</a> | <a href="#basicplaylist">BasicPlaylist</a>)></div>
   
   
 
@@ -480,6 +481,16 @@
           
         </div>
       
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>opts</span> <code class='quiet'>(PlaylistFetchOptions?
+            = <code>{playlist_type:&quot;basic&quot;,limit:0}</code>)</code>
+	    Fetch options.
+
+          </div>
+          
+        </div>
+      
     </div>
   
 
@@ -488,8 +499,8 @@
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#fullplaylist">FullPlaylist</a>></code>:
-        FullPlaylist object.
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#fullplaylist">FullPlaylist</a> | <a href="#basicplaylist">BasicPlaylist</a>)></code>:
+        Playlist object.
 
       
     
@@ -518,8 +529,8 @@
   
   <div class='clearfix'>
     
-    <h3 class='fl m0' id='fetchbasicplaylist'>
-      fetchBasicPlaylist
+    <h3 class='fl m0' id='fetchstream'>
+      fetchStream
     </h3>
     
     
@@ -527,87 +538,7 @@
   
 
   
-    <div class='pre p1 fill-light mt0'>fetchBasicPlaylist(instance: <a href="#instance">Instance</a>, id: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#basicplaylist">BasicPlaylist</a>></div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>instance</span> <code class='quiet'>(<a href="#instance">Instance</a>)</code>
-	    Instance.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Playlist ID.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-    
-      <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#basicplaylist">BasicPlaylist</a>></code>:
-        BasicPlaylist object.
-
-      
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-          
-        
-          
-          <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-  <div class='clearfix'>
-    
-    <h3 class='fl m0' id='getstream'>
-      getStream
-    </h3>
-    
-    
-  </div>
-  
-
-  
-    <div class='pre p1 fill-light mt0'>getStream(instance: <a href="#instance">Instance</a>, video: (<a href="#fullvideo">FullVideo</a> | <a href="#basicvideo">BasicVideo</a> | <a href="#playlistvideo">PlaylistVideo</a>), source: (<a href="#videoformat">VideoFormat</a> | <a href="#audioformat">AudioFormat</a>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></div>
+    <div class='pre p1 fill-light mt0'>fetchStream(instance: <a href="#instance">Instance</a>, video: (<a href="#fullvideo">FullVideo</a> | <a href="#basicvideo">BasicVideo</a> | <a href="#playlistvideo">PlaylistVideo</a>), source: (<a href="#videoformat">VideoFormat</a> | <a href="#audioformat">AudioFormat</a>)): <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></div>
   
   
 
@@ -1379,6 +1310,123 @@
     </div>
   
 </div>
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='instancestats'>
+      InstanceStats
+    </h3>
+    
+    
+  </div>
+  
+
+  
+    <div class='pre p1 fill-light mt0'>new InstanceStats(software_name: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, software_version: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, software_branch: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>, users_total: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, users_active_halfyear: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, users_active_month: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>, registrations: <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>software_name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Software Name
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>software_version</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Software Version
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>software_branch</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Software Branch
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>users_total</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Total Users
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>users_active_halfyear</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Users active in the last 6 months
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>users_active_month</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Users active in the last month
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>registrations</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    Is registration allowed?
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 

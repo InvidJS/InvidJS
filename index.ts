@@ -5,7 +5,10 @@ import {
   FullPlaylist,
   BasicPlaylist,
   Instance,
-  InstanceSearchOptions,
+  InstanceStats,
+  InstanceFetchOptions,
+  VideoFetchOptions,
+  PlaylistFetchOptions,
   VideoFormat,
   AudioFormat,
 } from "./classes/index";
@@ -13,13 +16,13 @@ import axios from "axios";
 import { fs } from "memfs";
 
 export let InvidJS = {
-  //Fetches all active instance links.
+  //Fetches active instances.
   /**
-   * @param {InstanceSearchOptions} [opts] - Search options.
+   * @param {InstanceFetchOptions} [opts] - Search options.
    * @returns {Promise<Instance[]>} Array of instance objects.
    */
   fetchInstances: async function (
-    opts: InstanceSearchOptions = {
+    opts: InstanceFetchOptions = {
       url: undefined,
       type: "all",
       region: "all",
@@ -60,16 +63,51 @@ export let InvidJS = {
     return instances;
   },
 
+  //Fetches stats of an instance.
+  /**
+   *
+   * @param {Instance} instance - Instance to fetch stats from.
+   * @returns {Promise<InstanceStats>} Instance stats.
+   */
+  fetchStats: async function (instance: Instance): Promise<InstanceStats> {
+    if (!instance)
+      throw new Error("You must provide an instance to fetch videos from!");
+    if (
+      instance.checkAPIAccess() === false ||
+      instance.checkAPIAccess() === null
+    )
+      throw new Error(
+        "The instance you provided does not support API requests or is offline!"
+      );
+    let stats!: InstanceStats;
+    await axios.get(`${instance.getURL()}/api/v1/stats`).then((res) => {
+      stats = new InstanceStats(
+        res.data.software.name,
+        res.data.software.version,
+        res.data.software.branch,
+        res.data.usage.users.total,
+        res.data.usage.users.activeHalfyear,
+        res.data.usage.users.activeMonth,
+        res.data.openRegistrations
+      );
+    });
+    return stats;
+  },
+
   //Fetches a video and converts it into an object.
   /**
-   * @param {Instance} instance - Instance.
+   * @param {Instance} instance - Instance to fetch videos from.
    * @param {string} id - Video ID.
-   * @returns {Promise<FullVideo>} FullVideo object.
+   * @param {VideoFetchOptions} [opts] - Fetch options.
+   * @returns {Promise<FullVideo | BasicVideo>} Video object.
    */
-  fetchFullVideo: async function (
+  fetchVideo: async function (
     instance: Instance,
-    id: string
-  ): Promise<FullVideo> {
+    id: string,
+    opts: VideoFetchOptions = {
+      type: "basic",
+    }
+  ): Promise<FullVideo | BasicVideo> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -80,7 +118,7 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info!: FullVideo;
+    let info!: FullVideo | BasicVideo;
     let formats: Array<AudioFormat | VideoFormat> = [];
     await axios.get(`${instance.getURL()}/api/v1/videos/${id}`).then((res) => {
       res.data.formatStreams
@@ -109,71 +147,27 @@ export let InvidJS = {
             );
           }
         });
-      info = new FullVideo(
-        res.data.title,
-        id,
-        res.data.description,
-        res.data.publishedText,
-        res.data.viewCount,
-        res.data.likeCount,
-        res.data.dislikeCount,
-        res.data.lengthSeconds,
-        formats
-      );
-    });
-    return info;
-  },
-
-  //Fetches a barebones video and converts it into an object.
-  /**
-   * @param {Instance} instance - Instance.
-   * @param {string} id - Video ID.
-   * @returns {Promise<BasicVideo>} BasicVideo object.
-   */
-  fetchBasicVideo: async function (
-    instance: Instance,
-    id: string
-  ): Promise<BasicVideo> {
-    if (!instance)
-      throw new Error("You must provide an instance to fetch videos from!");
-    if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if (
-      instance.checkAPIAccess() === false ||
-      instance.checkAPIAccess() === null
-    )
-      throw new Error(
-        "The instance you provided does not support API requests or is offline!"
-      );
-    let info!: BasicVideo;
-    let formats: Array<AudioFormat | VideoFormat> = [];
-    await axios.get(`${instance.getURL()}/api/v1/videos/${id}`).then((res) => {
-      res.data.formatStreams
-        .concat(res.data.adaptiveFormats)
-        .forEach((format: any) => {
-          if (!format.type.startsWith("audio")) {
-            formats.push(
-              new VideoFormat(
-                format.url,
-                format.itag,
-                format.type,
-                format.container
-              )
-            );
-          } else {
-            formats.push(
-              new AudioFormat(
-                format.url,
-                format.itag,
-                format.type,
-                format.container,
-                format.audioQuality,
-                format.audioSampleRate,
-                format.audioChannels
-              )
-            );
-          }
-        });
-      info = new BasicVideo(res.data.title, id, formats);
+      switch (opts.type) {
+        case "full": {
+          info = new FullVideo(
+            res.data.title,
+            id,
+            res.data.description,
+            res.data.publishedText,
+            res.data.viewCount,
+            res.data.likeCount,
+            res.data.dislikeCount,
+            res.data.lengthSeconds,
+            formats
+          );
+          break;
+        }
+        case "basic": 
+        default: {
+          info = new BasicVideo(res.data.title, id, formats);
+          break;
+        }
+      }
     });
     return info;
   },
@@ -182,12 +176,17 @@ export let InvidJS = {
   /**
    * @param {Instance} instance - Instance.
    * @param {string} id - Playlist ID.
-   * @returns {Promise<FullPlaylist>} FullPlaylist object.
+   * @param {PlaylistFetchOptions} [opts] - Fetch options.
+   * @returns {Promise<FullPlaylist | BasicPlaylist>} Playlist object.
    */
-  fetchFullPlaylist: async function (
+  fetchPlaylist: async function (
     instance: Instance,
-    id: string
-  ): Promise<FullPlaylist> {
+    id: string,
+    opts: PlaylistFetchOptions = {
+      playlist_type: "basic",
+      limit: 0,
+    }
+  ): Promise<FullPlaylist | BasicPlaylist> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -198,54 +197,32 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info!: FullPlaylist;
+    let info!: FullPlaylist | BasicPlaylist;
     let videos: Array<PlaylistVideo> = [];
     await axios
       .get(`${instance.getURL()}/api/v1/playlists/${id}`)
       .then((res) => {
         res.data.videos.forEach((video: any) => {
-          videos.push(new PlaylistVideo(video.title, video.videoId));
+          if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
+            videos.push(new PlaylistVideo(video.title, video.videoId));
         });
-        info = new FullPlaylist(
-          res.data.title,
-          res.data.author,
-          res.data.description,
-          res.data.videos.length,
-          videos
-        );
-      });
-    return info;
-  },
-
-  //Fetches a basic playlist and converts it into an object.
-  /**
-   * @param {Instance} instance - Instance.
-   * @param {string} id - Playlist ID.
-   * @returns {Promise<BasicPlaylist>} BasicPlaylist object.
-   */
-  fetchBasicPlaylist: async function (
-    instance: Instance,
-    id: string
-  ): Promise<BasicPlaylist> {
-    if (!instance)
-      throw new Error("You must provide an instance to fetch videos from!");
-    if (!id) throw new Error("You must provide a video ID to fetch it!");
-    if (
-      instance.checkAPIAccess() === false ||
-      instance.checkAPIAccess() === null
-    )
-      throw new Error(
-        "The instance you provided does not support API requests or is offline!"
-      );
-    let info!: BasicPlaylist;
-    let videos: Array<PlaylistVideo> = [];
-    await axios
-      .get(`${instance.getURL()}/api/v1/playlists/${id}`)
-      .then((res) => {
-        res.data.videos.forEach((video: any) => {
-          videos.push(new PlaylistVideo(video.title, video.videoId));
-        });
-        info = new BasicPlaylist(res.data.title, videos);
+        switch (opts.playlist_type) {
+          case "full": {
+            info = new FullPlaylist(
+              res.data.title,
+              res.data.author,
+              res.data.description,
+              res.data.videos.length,
+              videos
+            );
+            break;
+          }
+          case "basic":
+          default: {
+            info = new BasicPlaylist(res.data.title, videos);
+            break;
+          }
+        }
       });
     return info;
   },
@@ -255,7 +232,7 @@ export let InvidJS = {
    * @param {VideoFormat | AudioFormat} source - Video to fetch stream from.
    * @returns {Promise<any>} Readable stream.
    */
-  getStream: async function (
+  fetchStream: async function (
     instance: Instance,
     video: FullVideo | BasicVideo | PlaylistVideo,
     source: VideoFormat | AudioFormat
