@@ -126,14 +126,12 @@ export let InvidJS = {
       res.data.formatStreams
         .concat(res.data.adaptiveFormats)
         .forEach((format: any) => {
+          let container = format.container
+            ? format.container
+            : format.type.split("/")[1].split(";")[0];
           if (!format.type.startsWith("audio")) {
             formats.push(
-              new VideoFormat(
-                format.url,
-                format.itag,
-                format.type,
-                format.contaner
-              )
+              new VideoFormat(format.url, format.itag, format.type, container)
             );
           } else {
             formats.push(
@@ -141,7 +139,7 @@ export let InvidJS = {
                 format.url,
                 format.itag,
                 format.type,
-                format.container,
+                container,
                 format.audioQuality,
                 format.audioSampleRate,
                 format.audioChannels
@@ -211,10 +209,14 @@ export let InvidJS = {
         });
         switch (opts.playlist_type) {
           case "full": {
+            let author = res.data.author ? res.data.author : "SYSTEM";
+            let description = res.data.description
+              ? res.data.description
+              : "This playlist was created by the system.";
             info = new FullPlaylist(
               res.data.title,
-              res.data.author,
-              res.data.description,
+              author,
+              description,
               res.data.videos.length,
               videos
             );
