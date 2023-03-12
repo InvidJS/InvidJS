@@ -5,7 +5,7 @@
  * @param {string | undefined} type - Type of the instances to search.
  * @param {string | undefined} region - Region of the instances to search.
  * @param {boolean | "any" | undefined} api_allowed - API access value to search.
- * @param {number | undefined} limit - How many instances to fetch.
+ * @param {number | undefined} limit - Amount of instances to fetch.
  */
 export type InstanceFetchOptions = {
   url?: string;
@@ -19,8 +19,7 @@ export type InstanceFetchOptions = {
  * @name PlaylistFetchOptions
  * @description Playlist fetch filter.
  * @param {string | undefined} playlist_type - Type of the playlist to return.
- * @param {string | undefined} videos_type - Type of the videos to return.
- * @param {number | undefined} limit - How many videos to return.
+ * @param {number | undefined} limit - Amount of videos to return.
  */
 export type PlaylistFetchOptions = {
   playlist_type?: "full" | "basic" | "minimal";

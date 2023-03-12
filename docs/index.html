@@ -183,6 +183,16 @@
                 
                 </li>
               
+                
+                <li><a
+                  href='#channel'
+                  class="">
+                  Channel
+                  
+                </a>
+                
+                </li>
+              
             </ul>
           </div>
           <div class='mt1 h6 quiet'>
@@ -267,7 +277,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>region</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Region of the instance
+	    Region of the instance.
 
           </div>
           
@@ -294,7 +304,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Type of the instance
+	    Type of the instance.
 
           </div>
           
@@ -303,7 +313,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>uri</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    URL of the instance
+	    URL of the instance.
 
           </div>
           
@@ -484,7 +494,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>software_name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Software Name
+	    Name of the software (usually Invidious).
 
           </div>
           
@@ -493,7 +503,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>software_version</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Software Version
+	    Version of the software.
 
           </div>
           
@@ -502,7 +512,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>software_branch</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Software Branch
+	    Cloned branch.
 
           </div>
           
@@ -511,7 +521,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>users_total</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Total Users
+	    Total users.
 
           </div>
           
@@ -520,7 +530,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>users_active_halfyear</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Users active in the last 6 months
+	    Users active in the last 6 months.
 
           </div>
           
@@ -529,7 +539,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>users_active_month</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Users active in the last month
+	    Users active in the last month.
 
           </div>
           
@@ -581,7 +591,7 @@
 
   
 
-  <p>Video object.</p>
+  <p>Video object. Can be Minimal, Basic or Full.</p>
 
     <div class='pre p1 fill-light mt0'>Video</div>
   
@@ -601,7 +611,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Title of the video
+	    Title of the video.
 
           </div>
           
@@ -610,7 +620,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Video ID
+	    ID of the video.
 
           </div>
           
@@ -619,7 +629,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>formats</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#format">Format</a>>)</code>
-	    List of available formats
+	    List of available formats (basic or full only).
 
           </div>
           
@@ -628,7 +638,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>description</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Description of the video
+	    Description of the video (full only).
 
           </div>
           
@@ -637,7 +647,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>published</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Date of publishing
+	    Date of publishing (full only).
 
           </div>
           
@@ -646,7 +656,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>views</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Number of views
+	    Number of views (full only).
 
           </div>
           
@@ -655,7 +665,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>likes</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Number of likes
+	    Number of likes (full only).
 
           </div>
           
@@ -664,7 +674,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>dislikes</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Number of dislikes
+	    Number of dislikes (full only).
 
           </div>
           
@@ -673,7 +683,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>length</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Length of the video
+	    Length of the video (full only).
 
           </div>
           
@@ -716,7 +726,7 @@
 
   
 
-  <p>Playlist object with all information.</p>
+  <p>Playlist object. Can be Minimal, Basic or Full.</p>
 
     <div class='pre p1 fill-light mt0'>Playlist</div>
   
@@ -753,8 +763,17 @@
       
         <div class='space-bottom0'>
           <div>
+            <span class='code bold'>videos</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#video">Video</a>>)</code>
+	    Videos in the playlist (basic or full only).
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
             <span class='code bold'>author</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Author of the playlist.
+	    Author of the playlist (full only).
 
           </div>
           
@@ -763,7 +782,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>description</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Description of the playlist.
+	    Description of the playlist (full only).
 
           </div>
           
@@ -772,16 +791,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>videoCount</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Number of videos in the playlist.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>videos</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#video">Video</a>>)</code>
-	    Array of videos in the playlist.
+	    Number of videos in the playlist (full only).
 
           </div>
           
@@ -844,7 +854,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>url</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Video URL
+	    URL of the format source.
 
           </div>
           
@@ -853,7 +863,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>tag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    ID of the format
+	    ID of the format.
 
           </div>
           
@@ -862,7 +872,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Type of the format (codecs)
+	    Type of the format (codecs).
 
           </div>
           
@@ -871,7 +881,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>container</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Container of the format (mp4, webm, etc.)
+	    Container of the format (mp4, webm, etc.).
 
           </div>
           
@@ -880,7 +890,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>quality</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Quality of the audio
+	    Quality (audio only).
 
           </div>
           
@@ -889,7 +899,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>sampleRate</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Sample rate of the audio
+	    Sample rate (audio only).
 
           </div>
           
@@ -898,7 +908,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>channels</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
-	    Number of channels in the audio
+	    Number of channels (audio only).
 
           </div>
           
@@ -1053,7 +1063,7 @@
         <div class='space-bottom0'>
           <div>
             <span class='code bold'>limit</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>))</code>
-	    How many instances to fetch.
+	    Amount of instances to fetch.
 
           </div>
           
@@ -1187,17 +1197,8 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>videos_type</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>))</code>
-	    Type of the videos to return.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
             <span class='code bold'>limit</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>))</code>
-	    How many videos to return.
+	    Amount of videos to return.
 
           </div>
           
@@ -1879,6 +1880,106 @@
     </div>
   
 </div>
+
+  
+
+  
+
+  
+
+  
+</section>
+
+          
+        
+          
+          <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+  <div class='clearfix'>
+    
+    <h3 class='fl m0' id='channel'>
+      Channel
+    </h3>
+    
+    
+  </div>
+  
+
+  <p>Channel object.</p>
+
+    <div class='pre p1 fill-light mt0'>Channel</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>name</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Channel name.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Channel ID.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>isVerified</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a>)</code>
+	    Is channel verified?
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>subs</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Number of subscribers.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>videos</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a>)</code>
+	    Number of videos.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
 
   
 

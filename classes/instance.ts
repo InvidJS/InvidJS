@@ -2,11 +2,11 @@
  * @name Instance
  * @description Basic information about an instance.
  * 
- * @param {string} region  - Region of the instance
+ * @param {string} region  - Region of the instance.
  * @param {boolean} cors_allowed  - Is CORS allowed?
  * @param {boolean} api_allowed  - Is API allowed?
- * @param {string} type  - Type of the instance
- * @param {string} uri  - URL of the instance
+ * @param {string} type  - Type of the instance.
+ * @param {string} uri  - URL of the instance.
  */
 export class Instance {
   region: string;
@@ -49,12 +49,12 @@ export class Instance {
  * @name InstanceStats
  * @description Statistics about an instance.
  *
- * @param {string} software_name - Software Name
- * @param {string} software_version - Software Version
- * @param {string} software_branch - Software Branch
- * @param {number} users_total - Total Users
- * @param {number} users_active_halfyear - Users active in the last 6 months
- * @param {number} users_active_month - Users active in the last month
+ * @param {string} software_name - Name of the software (usually Invidious).
+ * @param {string} software_version - Version of the software.
+ * @param {string} software_branch - Cloned branch.
+ * @param {number} users_total - Total users.
+ * @param {number} users_active_halfyear - Users active in the last 6 months.
+ * @param {number} users_active_month - Users active in the last month.
  * @param {boolean} registrations - Is registration allowed?
  */
 export class InstanceStats {
