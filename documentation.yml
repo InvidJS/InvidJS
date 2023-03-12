@@ -5,8 +5,9 @@ toc:
     children:
       - Instance
       - InstanceStats
-      - Video
+      - Channel
       - Playlist
+      - Video
       - Format
   - name: Types
     description: |
