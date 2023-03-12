@@ -1,24 +1,19 @@
-import {
-  FullVideo,
-  BasicVideo,
-  PlaylistVideo,
-  VideoFormat,
-  AudioFormat,
-} from "./media";
+import { Playlist, Video, Format } from "./media";
 import { Instance, InstanceStats } from "./instance";
-import { FullPlaylist, BasicPlaylist } from "./playlist";
-import { InstanceFetchOptions, VideoFetchOptions, PlaylistFetchOptions } from "./options";
+import {
+  InstanceFetchOptions,
+  VideoFetchOptions,
+  PlaylistFetchOptions,
+  SearchOptions,
+} from "./options";
 export {
-  FullVideo,
-  BasicVideo,
-  PlaylistVideo,
-  VideoFormat,
-  AudioFormat,
-  FullPlaylist,
-  BasicPlaylist,
+  Playlist,
+  Video,
+  Format,
   Instance,
   InstanceStats,
   InstanceFetchOptions,
   VideoFetchOptions,
   PlaylistFetchOptions,
+  SearchOptions,
 };

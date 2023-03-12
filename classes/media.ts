@@ -1,113 +1,87 @@
 /**
- * @name FullVideo
- * @description Video object with all information.
+ * @name Playlist
+ * @description Playlist object with all information.
+ *
+ * @param {string} title - Title of the playlist.
+ * @param {string} id - ID of the playlist.
+ * @param {string} author - Author of the playlist.
+ * @param {string} description - Description of the playlist.
+ * @param {number} videoCount - Number of videos in the playlist.
+ * @param {Array<Video>} videos - Array of videos in the playlist.
+ */
+export class Playlist {
+  title: string;
+  id: string;
+  videos?: Array<Video>;
+  author?: string;
+  description?: string;
+  videoCount?: number;
+  constructor(
+    title: string,
+    id: string,
+    videos?: Array<Video>,
+    author?: string,
+    description?: string,
+    videoCount?: number,
+  ) {
+    this.title = title;
+    this.id = id;
+    this.videos = videos;
+    this.author = author;
+    this.description = description;
+    this.videoCount = videoCount;
+  }
+}
+
+/**
+ * @name Video
+ * @description Video object.
  * @param {string} title - Title of the video
  * @param {string} id - Video ID
+ * @param {Array<Format>} formats - List of available formats
  * @param {string} description - Description of the video
  * @param {string} published - Date of publishing
  * @param {number} views - Number of views
  * @param {number} likes - Number of likes
  * @param {number} dislikes - Number of dislikes
  * @param {number} length - Length of the video
- * @param {Array<VideoFormat | AudioFormat>} formats - List of available formats
  */
-export class FullVideo {
+export class Video {
   title: string;
   id: string;
-  description: string;
-  published: string;
-  views: number;
-  likes: number;
-  dislikes: number;
-  length: number;
-  formats: Array<VideoFormat | AudioFormat>;
+  formats?: Array<Format>;
+  description?: string;
+  published?: string;
+  views?: number;
+  likes?: number;
+  dislikes?: number;
+  length?: number;
   constructor(
     title: string,
     id: string,
-    description: string,
-    published: string,
-    views: number,
-    likes: number,
-    dislikes: number,
-    length: number,
-    formats: Array<VideoFormat | AudioFormat>
+    formats?: Array<Format>,
+    description?: string,
+    published?: string,
+    views?: number,
+    likes?: number,
+    dislikes?: number,
+    length?: number,
   ) {
     this.title = title;
     this.id = id;
+    this.formats = formats;
     this.description = description;
     this.published = published;
     this.views = views;
     this.likes = likes;
     this.dislikes = dislikes;
     this.length = length;
-    this.formats = formats;
   }
 }
 
 /**
- * @name BasicVideo
- * @description Video object with only basic information.
- *
- * @param {string} title - Title of the video
- * @param {string} id - Video ID
- * @param {Array<VideoFormat | AudioFormat>} formats - List of available formats
- */
-export class BasicVideo {
-  title: string;
-  id: string;
-  formats: Array<VideoFormat | AudioFormat>;
-  constructor(
-    title: string,
-    id: string,
-    formats: Array<VideoFormat | AudioFormat>
-  ) {
-    this.title = title;
-    this.id = id;
-    this.formats = formats;
-  }
-}
-
-/**
- * @name PlaylistVideo
- * @description Special video object for playlists.
- *
- * @param {string} title
- * @param {string} id
- */
-export class PlaylistVideo {
-  title: string;
-  id: string;
-  constructor(title: string, id: string) {
-    this.title = title;
-    this.id = id;
-  }
-}
-
-/**
- * @name VideoFormat
- * @description Format of a video.
- *
- * @param {string} url - Video URL
- * @param {string} tag - ID of the format
- * @param {string} type - Type of the format (codecs)
- * @param {string} container - Container of the format (mp4, webm, etc.)
- */
-export class VideoFormat {
-  url: string;
-  tag: any;
-  type: string;
-  container: string;
-  constructor(url: string, tag: string, type: string, container: string) {
-    this.url = url;
-    this.tag = tag;
-    this.type = type;
-    this.container = container;
-  }
-}
-
-/**
- * @name AudioFormat
- * @description Format of an audio.
+ * @name Format
+ * @description Video or audio format.
  *
  * @param {string} url - Video URL
  * @param {string} tag - ID of the format
@@ -117,22 +91,22 @@ export class VideoFormat {
  * @param {number} sampleRate -  Sample rate of the audio
  * @param {number} channels - Number of channels in the audio
  */
-export class AudioFormat {
+export class Format {
   url: string;
   tag: string;
   type: string;
   container: string;
-  quality: string;
-  sampleRate: number;
-  channels: number;
+  quality?: string;
+  sampleRate?: number;
+  channels?: number;
   constructor(
     url: string,
     tag: string,
     type: string,
     container: string,
-    quality: string,
-    sampleRate: number,
-    channels: number
+    quality?: string,
+    sampleRate?: number,
+    channels?: number
   ) {
     this.url = url;
     this.tag = tag;

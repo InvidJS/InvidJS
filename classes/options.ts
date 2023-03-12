@@ -23,8 +23,7 @@ export type InstanceFetchOptions = {
  * @param {number | undefined} limit - How many videos to return.
  */
 export type PlaylistFetchOptions = {
-  playlist_type?: "full" | "basic";
-  videos_type?: "full" | "basic";
+  playlist_type?: "full" | "basic" | "minimal";
   limit?: number;
 };
 
@@ -34,5 +33,18 @@ export type PlaylistFetchOptions = {
  * @param {string | undefined} type - Type of the video to return.
  */
 export type VideoFetchOptions = {
-  type?: "full" | "basic";
+  type?: "full" | "basic" | "minimal";
 };
+
+/**
+ * @name SearchOptions
+ * @description Search engine options.
+ * @param {string | undefined} type - Type of the content to search.
+ * @param {string | undefined} sorting - Sort by...
+ * @param {number | undefined} limit - How many videos to return.
+ */
+export type SearchOptions = {
+  type?: "video" | "playlist" | "channel" | "movie" | "show" | "all";
+  sorting?: "relevance" | "rating" | "upload_date" | "view_count";
+  limit?: number;
+}
