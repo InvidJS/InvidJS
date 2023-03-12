@@ -5,13 +5,9 @@ toc:
     children:
       - Instance
       - InstanceStats
-      - FullVideo
-      - BasicVideo
-      - PlaylistVideo
-      - FullPlaylist
-      - BasicPlaylist
-      - VideoFormat
-      - AudioFormat
+      - Video
+      - Playlist
+      - Format
   - name: Types
     description: |
       These InvidJS types are used in certain functions.
@@ -19,6 +15,7 @@ toc:
       - InstanceFetchOptions
       - VideoFetchOptions
       - PlaylistFetchOptions
+      - SearchOptions
   - name: Functions
     description: |
       Main functions of InvidJS.
@@ -27,4 +24,5 @@ toc:
       - fetchStats
       - fetchVideo
       - fetchPlaylist
+      - searchContent
       - fetchStream  

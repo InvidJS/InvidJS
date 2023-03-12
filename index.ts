@@ -1,19 +1,16 @@
 import {
-  FullVideo,
-  BasicVideo,
-  PlaylistVideo,
-  FullPlaylist,
-  BasicPlaylist,
+  Playlist,
+  Video,
+  Format,
   Instance,
   InstanceStats,
   InstanceFetchOptions,
   VideoFetchOptions,
   PlaylistFetchOptions,
-  VideoFormat,
-  AudioFormat,
+  SearchOptions,
 } from "./classes/index";
 import axios from "axios";
-import { fs } from "memfs";
+import { IReadStream } from "memfs/lib/volume";
 
 export let InvidJS = {
   /**
@@ -105,7 +102,7 @@ export let InvidJS = {
    * @param {string} id - Video ID.
    * @param {VideoFetchOptions} [opts] - Fetch options.
    * @example await InvidJS.fetchVideo(instance, "id");
-   * @returns {Promise<FullVideo | BasicVideo>} Video object.
+   * @returns {Promise<Video>} Video object.
    */
   fetchVideo: async function (
     instance: Instance,
@@ -113,7 +110,7 @@ export let InvidJS = {
     opts: VideoFetchOptions = {
       type: "basic",
     }
-  ): Promise<FullVideo | BasicVideo> {
+  ): Promise<Video> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -124,8 +121,8 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info!: FullVideo | BasicVideo;
-    let formats: Array<AudioFormat | VideoFormat> = [];
+    let info!: Video;
+    let formats: Array<Format> = [];
     await axios.get(`${instance.getURL()}/api/v1/videos/${id}`).then((res) => {
       res.data.formatStreams
         .concat(res.data.adaptiveFormats)
@@ -135,11 +132,11 @@ export let InvidJS = {
             : format.type.split("/")[1].split(";")[0];
           if (!format.type.startsWith("audio")) {
             formats.push(
-              new VideoFormat(format.url, format.itag, format.type, container)
+              new Format(format.url, format.itag, format.type, container)
             );
           } else {
             formats.push(
-              new AudioFormat(
+              new Format(
                 format.url,
                 format.itag,
                 format.type,
@@ -153,22 +150,26 @@ export let InvidJS = {
         });
       switch (opts.type) {
         case "full": {
-          info = new FullVideo(
+          info = new Video(
             res.data.title,
             id,
+            formats,
             res.data.description,
             res.data.publishedText,
             res.data.viewCount,
             res.data.likeCount,
             res.data.dislikeCount,
             res.data.lengthSeconds,
-            formats
           );
           break;
         }
         case "basic":
         default: {
-          info = new BasicVideo(res.data.title, id, formats);
+          info = new Video(res.data.title, id, formats);
+          break;
+        }
+        case "minimal": {
+          info = new Video(res.data.title, id);
           break;
         }
       }
@@ -183,7 +184,7 @@ export let InvidJS = {
    * @param {string} id - Playlist ID.
    * @param {PlaylistFetchOptions} [opts] - Fetch options.
    * @example await InvidJS.fetchPlaylist(instance, "id");
-   * @returns {Promise<FullPlaylist | BasicPlaylist>} Playlist object.
+   * @returns {Promise<Playlist>} Playlist object.
    */
   fetchPlaylist: async function (
     instance: Instance,
@@ -192,7 +193,7 @@ export let InvidJS = {
       playlist_type: "basic",
       limit: 0,
     }
-  ): Promise<FullPlaylist | BasicPlaylist> {
+  ): Promise<Playlist> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!id) throw new Error("You must provide a video ID to fetch it!");
@@ -203,14 +204,14 @@ export let InvidJS = {
       throw new Error(
         "The instance you provided does not support API requests or is offline!"
       );
-    let info!: FullPlaylist | BasicPlaylist;
-    let videos: Array<PlaylistVideo> = [];
+    let info!: Playlist;
+    let videos: Array<Video> = [];
     await axios
       .get(`${instance.getURL()}/api/v1/playlists/${id}`)
       .then((res) => {
         res.data.videos.forEach((video: any) => {
           if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-            videos.push(new PlaylistVideo(video.title, video.videoId));
+            videos.push(new Video(video.title, video.videoId));
         });
         switch (opts.playlist_type) {
           case "full": {
@@ -218,18 +219,23 @@ export let InvidJS = {
             let description = res.data.description
               ? res.data.description
               : "This playlist was created by the system.";
-            info = new FullPlaylist(
+            info = new Playlist(
               res.data.title,
+              id,
+              videos,
               author,
               description,
-              res.data.videos.length,
-              videos
+              res.data.videos.length
             );
             break;
           }
           case "basic":
           default: {
-            info = new BasicPlaylist(res.data.title, videos);
+            info = new Playlist(res.data.title, id, videos);
+            break;
+          }
+          case "minimal": {
+            info = new Playlist(res.data.title, id);
             break;
           }
         }
@@ -238,16 +244,72 @@ export let InvidJS = {
   },
 
   /**
+   * @name searchContent
+   * @description Searches content based on the query and search options.
+   * @param {Instance} instance - Instance.
+   * @param {string} query - Search query.
+   * @param {SearchOptions} [opts] - Search options.
+   * @example await InvidJS.searchContent(instance, "search");
+   * @returns {Promise<Video[] | Playlist[]>} Array of search results.
+   */
+  searchContent: async function (
+    instance: Instance,
+    query: string,
+    opts: SearchOptions = {
+      type: "video",
+      sorting: "relevance",
+      limit: 0,
+    }
+  ): Promise<Video[] | Playlist[]> {
+    if (!instance)
+      throw new Error("You must provide an instance to fetch videos from!");
+    if (!query) throw new Error("You must provide a search query!");
+    if (
+      instance.checkAPIAccess() === false ||
+      instance.checkAPIAccess() === null
+    )
+      throw new Error(
+        "The instance you provided does not support API requests or is offline!"
+      );
+    let params = `${instance.getURL()}/api/v1/search?q=${query}`;
+    if (opts.type) params += `&type=${opts.type}`;
+    if (opts.sorting) params += `&sort_by=${opts.sorting}`;
+    let results: Array<Video | Playlist> = [];
+    await axios.get(params).then((res) => {
+      res.data.forEach((result: any) => {
+        if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
+          switch (result.type) {
+            case "video":
+            case "movie":
+            {
+              results.push(new Video(result.title, result.videoId))
+              break;
+            }
+            case "playlist": {
+              let videos: Video[] = [];
+              result.videos.forEach((video: any) => {
+                videos.push(new Video(video.title, video.videoId))
+              });
+              results.push(new Playlist(result.title, result.playlistId, videos))
+              break;
+            }
+          }
+      });
+    });
+    return results;
+  },
+
+  /**
    * @name fetchStream
    * @description Fetches a video stream and allows its playback.
-   * @param {VideoFormat | AudioFormat} source - Video to fetch stream from.
-   * @returns {Promise<any>} Readable stream.
+   * @param {Format} source - Video to fetch stream from.
+   * @returns {Promise<IReadStream>} Readable stream.
    */
   fetchStream: async function (
     instance: Instance,
-    video: FullVideo | BasicVideo | PlaylistVideo,
-    source: VideoFormat | AudioFormat
-  ): Promise<any> {
+    video: Video,
+    source: Format
+  ): Promise<IReadStream> {
     if (!source)
       throw new Error(
         "You must provide a valid video or audio source to fetch a stream from!"
@@ -258,9 +320,6 @@ export let InvidJS = {
         responseType: "stream",
       }
     );
-    let stream = response.data.pipe(
-      fs.createWriteStream(`tmp.${source.container}`)
-    );
-    return stream;
+    return response.data;
   },
 };

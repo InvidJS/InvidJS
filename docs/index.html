@@ -53,45 +53,21 @@
                       </a></li>
                     
                       <li><a
-                        href='#fullvideo'
+                        href='#video'
                         class='regular pre-open'>
-                        .FullVideo
+                        .Video
                       </a></li>
                     
                       <li><a
-                        href='#basicvideo'
+                        href='#playlist'
                         class='regular pre-open'>
-                        .BasicVideo
+                        .Playlist
                       </a></li>
                     
                       <li><a
-                        href='#playlistvideo'
+                        href='#format'
                         class='regular pre-open'>
-                        .PlaylistVideo
-                      </a></li>
-                    
-                      <li><a
-                        href='#fullplaylist'
-                        class='regular pre-open'>
-                        .FullPlaylist
-                      </a></li>
-                    
-                      <li><a
-                        href='#basicplaylist'
-                        class='regular pre-open'>
-                        .BasicPlaylist
-                      </a></li>
-                    
-                      <li><a
-                        href='#videoformat'
-                        class='regular pre-open'>
-                        .VideoFormat
-                      </a></li>
-                    
-                      <li><a
-                        href='#audioformat'
-                        class='regular pre-open'>
-                        .AudioFormat
+                        .Format
                       </a></li>
                     
                     </ul>
@@ -132,6 +108,12 @@
                         href='#playlistfetchoptions'
                         class='regular pre-open'>
                         .PlaylistFetchOptions
+                      </a></li>
+                    
+                      <li><a
+                        href='#searchoptions'
+                        class='regular pre-open'>
+                        .SearchOptions
                       </a></li>
                     
                     </ul>
@@ -178,6 +160,12 @@
                         href='#fetchplaylist'
                         class='regular pre-open'>
                         .fetchPlaylist
+                      </a></li>
+                    
+                      <li><a
+                        href='#searchcontent'
+                        class='regular pre-open'>
+                        .searchContent
                       </a></li>
                     
                       <li><a
@@ -581,11 +569,11 @@
       </div>
     </div>
   
-    <div class='border-bottom' id='fullvideo'>
+    <div class='border-bottom' id='video'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>FullVideo</span>
+            <span class='code strong strong truncate'>Video</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -593,9 +581,9 @@
 
   
 
-  <p>Video object with all information.</p>
+  <p>Video object.</p>
 
-    <div class='pre p1 fill-light mt0'>FullVideo</div>
+    <div class='pre p1 fill-light mt0'>Video</div>
   
   
 
@@ -623,6 +611,15 @@
           <div>
             <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    Video ID
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>formats</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#format">Format</a>>)</code>
+	    List of available formats
 
           </div>
           
@@ -682,15 +679,6 @@
           
         </div>
       
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>formats</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="#videoformat">VideoFormat</a> | <a href="#audioformat">AudioFormat</a>)>)</code>
-	    List of available formats
-
-          </div>
-          
-        </div>
-      
     </div>
   
 
@@ -716,162 +704,11 @@
       </div>
     </div>
   
-    <div class='border-bottom' id='basicvideo'>
+    <div class='border-bottom' id='playlist'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>BasicVideo</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Video object with only basic information.</p>
-
-    <div class='pre p1 fill-light mt0'>BasicVideo</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Title of the video
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Video ID
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>formats</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;(<a href="#videoformat">VideoFormat</a> | <a href="#audioformat">AudioFormat</a>)>)</code>
-	    List of available formats
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='playlistvideo'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>PlaylistVideo</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Special video object for playlists.</p>
-
-    <div class='pre p1 fill-light mt0'>PlaylistVideo</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='fullplaylist'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>FullPlaylist</span>
+            <span class='code strong strong truncate'>Playlist</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -881,7 +718,7 @@
 
   <p>Playlist object with all information.</p>
 
-    <div class='pre p1 fill-light mt0'>FullPlaylist</div>
+    <div class='pre p1 fill-light mt0'>Playlist</div>
   
   
 
@@ -900,6 +737,15 @@
           <div>
             <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
 	    Title of the playlist.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>id</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    ID of the playlist.
 
           </div>
           
@@ -934,7 +780,7 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>videos</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;any>)</code>
+            <span class='code bold'>videos</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#video">Video</a>>)</code>
 	    Array of videos in the playlist.
 
           </div>
@@ -966,11 +812,11 @@
       </div>
     </div>
   
-    <div class='border-bottom' id='basicplaylist'>
+    <div class='border-bottom' id='format'>
       <div class="clearfix small pointer toggle-sibling">
         <div class="py1 contain">
             <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>BasicPlaylist</span>
+            <span class='code strong strong truncate'>Format</span>
         </div>
       </div>
       <div class="clearfix display-none toggle-target">
@@ -978,171 +824,9 @@
 
   
 
-  <p>Playlist object with only basic information.</p>
+  <p>Video or audio format.</p>
 
-    <div class='pre p1 fill-light mt0'>BasicPlaylist</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>title</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Title of the playlist.
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>videos</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;any>)</code>
-	    Array of videos in the playlist.
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='videoformat'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>VideoFormat</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Format of a video.</p>
-
-    <div class='pre p1 fill-light mt0'>VideoFormat</div>
-  
-  
-
-  
-  
-  
-  
-  
-  
-
-  
-    <div class='py1 quiet mt1 prose-big'>Parameters</div>
-    <div class='prose'>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>url</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Video URL
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>tag</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    ID of the format
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>type</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Type of the format (codecs)
-
-          </div>
-          
-        </div>
-      
-        <div class='space-bottom0'>
-          <div>
-            <span class='code bold'>container</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
-	    Container of the format (mp4, webm, etc.)
-
-          </div>
-          
-        </div>
-      
-    </div>
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-</section>
-
-      </div>
-    </div>
-  
-    <div class='border-bottom' id='audioformat'>
-      <div class="clearfix small pointer toggle-sibling">
-        <div class="py1 contain">
-            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
-            <span class='code strong strong truncate'>AudioFormat</span>
-        </div>
-      </div>
-      <div class="clearfix display-none toggle-target">
-        <section class='p2 mb2 clearfix bg-white minishadow'>
-
-  
-
-  <p>Format of an audio.</p>
-
-    <div class='pre p1 fill-light mt0'>AudioFormat</div>
+    <div class='pre p1 fill-light mt0'>Format</div>
   
   
 
@@ -1544,6 +1228,87 @@
       </div>
     </div>
   
+    <div class='border-bottom' id='searchoptions'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>SearchOptions</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Search engine options.</p>
+
+    <div class='pre p1 fill-light mt0'>SearchOptions</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>type</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>))</code>
+	    Type of the content to search.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>sorting</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>))</code>
+	    Sort by...
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>limit</span> <code class='quiet'>((<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Number">number</a> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/undefined">undefined</a>))</code>
+	    How many videos to return.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
 </div>
 
   
@@ -1821,7 +1586,7 @@
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#fullvideo">FullVideo</a> | <a href="#basicvideo">BasicVideo</a>)></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#video">Video</a>></code>:
         Video object.
 
       
@@ -1916,7 +1681,7 @@
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="#fullplaylist">FullPlaylist</a> | <a href="#basicplaylist">BasicPlaylist</a>)></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;<a href="#playlist">Playlist</a>></code>:
         Playlist object.
 
       
@@ -1932,6 +1697,101 @@
     
       
       <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">await</span> <span class="hljs-title class_">InvidJS</span>.<span class="hljs-title function_">fetchPlaylist</span>(instance, <span class="hljs-string">&quot;id&quot;</span>);</pre>
+    
+  
+
+  
+
+  
+
+  
+
+  
+</section>
+
+      </div>
+    </div>
+  
+    <div class='border-bottom' id='searchcontent'>
+      <div class="clearfix small pointer toggle-sibling">
+        <div class="py1 contain">
+            <a class='icon pin-right py1 dark-link caret-right'>▸</a>
+            <span class='code strong strong truncate'>searchContent</span>
+        </div>
+      </div>
+      <div class="clearfix display-none toggle-target">
+        <section class='p2 mb2 clearfix bg-white minishadow'>
+
+  
+
+  <p>Searches content based on the query and search options.</p>
+
+    <div class='pre p1 fill-light mt0'>searchContent</div>
+  
+  
+
+  
+  
+  
+  
+  
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Parameters</div>
+    <div class='prose'>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>instance</span> <code class='quiet'>(<a href="#instance">Instance</a>)</code>
+	    Instance.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>query</span> <code class='quiet'>(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String">string</a>)</code>
+	    Search query.
+
+          </div>
+          
+        </div>
+      
+        <div class='space-bottom0'>
+          <div>
+            <span class='code bold'>opts</span> <code class='quiet'>(<a href="#searchoptions">SearchOptions</a>?)</code>
+	    Search options.
+
+          </div>
+          
+        </div>
+      
+    </div>
+  
+
+  
+
+  
+    
+      <div class='py1 quiet mt1 prose-big'>Returns</div>
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;(<a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#video">Video</a>> | <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array">Array</a>&#x3C;<a href="#playlist">Playlist</a>>)></code>:
+        Array of search results.
+
+      
+    
+  
+
+  
+
+  
+
+  
+    <div class='py1 quiet mt1 prose-big'>Example</div>
+    
+      
+      <pre class='p1 overflow-auto round fill-light'><span class="hljs-keyword">await</span> <span class="hljs-title class_">InvidJS</span>.<span class="hljs-title function_">searchContent</span>(instance, <span class="hljs-string">&quot;search&quot;</span>);</pre>
     
   
 
@@ -1978,7 +1838,7 @@
       
         <div class='space-bottom0'>
           <div>
-            <span class='code bold'>source</span> <code class='quiet'>((<a href="#videoformat">VideoFormat</a> | <a href="#audioformat">AudioFormat</a>))</code>
+            <span class='code bold'>source</span> <code class='quiet'>(<a href="#format">Format</a>)</code>
 	    Video to fetch stream from.
 
           </div>
@@ -1993,7 +1853,7 @@
   
     
       <div class='py1 quiet mt1 prose-big'>Returns</div>
-      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;any></code>:
+      <code><a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a>&#x3C;IReadStream></code>:
         Readable stream.
 
       
