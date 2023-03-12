@@ -1,4 +1,4 @@
-import { Playlist, Video, Format } from "./media";
+import { Channel, Playlist, Video, Format } from "./media";
 import { Instance, InstanceStats } from "./instance";
 import {
   InstanceFetchOptions,
@@ -7,6 +7,7 @@ import {
   SearchOptions,
 } from "./options";
 export {
+  Channel,
   Playlist,
   Video,
   Format,
