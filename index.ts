@@ -1,4 +1,5 @@
 import {
+  Channel,
   Playlist,
   Video,
   Format,
@@ -159,7 +160,7 @@ export let InvidJS = {
             res.data.viewCount,
             res.data.likeCount,
             res.data.dislikeCount,
-            res.data.lengthSeconds,
+            res.data.lengthSeconds
           );
           break;
         }
@@ -250,7 +251,7 @@ export let InvidJS = {
    * @param {string} query - Search query.
    * @param {SearchOptions} [opts] - Search options.
    * @example await InvidJS.searchContent(instance, "search");
-   * @returns {Promise<Video[] | Playlist[]>} Array of search results.
+   * @returns {Promise<Array<Channel | Playlist | Video>>} Array of search results.
    */
   searchContent: async function (
     instance: Instance,
@@ -260,7 +261,7 @@ export let InvidJS = {
       sorting: "relevance",
       limit: 0,
     }
-  ): Promise<Video[] | Playlist[]> {
+  ): Promise<Array<Channel | Playlist | Video>> {
     if (!instance)
       throw new Error("You must provide an instance to fetch videos from!");
     if (!query) throw new Error("You must provide a search query!");
@@ -274,24 +275,35 @@ export let InvidJS = {
     let params = `${instance.getURL()}/api/v1/search?q=${query}`;
     if (opts.type) params += `&type=${opts.type}`;
     if (opts.sorting) params += `&sort_by=${opts.sorting}`;
-    let results: Array<Video | Playlist> = [];
+    let results: Array<Channel | Playlist | Video> = [];
     await axios.get(params).then((res) => {
       res.data.forEach((result: any) => {
         if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
           switch (result.type) {
-            case "video":
-            case "movie":
-            {
-              results.push(new Video(result.title, result.videoId))
+            case "video": {
+              results.push(new Video(result.title, result.videoId));
               break;
             }
             case "playlist": {
               let videos: Video[] = [];
               result.videos.forEach((video: any) => {
-                videos.push(new Video(video.title, video.videoId))
+                videos.push(new Video(video.title, video.videoId));
               });
-              results.push(new Playlist(result.title, result.playlistId, videos))
+              results.push(
+                new Playlist(result.title, result.playlistId, videos)
+              );
               break;
+            }
+            case "channel": {
+              results.push(
+                new Channel(
+                  result.author,
+                  result.authorId,
+                  result.authorVerified,
+                  result.subCount,
+                  result.videoCount
+                )
+              );
             }
           }
       });
