@@ -40,10 +40,12 @@ export type VideoFetchOptions = {
  * @description Search engine options.
  * @param {string | undefined} type - Type of the content to search.
  * @param {string | undefined} sorting - Sort by...
+ * @param {number | undefined} page - Page of the search results.
  * @param {number | undefined} limit - How many videos to return.
  */
 export type SearchOptions = {
   type?: "video" | "playlist" | "channel" | "movie" | "show" | "all";
   sorting?: "relevance" | "rating" | "upload_date" | "view_count";
+  page?: number;
   limit?: number;
 }

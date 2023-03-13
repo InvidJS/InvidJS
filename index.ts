@@ -259,6 +259,7 @@ export let InvidJS = {
     opts: SearchOptions = {
       type: "video",
       sorting: "relevance",
+      page: 1,
       limit: 0,
     }
   ): Promise<Array<Channel | Playlist | Video>> {
@@ -275,6 +276,7 @@ export let InvidJS = {
     let params = `${instance.getURL()}/api/v1/search?q=${query}`;
     if (opts.type) params += `&type=${opts.type}`;
     if (opts.sorting) params += `&sort_by=${opts.sorting}`;
+    if (opts.page) params += `&page=${opts.page}`;
     let results: Array<Channel | Playlist | Video> = [];
     await axios.get(params).then((res) => {
       res.data.forEach((result: any) => {
