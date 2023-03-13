@@ -304,6 +304,7 @@ export let InvidJS = {
                   result.videoCount
                 )
               );
+              break;
             }
           }
       });
