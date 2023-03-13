@@ -17,7 +17,7 @@
     "registry": "https://npm.pkg.github.com/alexavil"
   },
   "engines": {
-    "node": ">16.9.0"
+    "node": ">=16.9.0"
   },
   "version": "0.0.3",
   "description": "An attempt to add Invidious support to Node.js",
