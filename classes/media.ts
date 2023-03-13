@@ -19,7 +19,7 @@ export class Channel {
     id: string,
     isVerified: boolean,
     subs: number,
-    videos: number,
+    videos: number
   ) {
     this.name = name;
     this.id = id;
@@ -53,7 +53,7 @@ export class Playlist {
     videos?: Array<Video>,
     author?: string,
     description?: string,
-    videoCount?: number,
+    videoCount?: number
   ) {
     this.title = title;
     this.id = id;
@@ -96,7 +96,7 @@ export class Video {
     views?: number,
     likes?: number,
     dislikes?: number,
-    length?: number,
+    length?: number
   ) {
     this.title = title;
     this.id = id;
@@ -146,5 +146,27 @@ export class Format {
     this.quality = quality;
     this.sampleRate = sampleRate;
     this.channels = channels;
+  }
+}
+
+/**
+ * @name Image
+ * @description Image object, used for thumbnails or banners.
+ *
+ * @param {string} url - Image URL.
+ * @param {number} width - Image width.
+ * @param {number} height - Image height.
+ * @param {string} quality - Image quality.
+ */
+export class Image {
+  url: string;
+  width: number;
+  height: number;
+  quality?: string;
+  constructor(url: string, width: number, height: number, quality: string) {
+    this.url = url;
+    this.width = width;
+    this.height = height;
+    this.quality = quality;
   }
 }
