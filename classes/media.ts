@@ -7,25 +7,27 @@
  * @param {number} subs - Number of subscribers.
  * @param {number} videos - Number of videos.
  */
-
 export class Channel {
   name: string;
   id: string;
-  isVerified: boolean;
-  subs: number;
-  videos: number;
+  isVerified?: boolean;
+  subs?: number;
+  videos?: number;
+  description?: string;
   constructor(
     name: string,
     id: string,
-    isVerified: boolean,
-    subs: number,
-    videos: number
+    isVerified?: boolean,
+    subs?: number,
+    videos?: number,
+    description?: string,
   ) {
     this.name = name;
     this.id = id;
     this.isVerified = isVerified;
     this.subs = subs;
     this.videos = videos;
+    this.description = description;
   }
 }
 
