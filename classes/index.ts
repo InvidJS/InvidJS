@@ -5,6 +5,10 @@ import {
   VideoFetchOptions,
   PlaylistFetchOptions,
   SearchOptions,
+  FetchTypes,
+  InstanceTypes,
+  ContentTypes,
+  Sorting,
 } from "./options";
 export {
   Channel,
@@ -18,4 +22,8 @@ export {
   VideoFetchOptions,
   PlaylistFetchOptions,
   SearchOptions,
+  FetchTypes,
+  InstanceTypes,
+  ContentTypes,
+  Sorting,
 };

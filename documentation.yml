@@ -1,7 +1,7 @@
 toc:
   - name: Classes
     description: |
-      These classes are available in InvidJS, created by various functions.
+      Classes that are created by InvidJS's functions.
     children:
       - Instance
       - InstanceStats
@@ -9,21 +9,30 @@ toc:
       - Playlist
       - Video
       - Format
-  - name: Types
-    description: |
-      These InvidJS types are used in certain functions.
-    children:
-      - InstanceFetchOptions
-      - VideoFetchOptions
-      - PlaylistFetchOptions
-      - SearchOptions
+      - Image
   - name: Functions
     description: |
-      Main functions of InvidJS.
+      Functions of InvidJS.
     children:
       - fetchInstances
       - fetchStats
       - fetchVideo
       - fetchPlaylist
       - searchContent
-      - fetchStream  
+      - fetchStream      
+  - name: Interfaces
+    description: |
+      Interfaces that are used in InvidJS's functions.
+    children:
+      - InstanceFetchOptions
+      - VideoFetchOptions
+      - PlaylistFetchOptions
+      - SearchOptions
+  - name: Enums
+    description: |
+      Enums that are used in InvidJS's functions.
+    children:
+      - FetchTypes
+      - InstanceTypes
+      - ContentTypes
+      - Sorting      

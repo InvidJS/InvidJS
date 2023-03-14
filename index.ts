@@ -9,6 +9,10 @@ import {
   VideoFetchOptions,
   PlaylistFetchOptions,
   SearchOptions,
+  FetchTypes,
+  InstanceTypes,
+  ContentTypes,
+  Sorting,
 } from "./classes/index";
 import axios from "axios";
 import { IReadStream } from "memfs/lib/volume";
@@ -25,7 +29,7 @@ export let InvidJS = {
   fetchInstances: async function (
     opts: InstanceFetchOptions = {
       url: undefined,
-      type: "all",
+      type: InstanceTypes.ALL,
       region: "all",
       api_allowed: "any",
       limit: 0,
@@ -109,7 +113,8 @@ export let InvidJS = {
     instance: Instance,
     id: string,
     opts: VideoFetchOptions = {
-      type: "basic",
+      region: "US",
+      type: FetchTypes.Basic,
     }
   ): Promise<Video> {
     if (!instance)
@@ -191,7 +196,7 @@ export let InvidJS = {
     instance: Instance,
     id: string,
     opts: PlaylistFetchOptions = {
-      playlist_type: "basic",
+      playlist_type: FetchTypes.Basic,
       limit: 0,
     }
   ): Promise<Playlist> {
@@ -257,8 +262,8 @@ export let InvidJS = {
     instance: Instance,
     query: string,
     opts: SearchOptions = {
-      type: "video",
-      sorting: "relevance",
+      type: ContentTypes.Video,
+      sorting: Sorting.Relevance,
       page: 1,
       limit: 0,
     }
