@@ -9,9 +9,12 @@ import {
   VideoFetchOptions,
   PlaylistFetchOptions,
   SearchOptions,
+  TrendingOptions,
+  PopularOptions,
   FetchTypes,
   InstanceTypes,
   ContentTypes,
+  TrendingTypes,
   Sorting,
 } from "./classes/index";
 import axios from "axios";
@@ -248,6 +251,7 @@ async function searchContent(
   instance: Instance,
   query: string,
   opts: SearchOptions = {
+    region: "US",
     type: ContentTypes.Video,
     sorting: Sorting.Relevance,
     page: 1,
@@ -262,6 +266,7 @@ async function searchContent(
       "The instance you provided does not support API requests or is offline!"
     );
   let params = `${instance.getURL()}/api/v1/search?q=${query}`;
+  if (opts.region) params += `&region=${opts.region}`;
   if (opts.type) params += `&type=${opts.type}`;
   if (opts.sorting) params += `&sort_by=${opts.sorting}`;
   if (opts.page) params += `&page=${opts.page}`;
@@ -301,6 +306,72 @@ async function searchContent(
 }
 
 /**
+ * @name fetchTrending
+ * @description Fetches trending videos.
+ * @param {Instance} instance - Instance.
+ * @param {TrendingOptions} [opts] - Search options.
+ * @example await InvidJS.fetchTrending(instance);
+ * @returns {Promise<Array<Video>>} Array of search results.
+ */
+async function fetchTrending(
+  instance: Instance,
+  opts: TrendingOptions = {
+    region: "US",
+    type: TrendingTypes.Music,
+    limit: 0,
+  }
+): Promise<Array<Video>> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch videos from!");
+  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+    throw new Error(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let params = `${instance.getURL()}/api/v1/trending`;
+  if (opts.region) params += `?region=${opts.region}`;
+  if (opts.type) params += `&type=${opts.type}`;
+  let results: Array<Video> = [];
+  await axios.get(params).then((res) => {
+    res.data.forEach((result: any) => {
+      if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
+        results.push(new Video(result.title, result.videoId));
+    });
+  });
+  return results;
+}
+
+/**
+ * @name fetchPopular
+ * @description Searches content based on the query and search options.
+ * @param {Instance} instance - Instance.
+ * @param {PopularOptions} [opts] - Search options.
+ * @example await InvidJS.fetchPopular(instance);
+ * @returns {Promise<Array<Video>>} Array of search results.
+ */
+async function fetchPopular(
+  instance: Instance,
+  opts: PopularOptions = {
+    limit: 0,
+  }
+): Promise<Array<Video>> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch videos from!");
+  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+    throw new Error(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let params = `${instance.getURL()}/api/v1/popular`;
+  let results: Array<Video> = [];
+  await axios.get(params).then((res) => {
+    res.data.forEach((result: any) => {
+      if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
+        results.push(new Video(result.title, result.videoId));
+    });
+  });
+  return results;
+}
+
+/**
  * @name fetchStream
  * @description Fetches a video stream and allows its playback.
  * @param {Format} source - Video to fetch stream from.
@@ -330,5 +401,7 @@ export {
   fetchVideo,
   fetchPlaylist,
   searchContent,
-  fetchStream
-}
+  fetchTrending,
+  fetchPopular,
+  fetchStream,
+};

@@ -55,12 +55,30 @@ export interface SearchOptions {
 }
 
 /**
+ * @name TrendingOptions
+ * @description Options for fetching trending content.
+ * @param {string | undefined} region - Region to fetch the video as.
+ * @param {TrendingTypes | undefined} type - Type of the video to return.
+ * @param {number | undefined} limit - How many videos to return.
+ */
+export interface TrendingOptions {
+  region?: string,
+  type?: TrendingTypes,
+  limit?: number
+};
+
+/**
+ * @name PopularOptions
+ * @description Options for fetching popular content.
+ * @param {number | undefined} limit - How many videos to return.
+ */
+export interface PopularOptions {
+  limit?: number
+};
+
+/**
  * @name FetchTypes
  * @description Use this to determine how verbose you need your output to be. Minimal contains only the title and the ID. Basic, depending on the type, will contain all the objects necessary to have the fetched content work. Full will make all the fields available to you.
- * @example FetchTypes.Minimal
- * @example FetchTypes.Basic
- * @example FetchTypes.Full
- * @enum {string}
  */
 export enum FetchTypes {
   Minimal = "minimal",
@@ -71,11 +89,6 @@ export enum FetchTypes {
 /**
  * @name InstanceTypes
  * @description Lists all types of Invidious instances.
- * @example InstanceTypes.https
- * @example InstanceTypes.tor
- * @example InstanceTypes.i2p
- * @example InstanceTypes.ALL
- * @enum {string}
  */
 export enum InstanceTypes {
   https = "https",
@@ -87,13 +100,6 @@ export enum InstanceTypes {
 /**
  * @name ContentTypes
  * @description Lists all types of Invidious content.
- * @example ContentTypes.Video
- * @example ContentTypes.Playlist
- * @example ContentTypes.Channel
- * @example ContentTypes.Movie
- * @example ContentTypes.Show
- * @example ContentTypes.ALL
- * @enum {string}
  */
 export enum ContentTypes {
   Video = "video",
@@ -105,13 +111,19 @@ export enum ContentTypes {
 }
 
 /**
+ * @name TrendingTypes
+ * @description Lists all types of trending content.
+ */
+export enum TrendingTypes {
+  Music = "music",
+  Gaming = "gaming",
+  News = "news",
+  Movies = "movies"
+}
+
+/**
  * @name Sorting
  * @description Invidious search can sort the content by using one of these values.
- * @example Sorting.Relevance
- * @example Sorting.Rating
- * @example Sorting.UploadDate
- * @example Sorting.ViewCount
- * @enum {string}
  */
 export enum Sorting {
   Relevance = "relevance",
