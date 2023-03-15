@@ -1,4 +1,4 @@
-import { InvidJS } from "../index";
+import * as InvidJS from "../index";
 
 describe("Instance stats fetch test", () => {
     test("Instance stats must be fetched correctly.", async () => {

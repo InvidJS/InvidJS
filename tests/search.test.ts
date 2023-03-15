@@ -1,5 +1,5 @@
 import { Channel, ContentTypes } from "../classes";
-import { InvidJS } from "../index";
+import * as InvidJS from "../index";
 
 describe("Search test", () => {
     test("Content must be fetched correctly.", async () => {

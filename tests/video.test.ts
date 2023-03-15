@@ -1,5 +1,5 @@
 import { FetchTypes } from "../classes";
-import { InvidJS } from "../index";
+import * as InvidJS from "../index";
 
 describe("Video fetch test", () => {
     test("Video must be fetched correctly.", async () => {

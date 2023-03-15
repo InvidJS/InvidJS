@@ -1,5 +1,5 @@
 import { InstanceTypes } from "../classes";
-import { InvidJS } from "../index";
+import * as InvidJS from "../index";
 
 describe("Instance fetch test", () => {
     test("Instances should fetch correctly with no options.", async () => {
