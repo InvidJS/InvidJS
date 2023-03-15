@@ -40,17 +40,23 @@ export interface VideoFetchOptions {
 /**
  * @name SearchOptions
  * @description Search engine options.
- * @param {ContentTypes | undefined} type - Type of the content to search.
- * @param {Sorting | undefined} sorting - Sort by...
- * @param {string | undefined} region - Region to fetch the video as.
  * @param {number | undefined} page - Page of the search results.
+ * @param {Sorting | undefined} sorting - Sort by...
+ * @param {DateValues | undefined} date - Get videos by a certain date.
+ * @param {Duration | undefined} duration - Duration of a video.
+ * @param {ContentTypes | undefined} type - Type of the content to search.
+ * @param {string | undefined} features - Comma-separated features of a video. Possible values: "hd", "subtitles", "creative_commons", "3d", "live", "purchased", "4k", "360", "location", "hdr", "vr180"
+ * @param {string | undefined} region - Region to fetch the video as.
  * @param {number | undefined} limit - How many videos to return.
  */
 export interface SearchOptions {
-  type?: ContentTypes;
-  sorting?: Sorting;
-  region?: string,
   page?: number;
+  sorting?: Sorting;
+  date?: DateValues;
+  duration?: Duration;
+  type?: ContentTypes;
+  features?: string;
+  region?: string,
   limit?: number;
 }
 
@@ -131,3 +137,26 @@ export enum Sorting {
   UploadDate = "upload_date",
   ViewCount = "view_count"
 }
+
+/**
+ * @name Duration
+ * @description Invidious can search for the following video duration.
+ */
+export enum Duration {
+  Short = "short",
+  Medium = "medium",
+  Long = "long"
+}
+
+/**
+ * @name DateValues
+ * @description Invidious can search for the videos with the following upload dates.
+ */
+export enum DateValues {
+  Hour = "hour",
+  Today = "today",
+  Week = "week",
+  Month = "month",
+  Year = "year"
+}
+

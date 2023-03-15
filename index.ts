@@ -251,10 +251,10 @@ async function searchContent(
   instance: Instance,
   query: string,
   opts: SearchOptions = {
-    region: "US",
-    type: ContentTypes.Video,
-    sorting: Sorting.Relevance,
     page: 1,
+    sorting: Sorting.Relevance,
+    type: ContentTypes.Video,
+    region: "US",
     limit: 0,
   }
 ): Promise<Array<Channel | Playlist | Video>> {
@@ -266,10 +266,13 @@ async function searchContent(
       "The instance you provided does not support API requests or is offline!"
     );
   let params = `${instance.getURL()}/api/v1/search?q=${query}`;
-  if (opts.region) params += `&region=${opts.region}`;
-  if (opts.type) params += `&type=${opts.type}`;
-  if (opts.sorting) params += `&sort_by=${opts.sorting}`;
   if (opts.page) params += `&page=${opts.page}`;
+  if (opts.sorting) params += `&sort_by=${opts.sorting}`;
+  if (opts.date) params += `&date=${opts.date}`;
+  if (opts.duration) params += `&duration=${opts.duration}`;
+  if (opts.type) params += `&type=${opts.type}`;
+  if (opts.features) params += `&features=${opts.features}`;
+  if (opts.region) params += `&region=${opts.region}`;
   let results: Array<Channel | Playlist | Video> = [];
   await axios.get(params).then((res) => {
     res.data.forEach((result: any) => {
