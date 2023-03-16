@@ -30,7 +30,6 @@ import { IReadStream } from "memfs/lib/volume";
  */
 async function fetchInstances(
   opts: InstanceFetchOptions = {
-    url: undefined,
     type: InstanceTypes.ALL,
     region: "all",
     api_allowed: "any",
