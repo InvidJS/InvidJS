@@ -301,7 +301,6 @@ async function searchContent(
               new Channel(
                 result.author,
                 result.authorId,
-                result.authorVerified,
                 result.subCount,
                 result.videoCount
               )

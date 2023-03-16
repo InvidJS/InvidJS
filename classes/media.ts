@@ -3,12 +3,12 @@
  * @description Channel object.
  * @param {string} name - Channel name.
  * @param {string} id - Channel ID.
- * @param {number} subs - Number of subscribers.
- * @param {number} video_count - Number of videos.
- * @param {string} description - Channel description.
- * @param {number} views - Number of views.
- * @param {boolean} isVerified - Is channel verified?
- * @param {Array<Video>} latest_videos - Latest videos.
+ * @param {number} subs - Number of subscribers (basic or full only).
+ * @param {number} video_count - Number of videos (basic or full only).
+ * @param {string} description - Channel description (full only).
+ * @param {number} views - Number of views (full only).
+ * @param {boolean} isVerified - Is channel verified? (full only)
+ * @param {Array<Video>} latest_videos - Latest videos (full only).
  */
 export class Channel {
   name: string;
