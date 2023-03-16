@@ -122,7 +122,9 @@ async function fetchVideo(
     );
   let info!: Video;
   let formats: Array<Format> = [];
-  await axios.get(`${instance.getURL()}/api/v1/videos/${id}?fields=title,videoId,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`).then((res) => {
+  let params = `${instance.getURL()}/api/v1/videos/${id}?fields=title,videoId,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`;
+  if (opts.region) params += `&region=${opts.region}`;
+  await axios.get(params).then((res) => {
     res.data.formatStreams
       .concat(res.data.adaptiveFormats)
       .forEach((format: any) => {
@@ -204,7 +206,8 @@ async function fetchPlaylist(
     );
   let info!: Playlist;
   let videos: Array<Video> = [];
-  await axios.get(`${instance.getURL()}/api/v1/playlists/${id}`).then((res) => {
+  let params = `${instance.getURL()}/api/v1/playlists/${id}?fields=title,playlistId,videos,author,authorId,description,videoCount`;
+  await axios.get(params).then((res) => {
     res.data.videos.forEach((video: any) => {
       if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
         videos.push(new Video(video.title, video.videoId));
