@@ -3,31 +3,40 @@
  * @description Channel object.
  * @param {string} name - Channel name.
  * @param {string} id - Channel ID.
- * @param {boolean} isVerified - Is channel verified?
  * @param {number} subs - Number of subscribers.
- * @param {number} videos - Number of videos.
+ * @param {number} video_count - Number of videos.
+ * @param {string} description - Channel description.
+ * @param {number} views - Number of views.
+ * @param {boolean} isVerified - Is channel verified?
+ * @param {Array<Video>} latest_videos - Latest videos.
  */
 export class Channel {
   name: string;
   id: string;
-  isVerified?: boolean;
   subs?: number;
-  videos?: number;
+  video_count?: number;
   description?: string;
+  views?: number;
+  isVerified?: boolean;
+  latest_videos?: Array<Video>;
   constructor(
     name: string,
     id: string,
-    isVerified?: boolean,
     subs?: number,
-    videos?: number,
+    video_count?: number,
     description?: string,
+    views?: number,
+    isVerified?: boolean,
+    latest_videos?: Array<Video>,
   ) {
     this.name = name;
     this.id = id;
-    this.isVerified = isVerified;
     this.subs = subs;
-    this.videos = videos;
+    this.video_count = video_count;
     this.description = description;
+    this.views = views;
+    this.isVerified = isVerified;
+    this.latest_videos = latest_videos;
   }
 }
 
