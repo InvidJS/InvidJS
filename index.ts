@@ -122,7 +122,7 @@ async function fetchVideo(
     );
   let info!: Video;
   let formats: Array<Format> = [];
-  await axios.get(`${instance.getURL()}/api/v1/videos/${id}?fields=title,videoId,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams`).then((res) => {
+  await axios.get(`${instance.getURL()}/api/v1/videos/${id}?fields=title,videoId,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`).then((res) => {
     res.data.formatStreams
       .concat(res.data.adaptiveFormats)
       .forEach((format: any) => {

@@ -72,6 +72,8 @@ export class Playlist {
  * @param {string} title - Title of the video.
  * @param {string} id - ID of the video.
  * @param {Array<Format>} formats - List of available formats (basic or full only).
+ * @param {string} author - Author username. (full only).
+ * @param {string} author_id - Author ID. (full only).
  * @param {string} description - Description of the video (full only).
  * @param {string} published - Date of publishing (full only).
  * @param {number} views - Number of views (full only).
@@ -83,6 +85,8 @@ export class Video {
   title: string;
   id: string;
   formats?: Array<Format>;
+  author?: string;
+  author_id?: string;
   description?: string;
   published?: string;
   views?: number;
@@ -93,6 +97,8 @@ export class Video {
     title: string,
     id: string,
     formats?: Array<Format>,
+    author?: string,
+    author_id?: string,
     description?: string,
     published?: string,
     views?: number,
@@ -103,6 +109,8 @@ export class Video {
     this.title = title;
     this.id = id;
     this.formats = formats;
+    this.author = author;
+    this.author_id = author_id;
     this.description = description;
     this.published = published;
     this.views = views;
