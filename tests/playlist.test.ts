@@ -14,22 +14,22 @@ describe("Playlist fetch test", () => {
 
     test("Must be able to fetch minimal playlist.", async () => {
         let instance = await InvidJS.fetchInstances({url: "https://y.com.sb"});
-        expect((await InvidJS.fetchPlaylist(instance[0], "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN", {playlist_type: FetchTypes.Minimal})).id).not.toBe(undefined);
+        expect((await InvidJS.fetchPlaylist(instance[0], "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN", {type: FetchTypes.Minimal})).id).not.toBe(undefined);
     })
 
     test("Must be able to fetch basic playlist.", async () => {
         let instance = await InvidJS.fetchInstances({url: "https://y.com.sb"});
-        expect((await InvidJS.fetchPlaylist(instance[0], "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN", {playlist_type: FetchTypes.Basic})).videos).not.toBe(undefined);
+        expect((await InvidJS.fetchPlaylist(instance[0], "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN", {type: FetchTypes.Basic})).videos).not.toBe(undefined);
     })
 
     test("Must be able to fetch full playlist.", async () => {
         let instance = await InvidJS.fetchInstances({url: "https://y.com.sb"});
-        expect((await InvidJS.fetchPlaylist(instance[0], "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN", {playlist_type: FetchTypes.Full})).description).not.toBe(undefined);
+        expect((await InvidJS.fetchPlaylist(instance[0], "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN", {type: FetchTypes.Full})).description).not.toBe(undefined);
     })
 
     test("Must be able to fetch a mix and fill it with data.", async () => {
         let instance = await InvidJS.fetchInstances({url: "https://y.com.sb"});
-        expect((await InvidJS.fetchPlaylist(instance[0], "RDMM", {playlist_type: FetchTypes.Full})).description).not.toBe(undefined);
+        expect((await InvidJS.fetchPlaylist(instance[0], "RDMM", {type: FetchTypes.Full})).description).not.toBe(undefined);
     })
 
     test("Must throw an error if API is blocked.", async () => {

@@ -18,11 +18,11 @@ export interface InstanceFetchOptions {
 /**
  * @name PlaylistFetchOptions
  * @description Playlist fetch filter.
- * @param {FetchTypes | undefined} playlist_type - Type of the playlist to return.
+ * @param {FetchTypes | undefined} type - Type of the playlist to return.
  * @param {number | undefined} limit - Amount of videos to return.
  */
 export interface PlaylistFetchOptions {
-  playlist_type?: FetchTypes
+  type?: FetchTypes
   limit?: number;
 };
 
@@ -34,6 +34,15 @@ export interface PlaylistFetchOptions {
  */
 export interface VideoFetchOptions {
   region?: string,
+  type?: FetchTypes
+};
+
+/**
+ * @name ChannelFetchOptions
+ * @description Options for fetching channels.
+ * @param {FetchTypes | undefined} type - Type of the channel to return.
+ */
+export interface ChannelFetchOptions {
   type?: FetchTypes
 };
 
