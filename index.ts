@@ -8,6 +8,7 @@ import {
   InstanceFetchOptions,
   VideoFetchOptions,
   PlaylistFetchOptions,
+  ChannelFetchOptions,
   SearchOptions,
   TrendingOptions,
   PopularOptions,
@@ -193,12 +194,12 @@ async function fetchPlaylist(
   instance: Instance,
   id: string,
   opts: PlaylistFetchOptions = {
-    playlist_type: FetchTypes.Basic,
+    type: FetchTypes.Basic,
     limit: 0,
   }
 ): Promise<Playlist> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch videos from!");
+    throw new Error("You must provide an instance to fetch playlists from!");
   if (!id) throw new Error("You must provide a video ID to fetch it!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
@@ -212,7 +213,7 @@ async function fetchPlaylist(
       if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
         videos.push(new Video(video.title, video.videoId));
     });
-    switch (opts.playlist_type) {
+    switch (opts.type) {
       case "full": {
         let author = res.data.author ? res.data.author : "SYSTEM";
         let authorId = res.data.authorId ? res.data.authorId : "-1";
@@ -237,6 +238,66 @@ async function fetchPlaylist(
       }
       case "minimal": {
         info = new Playlist(res.data.title, id);
+        break;
+      }
+    }
+  });
+  return info;
+}
+
+/**
+ * @name fetchChannel
+ * @description Fetches a playlist and converts it into an object.
+ * @param {Instance} instance - Instance.
+ * @param {string} id - Channel ID.
+ * @param {ChannelFetchOptions} [opts] - Fetch options.
+ * @example await InvidJS.fetchChannel(instance, "id");
+ * @returns {Promise<Channel>} Channel object.
+ */
+async function fetchChannel(
+  instance: Instance,
+  id: string,
+  opts: ChannelFetchOptions = {
+    type: FetchTypes.Basic,
+  }
+): Promise<Channel> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch channels from!");
+  if (!id) throw new Error("You must provide a video ID to fetch it!");
+  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+    throw new Error(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let info!: Channel;
+  let params = `${instance.getURL()}/api/v1/channels/${id}?fields=author,authorId,subCount,totalViews,description,authorVerified,latestVideos`;
+  await axios.get(params).then((res) => {
+    switch (opts.type) {
+      case "full": {
+        info = new Channel(
+          res.data.author,
+          res.data.authorId,
+          res.data.subCount,
+          res.data.description,
+          res.data.totalViews,
+          res.data.authorVerified,
+          res.data.latestVideos
+        )
+        break;
+      }
+      case "basic":
+      default: {
+        info = new Channel(
+          res.data.author,
+          res.data.authorId,
+          res.data.subCount
+        )
+        break;
+      }
+      case "minimal": {
+        info = new Channel(
+          res.data.author,
+          res.data.authorId
+        )
         break;
       }
     }
@@ -301,8 +362,7 @@ async function searchContent(
               new Channel(
                 result.author,
                 result.authorId,
-                result.subCount,
-                result.videoCount
+                result.subCount
               )
             );
             break;
@@ -408,6 +468,7 @@ export {
   fetchStats,
   fetchVideo,
   fetchPlaylist,
+  fetchChannel,
   searchContent,
   fetchTrending,
   fetchPopular,

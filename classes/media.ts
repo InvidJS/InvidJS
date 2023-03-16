@@ -4,7 +4,6 @@
  * @param {string} name - Channel name.
  * @param {string} id - Channel ID.
  * @param {number} subs - Number of subscribers (basic or full only).
- * @param {number} video_count - Number of videos (basic or full only).
  * @param {string} description - Channel description (full only).
  * @param {number} views - Number of views (full only).
  * @param {boolean} isVerified - Is channel verified? (full only)
@@ -14,7 +13,6 @@ export class Channel {
   name: string;
   id: string;
   subs?: number;
-  video_count?: number;
   description?: string;
   views?: number;
   isVerified?: boolean;
@@ -23,7 +21,6 @@ export class Channel {
     name: string,
     id: string,
     subs?: number,
-    video_count?: number,
     description?: string,
     views?: number,
     isVerified?: boolean,
@@ -32,7 +29,6 @@ export class Channel {
     this.name = name;
     this.id = id;
     this.subs = subs;
-    this.video_count = video_count;
     this.description = description;
     this.views = views;
     this.isVerified = isVerified;
