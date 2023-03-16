@@ -38,7 +38,8 @@ export class Channel {
  * @param {string} title - Title of the playlist.
  * @param {string} id - ID of the playlist.
  * @param {Array<Video>} videos - Videos in the playlist (basic or full only).
- * @param {string} author - Author of the playlist (full only).
+ * @param {string} author - Author username (full only).
+ * @param {string} author_id - Author ID (full only).
  * @param {string} description - Description of the playlist (full only).
  * @param {number} videoCount - Number of videos in the playlist (full only).
  */
@@ -47,6 +48,7 @@ export class Playlist {
   id: string;
   videos?: Array<Video>;
   author?: string;
+  author_id?: string;
   description?: string;
   videoCount?: number;
   constructor(
@@ -54,6 +56,7 @@ export class Playlist {
     id: string,
     videos?: Array<Video>,
     author?: string,
+    author_id?: string,
     description?: string,
     videoCount?: number
   ) {
@@ -61,6 +64,7 @@ export class Playlist {
     this.id = id;
     this.videos = videos;
     this.author = author;
+    this.author_id = author_id;
     this.description = description;
     this.videoCount = videoCount;
   }

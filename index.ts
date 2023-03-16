@@ -153,6 +153,8 @@ async function fetchVideo(
           res.data.title,
           id,
           formats,
+          res.data.author,
+          res.data.authorId,
           res.data.description,
           res.data.publishedText,
           res.data.viewCount,
@@ -210,6 +212,7 @@ async function fetchPlaylist(
     switch (opts.playlist_type) {
       case "full": {
         let author = res.data.author ? res.data.author : "SYSTEM";
+        let authorId = res.data.authorId ? res.data.authorId : "-1";
         let description = res.data.description
           ? res.data.description
           : "This playlist was created by the system.";
@@ -218,6 +221,7 @@ async function fetchPlaylist(
           id,
           videos,
           author,
+          authorId,
           description,
           res.data.videos.length
         );
