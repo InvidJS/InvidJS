@@ -1,17 +1,19 @@
-import { Channel, Playlist, Video, Format, Image } from "./media";
+import { Channel, Playlist, Video, Format, Image, Comment } from "./media";
 import { Instance, InstanceStats } from "./instance";
 import {
   InstanceFetchOptions,
   VideoFetchOptions,
   PlaylistFetchOptions,
   ChannelFetchOptions,
+  CommentFetchOptions,
   SearchOptions,
   TrendingOptions,
   PopularOptions,
   FetchTypes,
   InstanceTypes,
   ContentTypes,
-  Sorting,
+  VideoSorting,
+  CommentSorting,
   TrendingTypes
 } from "./options";
 export {
@@ -20,12 +22,14 @@ export {
   Video,
   Format,
   Image,
+  Comment,
   Instance,
   InstanceStats,
   InstanceFetchOptions,
   VideoFetchOptions,
   PlaylistFetchOptions,
   ChannelFetchOptions,
+  CommentFetchOptions,
   SearchOptions,
   TrendingOptions,
   PopularOptions,
@@ -33,5 +37,6 @@ export {
   InstanceTypes,
   ContentTypes,
   TrendingTypes,
-  Sorting,
+  VideoSorting,
+  CommentSorting,
 };
