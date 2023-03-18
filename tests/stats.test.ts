@@ -3,8 +3,8 @@ import * as InvidJS from "../index";
 describe("Instance stats fetch test", () => {
     test("Instance stats must be fetched correctly.", async () => {
         let instance = await InvidJS.fetchInstances({url: "https://y.com.sb"});
-        expect(await InvidJS.fetchStats(instance[0])).not.toBeNull();
-    })
+        expect(await InvidJS.fetchStats(instance[0])).not.toBeUndefined();
+    }, 30000)
 
     test("Must throw an error if API is blocked.", async () => {
         let instance = await InvidJS.fetchInstances({url: "https://yewtu.be"});
@@ -13,5 +13,5 @@ describe("Instance stats fetch test", () => {
         } catch (error: any) {
             expect(error.message).toBe("The instance you provided does not support API requests or is offline!")
         }
-    })
+    }, 30000)
 })
