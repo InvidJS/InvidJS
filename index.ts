@@ -74,13 +74,13 @@ async function fetchInstances(
 /**
  * @name fetchStats
  * @description Fetches stats of an instance.
- * @param {Instance} instance - Instance to fetch stats from.
+ * @param {Instance} instance - Instance to fetch data from.
  * @example await InvidJS.fetchStats(instance);
  * @returns {Promise<InstanceStats>} Instance stats.
  */
 async function fetchStats(instance: Instance): Promise<InstanceStats> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch videos from!");
+    throw new Error("You must provide an instance to fetch data from!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
@@ -103,7 +103,7 @@ async function fetchStats(instance: Instance): Promise<InstanceStats> {
 /**
  * @name fetchVideo
  * @description Fetches a video and converts it into an object.
- * @param {Instance} instance - Instance to fetch videos from.
+ * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Video ID.
  * @param {VideoFetchOptions} [opts] - Fetch options.
  * @example await InvidJS.fetchVideo(instance, "id");
@@ -118,7 +118,7 @@ async function fetchVideo(
   }
 ): Promise<Video> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch videos from!");
+    throw new Error("You must provide an instance to fetch data from!");
   if (!id) throw new Error("You must provide a video ID to fetch it!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
@@ -187,7 +187,7 @@ async function fetchVideo(
 /**
  * @name fetchComments
  * @description Fetches comments of a video.
- * @param {Instance} instance - Instance to fetch videos from.
+ * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Video ID.
  * @param {CommentFetchOptions} [opts] - Fetch options.
  * @example await InvidJS.fetchComments(instance, "id");
@@ -202,8 +202,8 @@ async function fetchComments(
   }
 ): Promise<Comment[]> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch videos from!");
-  if (!id) throw new Error("You must provide a video ID to fetch it!");
+    throw new Error("You must provide an instance to fetch data from!");
+  if (!id) throw new Error("You must provide a video ID to fetch comments!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
@@ -225,7 +225,7 @@ async function fetchComments(
 /**
  * @name fetchPlaylist
  * @description Fetches a playlist and converts it into an object.
- * @param {Instance} instance - Instance.
+ * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Playlist ID.
  * @param {PlaylistFetchOptions} [opts] - Fetch options.
  * @example await InvidJS.fetchPlaylist(instance, "id");
@@ -240,8 +240,8 @@ async function fetchPlaylist(
   }
 ): Promise<Playlist> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch playlists from!");
-  if (!id) throw new Error("You must provide a video ID to fetch it!");
+    throw new Error("You must provide an instance to fetch data from!");
+  if (!id) throw new Error("You must provide a playlist ID to fetch it!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
@@ -289,7 +289,7 @@ async function fetchPlaylist(
 /**
  * @name fetchChannel
  * @description Fetches a playlist and converts it into an object.
- * @param {Instance} instance - Instance.
+ * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
  * @param {ChannelFetchOptions} [opts] - Fetch options.
  * @example await InvidJS.fetchChannel(instance, "id");
@@ -303,8 +303,8 @@ async function fetchChannel(
   }
 ): Promise<Channel> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch channels from!");
-  if (!id) throw new Error("You must provide a video ID to fetch it!");
+    throw new Error("You must provide an instance to fetch data from!");
+  if (!id) throw new Error("You must provide a channel ID to fetch it!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
@@ -346,7 +346,7 @@ async function fetchChannel(
 /**
  * @name searchContent
  * @description Searches content based on the query and search options.
- * @param {Instance} instance - Instance.
+ * @param {Instance} instance - Instance to fetch data from.
  * @param {string} query - Search query.
  * @param {SearchOptions} [opts] - Search options.
  * @example await InvidJS.searchContent(instance, "search");
@@ -364,7 +364,7 @@ async function searchContent(
   }
 ): Promise<Array<Channel | Playlist | Video>> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch videos from!");
+    throw new Error("You must provide an instance to fetch data from!");
   if (!query) throw new Error("You must provide a search query!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
@@ -410,7 +410,7 @@ async function searchContent(
 /**
  * @name fetchTrending
  * @description Fetches trending videos.
- * @param {Instance} instance - Instance.
+ * @param {Instance} instance - Instance to fetch data from.
  * @param {TrendingOptions} [opts] - Search options.
  * @example await InvidJS.fetchTrending(instance);
  * @returns {Promise<Array<Video>>} Array of search results.
@@ -424,7 +424,7 @@ async function fetchTrending(
   }
 ): Promise<Array<Video>> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch videos from!");
+    throw new Error("You must provide an instance to fetch data from!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
@@ -445,7 +445,7 @@ async function fetchTrending(
 /**
  * @name fetchPopular
  * @description Searches content based on the query and search options.
- * @param {Instance} instance - Instance.
+ * @param {Instance} instance - Instance to fetch data from.
  * @param {PopularOptions} [opts] - Search options.
  * @example await InvidJS.fetchPopular(instance);
  * @returns {Promise<Array<Video>>} Array of search results.
@@ -457,7 +457,7 @@ async function fetchPopular(
   }
 ): Promise<Array<Video>> {
   if (!instance)
-    throw new Error("You must provide an instance to fetch videos from!");
+    throw new Error("You must provide an instance to fetch data from!");
   if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
