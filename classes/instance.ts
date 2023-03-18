@@ -6,42 +6,26 @@
  * @param {boolean} cors_allowed  - Is CORS allowed?
  * @param {boolean} api_allowed  - Is API allowed?
  * @param {string} type  - Type of the instance.
- * @param {string} uri  - URL of the instance.
+ * @param {string} url  - URL of the instance.
  */
 export class Instance {
   region: string;
   cors_allowed: boolean;
   api_allowed: boolean;
   type: string;
-  uri: string;
+  url: string;
   constructor(
     region: string,
     cors_allowed: boolean,
     api_allowed: boolean,
     type: string,
-    uri: string
+    url: string
   ) {
     this.region = region;
     this.cors_allowed = cors_allowed;
     this.api_allowed = api_allowed;
     this.type = type;
-    this.uri = uri;
-  }
-
-  /**
-   *
-   * @returns {boolean} Is API allowed?
-   */
-  checkAPIAccess(): boolean {
-    return this.api_allowed;
-  }
-
-  /**
-   *
-   * @returns {string} Instance URL.
-   */
-  getURL(): string {
-    return this.uri;
+    this.url = url;
   }
 }
 

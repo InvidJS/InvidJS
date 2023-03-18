@@ -1,4 +1,23 @@
 /**
+ * @name CommonOptions
+ * @description Base options for all methods.
+ * @param {number | undefined} limit - Amount of results to return.
+ */
+export interface CommonOptions {
+  limit?: number;
+}
+
+/**
+ * @name ContentOptions
+ * @description Base options for all content-related methods.
+ * @param {FetchTypes | undefined} type - Type of content to return.
+ */
+export interface ContentOptions {
+  type?: FetchTypes;
+}
+
+
+/**
  * @name InstanceFetchOptions
  * @description Instance fetch filter.
  * @param {string | undefined} url - URL of the instance to search.
@@ -7,12 +26,11 @@
  * @param {boolean | "any" | undefined} api_allowed - API access value to search.
  * @param {number | undefined} limit - Amount of instances to fetch.
  */
-export interface InstanceFetchOptions {
+export interface InstanceFetchOptions extends CommonOptions {
   url?: string;
   type?: InstanceTypes;
   region?: string;
   api_allowed?: boolean | "any";
-  limit?: number;
 };
 
 /**
@@ -21,10 +39,7 @@ export interface InstanceFetchOptions {
  * @param {FetchTypes | undefined} type - Type of the playlist to return.
  * @param {number | undefined} limit - Amount of videos to return.
  */
-export interface PlaylistFetchOptions {
-  type?: FetchTypes
-  limit?: number;
-};
+export interface PlaylistFetchOptions extends CommonOptions, ContentOptions {}
 
 /**
  * @name VideoFetchOptions
@@ -32,9 +47,8 @@ export interface PlaylistFetchOptions {
  * @param {string | undefined} region - Region to fetch the video as.
  * @param {FetchTypes | undefined} type - Type of the video to return.
  */
-export interface VideoFetchOptions {
+export interface VideoFetchOptions extends ContentOptions {
   region?: string,
-  type?: FetchTypes
 };
 
 /**
@@ -42,9 +56,7 @@ export interface VideoFetchOptions {
  * @description Options for fetching channels.
  * @param {FetchTypes | undefined} type - Type of the channel to return.
  */
-export interface ChannelFetchOptions {
-  type?: FetchTypes
-};
+export interface ChannelFetchOptions extends ContentOptions {};
 
 /**
  * @name CommentFetchOptions
@@ -52,9 +64,8 @@ export interface ChannelFetchOptions {
  * @param {CommentSorting | undefined} sorting - Sort by...
  * @param {number | undefined} limit - Amount of comments to return.
  */
-export interface CommentFetchOptions {
+export interface CommentFetchOptions extends CommonOptions {
   sorting?: CommentSorting;
-  limit?: number;
 };
 
 /**
@@ -69,7 +80,7 @@ export interface CommentFetchOptions {
  * @param {string | undefined} region - Region to fetch the video as.
  * @param {number | undefined} limit - How many videos to return.
  */
-export interface SearchOptions {
+export interface SearchOptions extends CommonOptions {
   page?: number;
   sorting?: VideoSorting;
   date?: DateValues;
@@ -77,7 +88,6 @@ export interface SearchOptions {
   type?: ContentTypes;
   features?: string;
   region?: string,
-  limit?: number;
 }
 
 /**
@@ -87,10 +97,9 @@ export interface SearchOptions {
  * @param {TrendingTypes | undefined} type - Type of the video to return.
  * @param {number | undefined} limit - How many videos to return.
  */
-export interface TrendingOptions {
+export interface TrendingOptions extends CommonOptions {
   region?: string,
-  type?: TrendingTypes,
-  limit?: number
+  type?: TrendingTypes
 };
 
 /**
@@ -98,9 +107,7 @@ export interface TrendingOptions {
  * @description Options for fetching popular content.
  * @param {number | undefined} limit - How many videos to return.
  */
-export interface PopularOptions {
-  limit?: number
-};
+export interface PopularOptions extends CommonOptions {};
 
 /**
  * @name FetchTypes

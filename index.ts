@@ -81,12 +81,12 @@ async function fetchInstances(
 async function fetchStats(instance: Instance): Promise<InstanceStats> {
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let stats!: InstanceStats;
-  await axios.get(`${instance.getURL()}/api/v1/stats`).then((res) => {
+  await axios.get(`${instance.url}/api/v1/stats`).then((res) => {
     stats = new InstanceStats(
       res.data.software.name,
       res.data.software.version,
@@ -120,13 +120,13 @@ async function fetchVideo(
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
   if (!id) throw new Error("You must provide a video ID to fetch it!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let info!: Video;
   let formats: Array<Format> = [];
-  let params = `${instance.getURL()}/api/v1/videos/${id}?fields=title,videoId,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`;
+  let params = `${instance.url}/api/v1/videos/${id}?fields=title,videoId,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`;
   if (opts.region) params += `&region=${opts.region}`;
   await axios.get(params).then((res) => {
     res.data.formatStreams
@@ -204,12 +204,12 @@ async function fetchComments(
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
   if (!id) throw new Error("You must provide a video ID to fetch comments!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let comments: Array<Comment> = [];
-  let params = `${instance.getURL()}/api/v1/comments/${id}`;
+  let params = `${instance.url}/api/v1/comments/${id}`;
   if (opts.sorting) params += `?sort_by=${opts.sorting}`;
   await axios.get(params).then((res) => {
     res.data.comments.forEach((comment: any) => {
@@ -242,13 +242,13 @@ async function fetchPlaylist(
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
   if (!id) throw new Error("You must provide a playlist ID to fetch it!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let info!: Playlist;
   let videos: Array<Video> = [];
-  let params = `${instance.getURL()}/api/v1/playlists/${id}?fields=title,playlistId,videos,author,authorId,description,videoCount`;
+  let params = `${instance.url}/api/v1/playlists/${id}?fields=title,playlistId,videos,author,authorId,description,videoCount`;
   await axios.get(params).then((res) => {
     res.data.videos.forEach((video: any) => {
       if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
@@ -305,12 +305,12 @@ async function fetchChannel(
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
   if (!id) throw new Error("You must provide a channel ID to fetch it!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let info!: Channel;
-  let params = `${instance.getURL()}/api/v1/channels/${id}?fields=author,authorId,subCount,totalViews,description,authorVerified,latestVideos`;
+  let params = `${instance.url}/api/v1/channels/${id}?fields=author,authorId,subCount,totalViews,description,authorVerified,latestVideos`;
   await axios.get(params).then((res) => {
     switch (opts.type) {
       case "full": {
@@ -366,11 +366,11 @@ async function searchContent(
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
   if (!query) throw new Error("You must provide a search query!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
-  let params = `${instance.getURL()}/api/v1/search?q=${query}`;
+  let params = `${instance.url}/api/v1/search?q=${query}`;
   if (opts.page) params += `&page=${opts.page}`;
   if (opts.sorting) params += `&sort_by=${opts.sorting}`;
   if (opts.date) params += `&date=${opts.date}`;
@@ -425,11 +425,11 @@ async function fetchTrending(
 ): Promise<Array<Video>> {
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
-  let params = `${instance.getURL()}/api/v1/trending`;
+  let params = `${instance.url}/api/v1/trending`;
   if (opts.region) params += `?region=${opts.region}`;
   if (opts.type) params += `&type=${opts.type}`;
   let results: Array<Video> = [];
@@ -458,11 +458,11 @@ async function fetchPopular(
 ): Promise<Array<Video>> {
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
-  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+  if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
-  let params = `${instance.getURL()}/api/v1/popular`;
+  let params = `${instance.url}/api/v1/popular`;
   let results: Array<Video> = [];
   await axios.get(params).then((res) => {
     res.data.forEach((result: any) => {
@@ -489,7 +489,7 @@ async function fetchStream(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
   let response = await axios.get(
-    `${instance.getURL()}/latest_version?id=${video.id}&itag=${source.tag}`,
+    `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`,
     {
       responseType: "stream",
     }
