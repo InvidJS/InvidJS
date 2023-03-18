@@ -3,12 +3,14 @@ import {
   Playlist,
   Video,
   Format,
+  Comment,
   Instance,
   InstanceStats,
   InstanceFetchOptions,
   VideoFetchOptions,
   PlaylistFetchOptions,
   ChannelFetchOptions,
+  CommentFetchOptions,
   SearchOptions,
   TrendingOptions,
   PopularOptions,
@@ -16,7 +18,8 @@ import {
   InstanceTypes,
   ContentTypes,
   TrendingTypes,
-  Sorting,
+  VideoSorting,
+  CommentSorting,
 } from "./classes/index";
 import axios from "axios";
 import { IReadStream } from "memfs/lib/volume";
@@ -182,6 +185,44 @@ async function fetchVideo(
 }
 
 /**
+ * @name fetchComments
+ * @description Fetches comments of a video.
+ * @param {Instance} instance - Instance to fetch videos from.
+ * @param {string} id - Video ID.
+ * @param {CommentFetchOptions} [opts] - Fetch options.
+ * @example await InvidJS.fetchComments(instance, "id");
+ * @returns {Promise<Comment[]>} Comments array.
+ */
+async function fetchComments(
+  instance: Instance,
+  id: string,
+  opts: CommentFetchOptions = {
+    sorting: CommentSorting.Top,
+    limit: 0,
+  }
+): Promise<Comment[]> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch videos from!");
+  if (!id) throw new Error("You must provide a video ID to fetch it!");
+  if (instance.checkAPIAccess() === false || instance.checkAPIAccess() === null)
+    throw new Error(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let comments: Array<Comment> = [];
+  let params = `${instance.getURL()}/api/v1/comments/${id}`;
+  if (opts.sorting) params += `?sort_by=${opts.sorting}`;
+  await axios.get(params).then((res) => {
+    res.data.comments.forEach((comment: any) => {
+      if (!opts.limit || opts.limit === 0 || comments.length < opts.limit)
+        comments.push(
+          new Comment(comment.author, comment.authorId, comment.content)
+        );
+    });
+  });
+  return comments;
+}
+
+/**
  * @name fetchPlaylist
  * @description Fetches a playlist and converts it into an object.
  * @param {Instance} instance - Instance.
@@ -281,7 +322,7 @@ async function fetchChannel(
           res.data.totalViews,
           res.data.authorVerified,
           res.data.latestVideos
-        )
+        );
         break;
       }
       case "basic":
@@ -290,14 +331,11 @@ async function fetchChannel(
           res.data.author,
           res.data.authorId,
           res.data.subCount
-        )
+        );
         break;
       }
       case "minimal": {
-        info = new Channel(
-          res.data.author,
-          res.data.authorId
-        )
+        info = new Channel(res.data.author, res.data.authorId);
         break;
       }
     }
@@ -319,7 +357,7 @@ async function searchContent(
   query: string,
   opts: SearchOptions = {
     page: 1,
-    sorting: Sorting.Relevance,
+    sorting: VideoSorting.Relevance,
     type: ContentTypes.Video,
     region: "US",
     limit: 0,
@@ -359,11 +397,7 @@ async function searchContent(
           }
           case "channel": {
             results.push(
-              new Channel(
-                result.author,
-                result.authorId,
-                result.subCount
-              )
+              new Channel(result.author, result.authorId, result.subCount)
             );
             break;
           }
@@ -467,6 +501,7 @@ export {
   fetchInstances,
   fetchStats,
   fetchVideo,
+  fetchComments,
   fetchPlaylist,
   fetchChannel,
   searchContent,
