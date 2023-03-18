@@ -16,11 +16,11 @@ describe("Instance fetch test", () => {
     })
 
     test("Instances region should be respected.", async () => {
-        expect(await InvidJS.fetchInstances({region: "NL"})).toHaveLength(3);
+        expect(await InvidJS.fetchInstances({region: "PL"})).toHaveLength(1);
     })
 
     test("Instance API status should be respected.", async () => {
-        expect(await InvidJS.fetchInstances({api_allowed: false})).not.toHaveLength(0);
+        expect(await InvidJS.fetchInstances({api_allowed: false})).toHaveLength(3);
     })
 
     test("Instances limit should be respected.", async () => {
