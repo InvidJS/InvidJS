@@ -1,7 +1,7 @@
 /**
  * @name Instance
  * @description Basic information about an instance.
- * 
+ *
  * @param {string} region  - Region of the instance.
  * @param {boolean} cors_allowed  - Is CORS allowed?
  * @param {boolean} api_allowed  - Is API allowed?

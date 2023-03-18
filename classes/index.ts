@@ -14,7 +14,7 @@ import {
   ContentTypes,
   VideoSorting,
   CommentSorting,
-  TrendingTypes
+  TrendingTypes,
 } from "./options";
 export {
   Channel,

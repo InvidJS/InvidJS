@@ -24,7 +24,7 @@ export class Channel {
     description?: string,
     views?: number,
     isVerified?: boolean,
-    latest_videos?: Array<Video>,
+    latest_videos?: Array<Video>
   ) {
     this.name = name;
     this.id = id;

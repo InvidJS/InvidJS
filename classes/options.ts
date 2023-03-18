@@ -16,7 +16,6 @@ export interface ContentOptions {
   type?: FetchTypes;
 }
 
-
 /**
  * @name InstanceFetchOptions
  * @description Instance fetch filter.
@@ -31,7 +30,7 @@ export interface InstanceFetchOptions extends CommonOptions {
   type?: InstanceTypes;
   region?: string;
   api_allowed?: boolean | "any";
-};
+}
 
 /**
  * @name PlaylistFetchOptions
@@ -48,15 +47,15 @@ export interface PlaylistFetchOptions extends CommonOptions, ContentOptions {}
  * @param {FetchTypes | undefined} type - Type of the video to return.
  */
 export interface VideoFetchOptions extends ContentOptions {
-  region?: string,
-};
+  region?: string;
+}
 
 /**
  * @name ChannelFetchOptions
  * @description Options for fetching channels.
  * @param {FetchTypes | undefined} type - Type of the channel to return.
  */
-export interface ChannelFetchOptions extends ContentOptions {};
+export interface ChannelFetchOptions extends ContentOptions {}
 
 /**
  * @name CommentFetchOptions
@@ -66,7 +65,7 @@ export interface ChannelFetchOptions extends ContentOptions {};
  */
 export interface CommentFetchOptions extends CommonOptions {
   sorting?: CommentSorting;
-};
+}
 
 /**
  * @name SearchOptions
@@ -87,7 +86,7 @@ export interface SearchOptions extends CommonOptions {
   duration?: Duration;
   type?: ContentTypes;
   features?: string;
-  region?: string,
+  region?: string;
 }
 
 /**
@@ -98,16 +97,16 @@ export interface SearchOptions extends CommonOptions {
  * @param {number | undefined} limit - How many videos to return.
  */
 export interface TrendingOptions extends CommonOptions {
-  region?: string,
-  type?: TrendingTypes
-};
+  region?: string;
+  type?: TrendingTypes;
+}
 
 /**
  * @name PopularOptions
  * @description Options for fetching popular content.
  * @param {number | undefined} limit - How many videos to return.
  */
-export interface PopularOptions extends CommonOptions {};
+export interface PopularOptions extends CommonOptions {}
 
 /**
  * @name FetchTypes
@@ -116,7 +115,7 @@ export interface PopularOptions extends CommonOptions {};
 export enum FetchTypes {
   Minimal = "minimal",
   Basic = "basic",
-  Full = "full"
+  Full = "full",
 }
 
 /**
@@ -127,7 +126,7 @@ export enum InstanceTypes {
   https = "https",
   tor = "onion",
   i2p = "i2p",
-  ALL = "all"
+  ALL = "all",
 }
 
 /**
@@ -140,7 +139,7 @@ export enum ContentTypes {
   Channel = "channel",
   Movie = "movie",
   Show = "show",
-  ALL = "all"
+  ALL = "all",
 }
 
 /**
@@ -151,7 +150,7 @@ export enum TrendingTypes {
   Music = "music",
   Gaming = "gaming",
   News = "news",
-  Movies = "movies"
+  Movies = "movies",
 }
 
 /**
@@ -162,7 +161,7 @@ export enum VideoSorting {
   Relevance = "relevance",
   Rating = "rating",
   UploadDate = "upload_date",
-  ViewCount = "view_count"
+  ViewCount = "view_count",
 }
 
 /**
@@ -171,7 +170,7 @@ export enum VideoSorting {
  */
 export enum CommentSorting {
   Top = "top",
-  New = "new"
+  New = "new",
 }
 
 /**
@@ -181,7 +180,7 @@ export enum CommentSorting {
 export enum Duration {
   Short = "short",
   Medium = "medium",
-  Long = "long"
+  Long = "long",
 }
 
 /**
@@ -193,6 +192,5 @@ export enum DateValues {
   Today = "today",
   Week = "week",
   Month = "month",
-  Year = "year"
+  Year = "year",
 }
-
