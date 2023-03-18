@@ -9,7 +9,7 @@ describe("Instance fetch test", () => {
 
     test("Only a single instance should be fetched if a URL is given.", async () => {
         let instances = await InvidJS.fetchInstances({url: "https://y.com.sb"});
-        expect(instances[0]).toHaveLength(1);
+        expect(instances).toHaveLength(1);
         expect(instances[0].url).toBe("https://y.com.sb");
     }, 30000)
 
