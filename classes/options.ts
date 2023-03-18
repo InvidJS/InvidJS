@@ -47,10 +47,21 @@ export interface ChannelFetchOptions {
 };
 
 /**
+ * @name CommentFetchOptions
+ * @description Options for fetching channels.
+ * @param {CommentSorting | undefined} sorting - Sort by...
+ * @param {number | undefined} limit - Amount of comments to return.
+ */
+export interface CommentFetchOptions {
+  sorting?: CommentSorting;
+  limit?: number;
+};
+
+/**
  * @name SearchOptions
  * @description Search engine options.
  * @param {number | undefined} page - Page of the search results.
- * @param {Sorting | undefined} sorting - Sort by...
+ * @param {VideoSorting | undefined} sorting - Sort by...
  * @param {DateValues | undefined} date - Get videos by a certain date.
  * @param {Duration | undefined} duration - Duration of a video.
  * @param {ContentTypes | undefined} type - Type of the content to search.
@@ -60,7 +71,7 @@ export interface ChannelFetchOptions {
  */
 export interface SearchOptions {
   page?: number;
-  sorting?: Sorting;
+  sorting?: VideoSorting;
   date?: DateValues;
   duration?: Duration;
   type?: ContentTypes;
@@ -137,14 +148,23 @@ export enum TrendingTypes {
 }
 
 /**
- * @name Sorting
+ * @name VideoSorting
  * @description Invidious search can sort the content by using one of these values.
  */
-export enum Sorting {
+export enum VideoSorting {
   Relevance = "relevance",
   Rating = "rating",
   UploadDate = "upload_date",
   ViewCount = "view_count"
+}
+
+/**
+ * @name CommentSorting
+ * @description Invidious can sort comments by using one of these values.
+ */
+export enum CommentSorting {
+  Top = "top",
+  New = "new"
 }
 
 /**
