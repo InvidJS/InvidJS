@@ -20,6 +20,11 @@ import {
   TrendingTypes,
   VideoSorting,
   CommentSorting,
+  ChannelPlaylistsOptions,
+  ChannelVideosOptions,
+  ChannelRelatedOptions,
+  ChannelPlaylistsSorting,
+  ChannelVideosSorting,
 } from "./classes/index";
 import axios from "axios";
 import fs from "fs-extra";
@@ -344,6 +349,105 @@ async function fetchChannel(
 }
 
 /**
+ * @name fetchRelatedChannels
+ * @description Fetches related channels and converts them into an object.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {string} id - Channel ID.
+ * @example await InvidJS.fetchRelatedChannels(instance, "id");
+ * @returns {Promise<Array<Channel>>} Array of related channels.
+ */
+async function fetchRelatedChannels(
+  instance: Instance,
+  id: string,
+  opts: ChannelRelatedOptions = {
+    limit: 0,
+  }
+): Promise<Array<Channel>> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch data from!");
+  if (!id) throw new Error("You must provide a channel ID to fetch it!");
+  if (instance.api_allowed === false || instance.api_allowed === null)
+    throw new Error(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let channels: Array<Channel> = [];
+  let params = `${instance.url}/api/v1/channels/${id}/channels`;
+    await axios.get(params).then((res) => {
+      res.data.relatedChannels.forEach((channel: any) => {
+        if (!opts.limit || opts.limit === 0 || channels.length < opts.limit)
+          channels.push(new Channel(channel.author, channel.authorId));
+      });
+    });
+  return channels;
+}
+
+/**
+ * @name fetchChannelPlaylists
+ * @description Fetches channel playlists and converts them into an object.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {string} id - Channel ID.
+ * @example await InvidJS.fetchChannelPlaylists(instance, "id");
+ * @returns {Promise<Array<Playlist>>} Array of channel playlists.
+ */
+async function fetchChannelPlaylists(
+  instance: Instance,
+  id: string,
+  opts: ChannelPlaylistsOptions = {
+    limit: 0,
+  }
+): Promise<Array<Playlist>> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch data from!");
+  if (!id) throw new Error("You must provide a channel ID to fetch it!");
+  if (instance.api_allowed === false || instance.api_allowed === null)
+    throw new Error(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let playlists: Array<Playlist> = [];
+  let params = `${instance.url}/api/v1/channels/${id}/playlists`;
+    await axios.get(params).then((res) => {
+      res.data.playlists.forEach((playlist: any) => {
+        if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
+          playlists.push(new Playlist(playlist.title, playlist.playlistId));
+      });
+    });
+  return playlists;
+}
+
+/**
+ * @name fetchChannelVideos
+ * @description Fetches channel videos and converts them into an object.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {string} id - Channel ID.
+ * @example await InvidJS.fetchChannelPlaylists(instance, "id");
+ * @returns {Promise<Array<Video>>} Array of channel videos.
+ */
+async function fetchChannelVideos(
+  instance: Instance,
+  id: string,
+  opts: ChannelVideosOptions = {
+    limit: 0,
+  }
+): Promise<Array<Video>> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch data from!");
+  if (!id) throw new Error("You must provide a channel ID to fetch it!");
+  if (instance.api_allowed === false || instance.api_allowed === null)
+    throw new Error(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let videos: Array<Video> = [];
+  let params = `${instance.url}/api/v1/channels/${id}/videos`;
+    await axios.get(params).then((res) => {
+      res.data.videos.forEach((video: any) => {
+        if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
+          videos.push(new Video(video.title, video.videoId));
+      });
+    });
+  return videos;
+}
+
+/**
  * @name searchContent
  * @description Searches content based on the query and search options.
  * @param {Instance} instance - Instance to fetch data from.
@@ -506,6 +610,9 @@ export {
   fetchComments,
   fetchPlaylist,
   fetchChannel,
+  fetchRelatedChannels,
+  fetchChannelPlaylists,
+  fetchChannelVideos,
   searchContent,
   fetchTrending,
   fetchPopular,

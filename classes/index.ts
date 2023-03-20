@@ -6,6 +6,9 @@ import {
   PlaylistFetchOptions,
   ChannelFetchOptions,
   CommentFetchOptions,
+  ChannelPlaylistsOptions,
+  ChannelVideosOptions,
+  ChannelRelatedOptions,
   SearchOptions,
   TrendingOptions,
   PopularOptions,
@@ -15,6 +18,8 @@ import {
   VideoSorting,
   CommentSorting,
   TrendingTypes,
+  ChannelPlaylistsSorting,
+  ChannelVideosSorting
 } from "./options";
 export {
   Channel,
@@ -39,4 +44,9 @@ export {
   TrendingTypes,
   VideoSorting,
   CommentSorting,
+  ChannelPlaylistsOptions,
+  ChannelVideosOptions,
+  ChannelRelatedOptions,
+  ChannelPlaylistsSorting,
+  ChannelVideosSorting
 };

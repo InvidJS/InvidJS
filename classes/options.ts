@@ -109,6 +109,33 @@ export interface TrendingOptions extends CommonOptions {
 export interface PopularOptions extends CommonOptions {}
 
 /**
+ * @name ChannelRelatedOptions
+ * @description Options for fetching related channels.
+ * @param {number | undefined} limit - How many channels to return.
+ */
+export interface ChannelRelatedOptions extends CommonOptions {}
+
+/**
+ * @name ChannelVideosOptions
+ * @description Options for fetching videos on a channel.
+ * @param {ChannelVideosSorting | undefined} sorting - Sort by...
+ * @param {number | undefined} limit - How many videos to return.
+ */
+export interface ChannelVideosOptions extends CommonOptions {
+  sorting?: ChannelVideosSorting;
+}
+
+/**
+ * @name ChannelPlaylistsOptions
+ * @description Options for fetching playlists on a channel.
+ * @param {ChannelPlaylistsSorting | undefined} sorting - Sort by...
+ * @param {number | undefined} limit - How many playlists to return.
+ */
+export interface ChannelPlaylistsOptions extends CommonOptions {
+  sorting?: ChannelPlaylistsSorting;
+}
+
+/**
  * @name FetchTypes
  * @description Use this to determine how verbose you need your output to be. Minimal contains only the title and the ID. Basic, depending on the type, will contain all the objects necessary to have the fetched content work. Full will make all the fields available to you.
  */
@@ -193,4 +220,24 @@ export enum DateValues {
   Week = "week",
   Month = "month",
   Year = "year",
+}
+
+/**
+ * @name ChannelVideosSorting
+ * @description Invidious can sort videos on a channel by using one of these values.
+ */
+export enum ChannelVideosSorting {
+  Newest = "newest",
+  Popular = "popular",
+  Oldest = "oldest",
+}
+
+/**
+ * @name ChannelPlaylistsSorting
+ * @description Invidious can sort playlists on a channel by using one of these values.
+ */
+export enum ChannelPlaylistsSorting {
+  Newest = "newest",
+  Popular = "popular",
+  Last = "last",
 }
