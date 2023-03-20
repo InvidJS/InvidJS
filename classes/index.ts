@@ -19,7 +19,7 @@ import {
   CommentSorting,
   TrendingTypes,
   ChannelPlaylistsSorting,
-  ChannelVideosSorting
+  ChannelVideosSorting,
 } from "./options";
 export {
   Channel,
@@ -48,5 +48,5 @@ export {
   ChannelVideosOptions,
   ChannelRelatedOptions,
   ChannelPlaylistsSorting,
-  ChannelVideosSorting
+  ChannelVideosSorting,
 };

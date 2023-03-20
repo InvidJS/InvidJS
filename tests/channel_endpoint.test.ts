@@ -18,7 +18,7 @@ describe("Channel endpoint test", () => {
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw",
       {
-        limit: 3
+        limit: 3,
       }
     );
     expect(channels).toHaveLength(3);
@@ -41,7 +41,7 @@ describe("Channel endpoint test", () => {
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw",
       {
-        limit: 5
+        limit: 5,
       }
     );
     expect(playlists).toHaveLength(5);
@@ -58,14 +58,13 @@ describe("Channel endpoint test", () => {
     expect(videos[0]).toBeInstanceOf(Video);
   }, 30000);
 
-
   test("Must respect limit on videos.", async () => {
     let instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
     let videos = await InvidJS.fetchChannelVideos(
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw",
       {
-        limit: 7
+        limit: 7,
       }
     );
     expect(videos).toHaveLength(7);

@@ -372,12 +372,12 @@ async function fetchRelatedChannels(
     );
   let channels: Array<Channel> = [];
   let params = `${instance.url}/api/v1/channels/${id}/channels`;
-    await axios.get(params).then((res) => {
-      res.data.relatedChannels.forEach((channel: any) => {
-        if (!opts.limit || opts.limit === 0 || channels.length < opts.limit)
-          channels.push(new Channel(channel.author, channel.authorId));
-      });
+  await axios.get(params).then((res) => {
+    res.data.relatedChannels.forEach((channel: any) => {
+      if (!opts.limit || opts.limit === 0 || channels.length < opts.limit)
+        channels.push(new Channel(channel.author, channel.authorId));
     });
+  });
   return channels;
 }
 
@@ -405,12 +405,12 @@ async function fetchChannelPlaylists(
     );
   let playlists: Array<Playlist> = [];
   let params = `${instance.url}/api/v1/channels/${id}/playlists`;
-    await axios.get(params).then((res) => {
-      res.data.playlists.forEach((playlist: any) => {
-        if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
-          playlists.push(new Playlist(playlist.title, playlist.playlistId));
-      });
+  await axios.get(params).then((res) => {
+    res.data.playlists.forEach((playlist: any) => {
+      if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
+        playlists.push(new Playlist(playlist.title, playlist.playlistId));
     });
+  });
   return playlists;
 }
 
@@ -438,12 +438,12 @@ async function fetchChannelVideos(
     );
   let videos: Array<Video> = [];
   let params = `${instance.url}/api/v1/channels/${id}/videos`;
-    await axios.get(params).then((res) => {
-      res.data.videos.forEach((video: any) => {
-        if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-          videos.push(new Video(video.title, video.videoId));
-      });
+  await axios.get(params).then((res) => {
+    res.data.videos.forEach((video: any) => {
+      if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
+        videos.push(new Video(video.title, video.videoId));
     });
+  });
   return videos;
 }
 
