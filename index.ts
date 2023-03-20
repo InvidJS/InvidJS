@@ -22,7 +22,7 @@ import {
   CommentSorting,
 } from "./classes/index";
 import axios from "axios";
-import { IReadStream } from "memfs/lib/volume";
+import fs from "fs-extra";
 
 /**
  * @name fetchInstances
@@ -474,27 +474,29 @@ async function fetchPopular(
 }
 
 /**
- * @name fetchStream
- * @description Fetches a video stream and allows its playback.
- * @param {Format} source - Video to fetch stream from.
- * @returns {Promise<IReadStream>} Readable stream.
+ * @name downloadSource
+ * @description Fetches a video stream and saves it into a file.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {Video} video - Video to fetch stream from.
+ * @param {Format} source - Format to download.
+ * @param {string} path - Path to save downloaded stream to. Do not include the file name.
+ * @returns {File} Source file.
  */
-async function fetchStream(
+async function downloadSource(
   instance: Instance,
   video: Video,
-  source: Format
-): Promise<IReadStream> {
+  source: Format,
+  path: string = "./"
+): Promise<any> {
+  if (!instance)
+    throw new Error("You must provide an instance to fetch data from!");
+  if (!video) throw new Error("You must provide a valid video object!");
   if (!source)
     throw new Error(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
-  let response = await axios.get(
-    `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`,
-    {
-      responseType: "stream",
-    }
-  );
-  return response.data;
+  //TODO: Download sources with multi-connection in mind.
+  return true;
 }
 
 export {
@@ -507,5 +509,5 @@ export {
   searchContent,
   fetchTrending,
   fetchPopular,
-  fetchStream,
+  downloadSource,
 };
