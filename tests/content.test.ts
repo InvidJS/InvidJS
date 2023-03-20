@@ -1,4 +1,4 @@
-import { Channel, ContentTypes } from "../classes";
+import { ContentTypes, Channel } from "../classes";
 import * as InvidJS from "../index";
 
 describe("Search test", () => {
@@ -42,6 +42,56 @@ describe("Search test", () => {
     let instances = await InvidJS.fetchInstances({ url: "https://yewtu.be" });
     try {
       await InvidJS.searchContent(instances[0], "typescript");
+    } catch (error: any) {
+      expect(error.message).toBe(
+        "The instance you provided does not support API requests or is offline!"
+      );
+    }
+  }, 30000);
+});
+
+describe("Popular fetch test", () => {
+  test("Popular content must be fetched correctly.", async () => {
+    let instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    expect(await InvidJS.fetchPopular(instances[0])).not.toHaveLength(0);
+  }, 30000);
+
+  test("Limit must be respected.", async () => {
+    let instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    expect(await InvidJS.fetchPopular(instances[0], { limit: 3 })).toHaveLength(
+      3
+    );
+  }, 30000);
+
+  test("Must throw an error if API is blocked.", async () => {
+    let instances = await InvidJS.fetchInstances({ url: "https://yewtu.be" });
+    try {
+      await InvidJS.fetchPopular(instances[0]);
+    } catch (error: any) {
+      expect(error.message).toBe(
+        "The instance you provided does not support API requests or is offline!"
+      );
+    }
+  }, 30000);
+});
+
+describe("Trending fetch test", () => {
+  test("Trending content must be fetched correctly.", async () => {
+    let instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    expect(await InvidJS.fetchTrending(instances[0])).not.toHaveLength(0);
+  }, 30000);
+
+  test("Limit must be respected.", async () => {
+    let instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    expect(
+      await InvidJS.fetchTrending(instances[0], { limit: 3 })
+    ).toHaveLength(3);
+  }, 30000);
+
+  test("Must throw an error if API is blocked.", async () => {
+    let instances = await InvidJS.fetchInstances({ url: "https://yewtu.be" });
+    try {
+      await InvidJS.fetchTrending(instances[0]);
     } catch (error: any) {
       expect(error.message).toBe(
         "The instance you provided does not support API requests or is offline!"
