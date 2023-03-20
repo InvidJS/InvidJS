@@ -288,7 +288,7 @@ async function fetchPlaylist(
 
 /**
  * @name fetchChannel
- * @description Fetches a playlist and converts it into an object.
+ * @description Fetches a channel and converts it into an object.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
  * @param {ChannelFetchOptions} [opts] - Fetch options.
