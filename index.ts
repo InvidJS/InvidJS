@@ -193,14 +193,14 @@ async function fetchVideo(
  * @name fetchComments
  * @description Fetches comments of a video.
  * @param {Instance} instance - Instance to fetch data from.
- * @param {string} id - Video ID.
+ * @param {Video} video - Video object.
  * @param {CommentFetchOptions} [opts] - Fetch options.
- * @example await InvidJS.fetchComments(instance, "id");
+ * @example await InvidJS.fetchComments(instance, video);
  * @returns {Promise<Comment[]>} Comments array.
  */
 async function fetchComments(
   instance: Instance,
-  id: string,
+  video: Video,
   opts: CommentFetchOptions = {
     sorting: CommentSorting.Top,
     limit: 0,
@@ -208,13 +208,13 @@ async function fetchComments(
 ): Promise<Comment[]> {
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
-  if (!id) throw new Error("You must provide a video ID to fetch comments!");
+  if (!video) throw new Error("You must provide a video to fetch comments!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let comments: Array<Comment> = [];
-  let params = `${instance.url}/api/v1/comments/${id}`;
+  let params = `${instance.url}/api/v1/comments/${video.id}`;
   if (opts.sorting) params += `?sort_by=${opts.sorting}`;
   await axios.get(params).then((res) => {
     res.data.comments.forEach((comment: any) => {
@@ -352,27 +352,28 @@ async function fetchChannel(
  * @name fetchRelatedChannels
  * @description Fetches related channels and converts them into an object.
  * @param {Instance} instance - Instance to fetch data from.
- * @param {string} id - Channel ID.
+ * @param {Channel} channel - Channel object.
  * @param {ChannelRelatedOptions} [opts] - Fetch options.
- * @example await InvidJS.fetchRelatedChannels(instance, "id");
+ * @example await InvidJS.fetchRelatedChannels(instance, channel);
  * @returns {Promise<Array<Channel>>} Array of related channels.
  */
 async function fetchRelatedChannels(
   instance: Instance,
-  id: string,
+  channel: Channel,
   opts: ChannelRelatedOptions = {
     limit: 0,
   }
 ): Promise<Array<Channel>> {
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
-  if (!id) throw new Error("You must provide a channel ID to fetch it!");
+  if (!channel)
+    throw new Error("You must provide a channel to fetch related channels!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let channels: Array<Channel> = [];
-  let params = `${instance.url}/api/v1/channels/${id}/channels`;
+  let params = `${instance.url}/api/v1/channels/${channel.id}/channels`;
   await axios.get(params).then((res) => {
     res.data.relatedChannels.forEach((channel: any) => {
       if (!opts.limit || opts.limit === 0 || channels.length < opts.limit)
@@ -386,27 +387,28 @@ async function fetchRelatedChannels(
  * @name fetchChannelPlaylists
  * @description Fetches latest channel playlists and converts them into an object.
  * @param {Instance} instance - Instance to fetch data from.
- * @param {string} id - Channel ID.
+ * @param {Channel} channel - Channel object.
  * @param {ChannelPlaylistsOptions} [opts] - Fetch options.
- * @example await InvidJS.fetchChannelPlaylists(instance, "id");
+ * @example await InvidJS.fetchChannelPlaylists(instance, channel);
  * @returns {Promise<Array<Playlist>>} Array of channel playlists.
  */
 async function fetchChannelPlaylists(
   instance: Instance,
-  id: string,
+  channel: Channel,
   opts: ChannelPlaylistsOptions = {
     limit: 0,
   }
 ): Promise<Array<Playlist>> {
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
-  if (!id) throw new Error("You must provide a channel ID to fetch it!");
+  if (!channel)
+    throw new Error("You must provide a channel to fetch playlists!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let playlists: Array<Playlist> = [];
-  let params = `${instance.url}/api/v1/channels/${id}/playlists`;
+  let params = `${instance.url}/api/v1/channels/${channel.id}/playlists`;
   await axios.get(params).then((res) => {
     res.data.playlists.forEach((playlist: any) => {
       if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
@@ -420,27 +422,27 @@ async function fetchChannelPlaylists(
  * @name fetchChannelVideos
  * @description Fetches latest channel videos and converts them into an object.
  * @param {Instance} instance - Instance to fetch data from.
- * @param {string} id - Channel ID.
+ * @param {Channel} channel - Channel object.
  * @param {ChannelVideosOptions} [opts] - Fetch options.
- * @example await InvidJS.fetchChannelPlaylists(instance, "id");
+ * @example await InvidJS.fetchChannelPlaylists(instance, channel);
  * @returns {Promise<Array<Video>>} Array of channel videos.
  */
 async function fetchChannelVideos(
   instance: Instance,
-  id: string,
+  channel: Channel,
   opts: ChannelVideosOptions = {
     limit: 0,
   }
 ): Promise<Array<Video>> {
   if (!instance)
     throw new Error("You must provide an instance to fetch data from!");
-  if (!id) throw new Error("You must provide a channel ID to fetch it!");
+  if (!channel) throw new Error("You must provide a channel to fetch videos!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new Error(
       "The instance you provided does not support API requests or is offline!"
     );
   let videos: Array<Video> = [];
-  let params = `${instance.url}/api/v1/channels/${id}/videos`;
+  let params = `${instance.url}/api/v1/channels/${channel.id}/videos`;
   await axios.get(params).then((res) => {
     res.data.videos.forEach((video: any) => {
       if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
