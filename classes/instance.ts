@@ -9,11 +9,11 @@
  * @param {string} url  - URL of the instance.
  */
 export class Instance {
-  region: string;
-  cors_allowed: boolean;
-  api_allowed: boolean;
-  type: string;
-  url: string;
+  public region: string;
+  public cors_allowed: boolean;
+  public api_allowed: boolean;
+  public type: string;
+  public url: string;
   constructor(
     region: string,
     cors_allowed: boolean,
@@ -42,13 +42,13 @@ export class Instance {
  * @param {boolean} registrations - Is registration allowed?
  */
 export class InstanceStats {
-  software_name: string;
-  software_version: string;
-  software_branch: string;
-  users_total: number;
-  users_active_halfyear: number;
-  users_active_month: number;
-  registrations: boolean;
+  public software_name: string;
+  public software_version: string;
+  public software_branch: string;
+  public users_total: number;
+  public users_active_halfyear: number;
+  public users_active_month: number;
+  public registrations: boolean;
   constructor(
     software_name: string,
     software_version: string,
