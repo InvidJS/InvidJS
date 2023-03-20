@@ -353,6 +353,7 @@ async function fetchChannel(
  * @description Fetches related channels and converts them into an object.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
+ * @param {ChannelRelatedOptions} [opts] - Fetch options.
  * @example await InvidJS.fetchRelatedChannels(instance, "id");
  * @returns {Promise<Array<Channel>>} Array of related channels.
  */
@@ -386,6 +387,7 @@ async function fetchRelatedChannels(
  * @description Fetches latest channel playlists and converts them into an object.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
+ * @param {ChannelPlaylistsOptions} [opts] - Fetch options.
  * @example await InvidJS.fetchChannelPlaylists(instance, "id");
  * @returns {Promise<Array<Playlist>>} Array of channel playlists.
  */
@@ -419,6 +421,7 @@ async function fetchChannelPlaylists(
  * @description Fetches latest channel videos and converts them into an object.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
+ * @param {ChannelVideosOptions} [opts] - Fetch options.
  * @example await InvidJS.fetchChannelPlaylists(instance, "id");
  * @returns {Promise<Array<Video>>} Array of channel videos.
  */
