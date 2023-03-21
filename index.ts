@@ -604,8 +604,19 @@ async function downloadSource(
     throw new Error(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
-  //TODO: Download sources with multi-connection in mind.
-  return true;
+  //Using Axios, split a single request into multiple connections.
+  //This has to be done because certain formats are throttled.
+  let response = await axios.get(
+    `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`,
+    {
+      responseType: "stream",
+      headers: {"Range": "bytes=0-6000"}
+    }
+  );
+  let stream = response.data.pipe(
+    fs.createWriteStream(`${path}${video.id}.${source.container}`)
+  );
+  return stream;
 }
 
 export {
