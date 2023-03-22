@@ -21,6 +21,13 @@ import {
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
 } from "./options";
+import {
+  MissingArgumentError,
+  InvalidArgumentError,
+  APINotAvailableError,
+  APIError,
+  ErrorCodes,
+} from "./errors";
 export {
   Channel,
   Playlist,
@@ -49,4 +56,9 @@ export {
   ChannelRelatedOptions,
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
+  MissingArgumentError,
+  InvalidArgumentError,
+  APIError,
+  APINotAvailableError,
+  ErrorCodes,
 };
