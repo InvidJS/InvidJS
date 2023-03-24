@@ -838,6 +838,14 @@ async function downloadSource(
         fs.unlink(files[i]);
       });
     }
+  } else {
+    let response = await axios.get(params, {
+      responseType: "arraybuffer",
+    })
+    let file = fs.createWriteStream(
+      `${opts.path}${video.id}.${source.container}`
+    );
+    file.write(response.data);
   }
 }
 
