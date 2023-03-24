@@ -37,8 +37,7 @@ jobs:
         cd ../docs
         git config user.email actions@github.com
         git config user.name GitHub Actions
-        git commit -a
-        git commit -m "CI: Rebuild docs"
+        git commit -a -m "CI: Rebuild docs"
         git push
       
   
