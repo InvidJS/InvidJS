@@ -17,11 +17,15 @@ jobs:
       uses: actions/checkout@v3
       with:
         path: './code'
+    - name: LS
+      run: ls -la
     - name: Clone docs
       uses: actions/checkout@v3
       with:
         repository: 'InvidJS/docs'
         path: './docs'
+    - name: LS2
+      run: ls -la    
     - name: Prepare Node.js
       uses: actions/setup-node@v3
       with:
