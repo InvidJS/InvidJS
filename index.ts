@@ -14,6 +14,7 @@ import {
   SearchOptions,
   TrendingOptions,
   PopularOptions,
+  StreamOptions,
   FetchTypes,
   InstanceTypes,
   ContentTypes,
@@ -774,7 +775,10 @@ async function downloadSource(
   instance: Instance,
   video: Video,
   source: Format,
-  path: string = "./"
+  opts: StreamOptions = {
+    path: "./",
+    parts: 5,
+  }
 ): Promise<any> {
   if (!instance)
     throw new MissingArgumentError(
@@ -786,19 +790,55 @@ async function downloadSource(
     throw new MissingArgumentError(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
+  if (opts && !opts.path) opts.path = "./";
+  if (opts.parts && opts.parts < 1) throw new InvalidArgumentError("A source must be downloaded in at least a single part!")
   //Using Axios, split a single request into multiple connections.
   //This has to be done because certain formats are throttled.
-  let response = await axios.get(
-    `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`,
-    {
-      responseType: "stream",
-      headers: { Range: "bytes=0-6000" },
+  let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
+  let lengthQuery = await axios.get(params, {
+    headers: { Range: `bytes=0-0` },
+  });
+  let length = lengthQuery.headers["content-range"].split("/")[1];
+  if (opts.parts) {
+    let parts = Math.ceil(parseInt(length) / opts.parts);
+    let positions: Array<number> = [];
+    for (let i = 0; i < opts.parts; i++) {
+      positions.push(i * parts);
     }
-  );
-  let stream = response.data.pipe(
-    fs.createWriteStream(`${path}${video.id}.${source.container}`)
-  );
-  return stream;
+    let promises: Array<Promise<any>> = [];
+    positions.forEach((position) => {
+      let range = `bytes=${position}-${position + parts - 1}`;
+      promises.push(
+        axios.get(params, {
+          headers: { Range: range },
+          responseType: "arraybuffer",
+        })
+      );
+    });
+    let responses = await axios.all(promises);
+    let files: Array<string> = [];
+    for (let i = 0; i < responses.length; i++) {
+      let response = responses[i];
+      let file = fs.createWriteStream(
+        `${opts.path}${video.id}-${i}.${source.container}`
+      );
+      file.write(response.data);
+      files.push(`${opts.path}${video.id}-${i}.${source.container}`);
+    }
+    for (let i = 0; i < files.length; i++) {
+      let result = fs.createWriteStream(
+        `${opts.path}${video.id}.${source.container}`,
+        {
+          start: i * parts,
+        }
+      );
+      let readable = fs.createReadStream(files[i]);
+      readable.pipe(result);
+      readable.on("close", () => {
+        fs.unlink(files[i]);
+      });
+    }
+  }
 }
 
 export {

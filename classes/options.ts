@@ -136,6 +136,17 @@ export interface ChannelPlaylistsOptions extends CommonOptions {
 }
 
 /**
+ * @name StreamOptions
+ * @description Options for downloading a stream.
+ * @param {number | undefined} parts - Number of parts to split the stream into.
+ * @param {string | undefined} path - Path to save the stream to. If not specified, the stream will be saved to the current directory.
+ */
+export interface StreamOptions {
+  parts?: number;
+  path?: string;
+}
+
+/**
  * @name FetchTypes
  * @description Use this to determine how verbose you need your output to be. Minimal contains only the title and the ID. Basic, depending on the type, will contain all the objects necessary to have the fetched content work. Full will make all the fields available to you.
  */
