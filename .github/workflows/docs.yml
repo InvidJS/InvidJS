@@ -32,6 +32,7 @@ jobs:
         npm install
     - name: Build docs
       run: | 
+        cd code
         npm run docs:build
         cd ../docs
         git config user.email actions@github.com
