@@ -1,4 +1,4 @@
-name: CI - Publish to GitHub Packages
+name: CI - GitHub Packages
 
 on:
   release:
