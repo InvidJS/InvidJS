@@ -24,7 +24,7 @@
   "scripts": {
     "prettier": "npx prettier index.ts ./classes/* ./tests/* --write",
     "test": "jest ./tests/ --verbose",
-    "build": "tsup index.ts --format cjs,esm --dts --clean && copy package.json dist && copy README.md dist",
+    "build": "tsup index.ts --format cjs,esm --dts --clean && cp package.json dist && cp README.md dist",
     "docs:build": "npx typedoc --name InvidJS --cleanOutputDir false"
   },
   "repository": {
