@@ -24,7 +24,6 @@ describe("Errors test", () => {
     try {
       await InvidJS.fetchVideo(instances[0], "9-RjN9gF954");
     } catch (error: any) {
-      console.error(error);
       expect(error.code).toBe(ErrorCodes.APIError);
     }
   }, 50000);
