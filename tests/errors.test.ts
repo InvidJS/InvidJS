@@ -2,7 +2,7 @@
 import { ErrorCodes } from "../classes";
 import * as InvidJS from "../index";
 
-describe("Errors test - all functions must fail", () => {
+describe("Errors test", () => {
   test("Must throw an error if arguments are missing.", async () => {
     try {
       await InvidJS.fetchVideo();

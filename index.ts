@@ -59,9 +59,7 @@ async function fetchInstances(
   await axios
     .get("https://api.invidious.io/instances.json")
     .then((res) => {
-      //Only push instances that meet the search criteria.
       res.data.forEach((instance: any) => {
-        //It is possible the user only provides some of the options.
         if (
           (!opts.url || opts.url === instance[1].uri) &&
           (!opts.type ||
@@ -768,7 +766,7 @@ async function fetchPopular(
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Video} video - Video to fetch stream from.
  * @param {Format} source - Format to download.
- * @param {string} path - Path to save downloaded stream to. Do not include the file name.
+ * @param {StreamOptions} [opts] - Options for fetching the source.
  * @returns {File} Source file.
  */
 async function downloadSource(
@@ -791,9 +789,7 @@ async function downloadSource(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
   if (opts && !opts.path) opts.path = "./";
-  if (opts.parts && opts.parts < 1) throw new InvalidArgumentError("A source must be downloaded in at least a single part!")
-  //Using Axios, split a single request into multiple connections.
-  //This has to be done because certain formats are throttled.
+  if (opts.parts && opts.parts < 1) throw new InvalidArgumentError("A source must be downloaded in at least a single part!");
   let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
   let lengthQuery = await axios.get(params, {
     headers: { Range: `bytes=0-0` },
