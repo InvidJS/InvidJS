@@ -3,7 +3,6 @@
 [![CI - Run tests](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml)
 [![CI - Build docs](https://github.com/InvidJS/InvidJS/actions/workflows/docs.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/docs.yml)
 [![CI - npmjs](https://github.com/InvidJS/InvidJS/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/npm-publish.yml)
-[![CI - GitHub Packages](https://github.com/InvidJS/InvidJS/actions/workflows/gh-packages.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/gh-packages.yml)
 
 An attempt to bring Invidious support to Node.js.
 
