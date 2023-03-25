@@ -13,9 +13,6 @@
   "tsup": {
     "target": "node16"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/invidjs"
-  },
   "engines": {
     "node": ">=16.9.0"
   },
