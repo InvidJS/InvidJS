@@ -9,7 +9,7 @@ describe("Errors test", () => {
     } catch (error: any) {
       expect(error.code).toBe(ErrorCodes.MissingArgument);
     }
-  }, 30000);
+  }, 50000);
 
   test("Must throw an error if arguments are invalid.", async () => {
     try {
@@ -17,7 +17,7 @@ describe("Errors test", () => {
     } catch (error: any) {
       expect(error.code).toBe(ErrorCodes.InvalidArgument);
     }
-  }, 30000);
+  }, 50000);
 
   test("Must throw an error if API returns an error.", async () => {
     const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
@@ -27,7 +27,7 @@ describe("Errors test", () => {
       console.error(error);
       expect(error.code).toBe(ErrorCodes.APIError);
     }
-  }, 30000);
+  }, 50000);
 
   test("Must throw an error if API is blocked.", async () => {
     const instances = await InvidJS.fetchInstances({ url: "https://yewtu.be" });
@@ -36,5 +36,5 @@ describe("Errors test", () => {
     } catch (error: any) {
       expect(error.code).toBe(ErrorCodes.APIBlocked);
     }
-  }, 30000);
+  }, 50000);
 });

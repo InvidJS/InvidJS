@@ -7,7 +7,7 @@ describe("Comments fetch test", () => {
     expect(await InvidJS.fetchComments(instances[0], video)).not.toHaveLength(
       0
     );
-  }, 30000);
+  }, 50000);
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
@@ -15,5 +15,5 @@ describe("Comments fetch test", () => {
     expect(
       await InvidJS.fetchComments(instances[0], video, { limit: 5 })
     ).toHaveLength(5);
-  }, 30000);
+  }, 50000);
 });
