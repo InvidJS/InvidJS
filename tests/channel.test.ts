@@ -3,14 +3,14 @@ import * as InvidJS from "../index";
 
 describe("Channel fetch test", () => {
   test("Channel must be fetched correctly.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     expect(
       await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A")
     ).not.toBeUndefined();
   }, 50000);
 
   test("Must be able to fetch minimal channel.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     expect(
       (
         await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A", {
@@ -21,7 +21,7 @@ describe("Channel fetch test", () => {
   }, 50000);
 
   test("Must be able to fetch basic channel.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     expect(
       (
         await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A", {
@@ -32,7 +32,7 @@ describe("Channel fetch test", () => {
   }, 50000);
 
   test("Must be able to fetch full channel.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     expect(
       (
         await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A", {
@@ -45,7 +45,7 @@ describe("Channel fetch test", () => {
 
 describe("Channel endpoint test", () => {
   test("Must fetch related channels correctly.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     const channel = await InvidJS.fetchChannel(
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw"
@@ -56,7 +56,7 @@ describe("Channel endpoint test", () => {
   }, 50000);
 
   test("Must respect limit on related channels.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     const channel = await InvidJS.fetchChannel(
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw"
@@ -69,7 +69,7 @@ describe("Channel endpoint test", () => {
   }, 50000);
 
   test("Must fetch playlists correctly.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     const channel = await InvidJS.fetchChannel(
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw"
@@ -83,7 +83,7 @@ describe("Channel endpoint test", () => {
   }, 50000);
 
   test("Must respect limit on playlists.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     const channel = await InvidJS.fetchChannel(
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw"
@@ -100,7 +100,7 @@ describe("Channel endpoint test", () => {
   }, 50000);
 
   test("Must fetch videos correctly.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     const channel = await InvidJS.fetchChannel(
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw"
@@ -111,7 +111,7 @@ describe("Channel endpoint test", () => {
   }, 50000);
 
   test("Must respect limit on videos.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     const channel = await InvidJS.fetchChannel(
       instances[0],
       "UCRjXNz9JNSuE8n-Oej4Rflw"

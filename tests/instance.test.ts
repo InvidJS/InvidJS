@@ -8,9 +8,9 @@ describe("Instance fetch test", () => {
   }, 50000);
 
   test("Only a single instance should be fetched if a URL is given.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     expect(instances).toHaveLength(1);
-    expect(instances[0].url).toBe("https://y.com.sb");
+    expect(instances[0].url).toBe("https://invidious.snopyta.org");
   }, 50000);
 
   test("Instances type should be respected.", async () => {
@@ -47,7 +47,7 @@ describe("Instance fetch test", () => {
 
 describe("Instance stats fetch test", () => {
   test("Instance stats must be fetched correctly.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     expect(await InvidJS.fetchStats(instances[0])).not.toBeUndefined();
   }, 50000);
 

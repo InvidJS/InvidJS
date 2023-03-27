@@ -20,7 +20,7 @@ describe("Errors test", () => {
   }, 50000);
 
   test("Must throw an error if API returns an error.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
     try {
       await InvidJS.fetchVideo(instances[0], "9-RjN9gF954");
     } catch (error: any) {
