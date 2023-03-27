@@ -55,11 +55,19 @@ async function fetchInstances(
     throw new InvalidArgumentError(
       "Limit is invalid - must be a number bigger than 0!"
     );
+  if (opts.health && (typeof opts.health !== "number" || opts.health < 0))
+    throw new InvalidArgumentError(
+      "Health is invalid - must be a number bigger than 0!"
+    );
   let instances: Array<Instance> = [];
   await axios
     .get("https://api.invidious.io/instances.json")
     .then((res) => {
       res.data.forEach((instance: any) => {
+        let health = undefined;
+        if (instance[1].monitor !== null) {
+          health = instance[1].monitor.dailyRatios[0].ratio;
+        }
         if (
           (!opts.url || opts.url === instance[1].uri) &&
           (!opts.type ||
@@ -71,12 +79,11 @@ async function fetchInstances(
           (opts.api_allowed === undefined ||
             opts.api_allowed === "any" ||
             instance[1].api === opts.api_allowed) &&
+          (!opts.health ||
+            opts.health === "any" ||
+            parseFloat(health) >= opts.health) &&
           (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
         ) {
-          let health = undefined;
-          if (instance[1].monitor !== null) {
-            health = instance[1].monitor.dailyRatios[0].ratio;
-          }
           instances.push(
             new Instance(
               instance[1].region,
@@ -84,7 +91,7 @@ async function fetchInstances(
               instance[1].api,
               instance[1].type,
               instance[1].uri,
-              health,
+              parseFloat(health)
             )
           );
         } else return false;
@@ -794,7 +801,10 @@ async function downloadSource(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
   if (opts && !opts.path) opts.path = "./";
-  if (opts.parts && opts.parts < 1) throw new InvalidArgumentError("A source must be downloaded in at least a single part!");
+  if (opts.parts && opts.parts < 1)
+    throw new InvalidArgumentError(
+      "A source must be downloaded in at least a single part!"
+    );
   let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
   let lengthQuery = await axios.get(params, {
     headers: { Range: `bytes=0-0` },
@@ -842,7 +852,7 @@ async function downloadSource(
   } else {
     let response = await axios.get(params, {
       responseType: "arraybuffer",
-    })
+    });
     let file = fs.createWriteStream(
       `${opts.path}${video.id}.${source.container}`
     );
