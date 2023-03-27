@@ -31,6 +31,7 @@ import {
   APIError,
   APINotAvailableError,
   ErrorCodes,
+  SaveSourceTo,
 } from "./classes/index";
 import axios from "axios";
 import fs from "fs-extra";
@@ -786,6 +787,7 @@ async function fetchSource(
   video: Video,
   source: Format,
   opts: StreamOptions = {
+    saveTo: SaveSourceTo.File,
     path: "./",
     parts: 5,
   }
@@ -801,6 +803,7 @@ async function fetchSource(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
   if (opts && !opts.path) opts.path = "./";
+  if (opts && !opts.parts) opts.parts = 1;
   if (opts.parts && opts.parts < 1)
     throw new InvalidArgumentError(
       "A source must be downloaded in at least a single part!"
@@ -827,36 +830,40 @@ async function fetchSource(
       );
     });
     let responses = await axios.all(promises);
-    let files: Array<string> = [];
-    for (let i = 0; i < responses.length; i++) {
-      let response = responses[i];
-      let file = fs.createWriteStream(
-        `${opts.path}${video.id}-${i}.${source.container}`
-      );
-      file.write(response.data);
-      files.push(`${opts.path}${video.id}-${i}.${source.container}`);
-    }
-    for (let i = 0; i < files.length; i++) {
-      let result = fs.createWriteStream(
-        `${opts.path}${video.id}.${source.container}`,
-        {
-          start: i * parts,
+    switch (opts.saveTo) {
+      case SaveSourceTo.File: {
+        let files: Array<string> = [];
+        for (let i = 0; i < responses.length; i++) {
+          let response = responses[i];
+          let file = fs.createWriteStream(
+            `${opts.path}${video.id}-${i}.${source.container}`
+          );
+          file.write(response.data);
+          files.push(`${opts.path}${video.id}-${i}.${source.container}`);
         }
-      );
-      let readable = fs.createReadStream(files[i]);
-      readable.pipe(result);
-      readable.on("close", () => {
-        fs.unlink(files[i]);
-      });
+        for (let i = 0; i < files.length; i++) {
+          let result = fs.createWriteStream(
+            `${opts.path}${video.id}.${source.container}`,
+            {
+              start: i * parts,
+            }
+          );
+          let readable = fs.createReadStream(files[i]);
+          readable.pipe(result);
+          readable.on("close", () => {
+            fs.unlink(files[i]);
+          });
+        }
+        break;
+      }
+      case SaveSourceTo.Memory: {
+        let blob = new Blob(responses);
+        return blob.stream();
+      }
+      default: {
+        break;
+      }
     }
-  } else {
-    let response = await axios.get(params, {
-      responseType: "arraybuffer",
-    });
-    let file = fs.createWriteStream(
-      `${opts.path}${video.id}.${source.container}`
-    );
-    file.write(response.data);
   }
 }
 

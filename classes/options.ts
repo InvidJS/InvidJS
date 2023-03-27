@@ -263,5 +263,5 @@ export enum ChannelPlaylistsSorting {
  */
 export enum SaveSourceTo {
   Memory = "memory",
-  File = "file"
+  File = "file",
 }
