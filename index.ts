@@ -73,13 +73,18 @@ async function fetchInstances(
             instance[1].api === opts.api_allowed) &&
           (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
         ) {
+          let health = undefined;
+          if (instance[1].monitor !== null) {
+            health = instance[1].monitor.dailyRatios[0].ratio;
+          }
           instances.push(
             new Instance(
               instance[1].region,
               instance[1].cors,
               instance[1].api,
               instance[1].type,
-              instance[1].uri
+              instance[1].uri,
+              health,
             )
           );
         } else return false;

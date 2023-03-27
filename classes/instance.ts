@@ -7,6 +7,7 @@
  * @param {boolean} api_allowed  - Is API allowed?
  * @param {string} type  - Type of the instance.
  * @param {string} url  - URL of the instance.
+ * @param {string} health - Latest reported health of the instance.
  */
 export class Instance {
   public region: string;
@@ -14,18 +15,21 @@ export class Instance {
   public api_allowed: boolean;
   public type: string;
   public url: string;
+  public health?: number;
   constructor(
     region: string,
     cors_allowed: boolean,
     api_allowed: boolean,
     type: string,
-    url: string
+    url: string,
+    health?: number,
   ) {
     this.region = region;
     this.cors_allowed = cors_allowed;
     this.api_allowed = api_allowed;
     this.type = type;
     this.url = url;
+    this.health = health;
   }
 }
 
