@@ -21,6 +21,7 @@ import {
   TrendingTypes,
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
+  SaveSourceTo
 } from "./options";
 import {
   MissingArgumentError,
@@ -63,4 +64,5 @@ export {
   APIError,
   APINotAvailableError,
   ErrorCodes,
+  SaveSourceTo
 };

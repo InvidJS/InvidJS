@@ -140,10 +140,12 @@ export interface ChannelPlaylistsOptions extends CommonOptions {
 /**
  * @name StreamOptions
  * @description Options for downloading a stream.
+ * @param {SaveSourceTo | undefined} saveTo - Where to save the stream.
  * @param {number | undefined} parts - Number of parts to split the stream into.
  * @param {string | undefined} path - Path to save the stream to. If not specified, the stream will be saved to the current directory.
  */
 export interface StreamOptions {
+  saveTo?: SaveSourceTo;
   parts?: number;
   path?: string;
 }
@@ -253,4 +255,13 @@ export enum ChannelPlaylistsSorting {
   Newest = "newest",
   Popular = "popular",
   Last = "last",
+}
+
+/**
+ * @name SaveSourceTo
+ * @description Possible values on where to save the source.
+ */
+export enum SaveSourceTo {
+  Memory = "memory",
+  File = "file"
 }

@@ -773,15 +773,15 @@ async function fetchPopular(
 }
 
 /**
- * @name downloadSource
- * @description Fetches a video stream and saves it into a file.
+ * @name fetchSource
+ * @description Fetches a video stream for later use.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Video} video - Video to fetch stream from.
  * @param {Format} source - Format to download.
  * @param {StreamOptions} [opts] - Options for fetching the source.
  * @returns {File} Source file.
  */
-async function downloadSource(
+async function fetchSource(
   instance: Instance,
   video: Video,
   source: Format,
@@ -873,5 +873,5 @@ export {
   searchContent,
   fetchTrending,
   fetchPopular,
-  downloadSource,
+  fetchSource,
 };
