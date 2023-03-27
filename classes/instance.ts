@@ -22,7 +22,7 @@ export class Instance {
     api_allowed: boolean,
     type: string,
     url: string,
-    health?: number,
+    health?: number
   ) {
     this.region = region;
     this.cors_allowed = cors_allowed;

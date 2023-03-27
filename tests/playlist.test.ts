@@ -3,7 +3,9 @@ import * as InvidJS from "../index";
 
 describe("Playlist fetch test", () => {
   test("Playlist must be fetched correctly.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
+    const instances = await InvidJS.fetchInstances({
+      url: "https://invidious.snopyta.org",
+    });
     expect(
       await InvidJS.fetchPlaylist(
         instances[0],
@@ -13,7 +15,9 @@ describe("Playlist fetch test", () => {
   }, 50000);
 
   test("Limit must be respected.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
+    const instances = await InvidJS.fetchInstances({
+      url: "https://invidious.snopyta.org",
+    });
     expect(
       (
         await InvidJS.fetchPlaylist(
@@ -26,7 +30,9 @@ describe("Playlist fetch test", () => {
   }, 50000);
 
   test("Must be able to fetch minimal playlist.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
+    const instances = await InvidJS.fetchInstances({
+      url: "https://invidious.snopyta.org",
+    });
     expect(
       (
         await InvidJS.fetchPlaylist(
@@ -39,7 +45,9 @@ describe("Playlist fetch test", () => {
   }, 50000);
 
   test("Must be able to fetch basic playlist.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
+    const instances = await InvidJS.fetchInstances({
+      url: "https://invidious.snopyta.org",
+    });
     expect(
       (
         await InvidJS.fetchPlaylist(
@@ -52,7 +60,9 @@ describe("Playlist fetch test", () => {
   }, 50000);
 
   test("Must be able to fetch full playlist.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
+    const instances = await InvidJS.fetchInstances({
+      url: "https://invidious.snopyta.org",
+    });
     expect(
       (
         await InvidJS.fetchPlaylist(
@@ -65,7 +75,9 @@ describe("Playlist fetch test", () => {
   }, 50000);
 
   test("Must be able to fetch a mix and fill it with data.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://invidious.snopyta.org" });
+    const instances = await InvidJS.fetchInstances({
+      url: "https://invidious.snopyta.org",
+    });
     expect(
       (
         await InvidJS.fetchPlaylist(instances[0], "RDMM", {
