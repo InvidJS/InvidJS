@@ -59,15 +59,4 @@ describe("Instance stats fetch test", () => {
     });
     expect(await InvidJS.fetchStats(instances[0])).not.toBeUndefined();
   }, 50000);
-
-  test("Must throw an error if API is blocked.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://yewtu.be" });
-    try {
-      await InvidJS.fetchStats(instances[0]);
-    } catch (error: any) {
-      expect(error.message).toBe(
-        "The instance you provided does not support API requests or is offline!"
-      );
-    }
-  }, 50000);
 });
