@@ -23,6 +23,7 @@ export interface ContentOptions {
  * @param {InstanceTypes | undefined} type - Type of the instances to search.
  * @param {string | undefined} region - Region of the instances to search.
  * @param {boolean | "any" | undefined} api_allowed - API access value to search.
+ * @param {number | undefined} health - Filter instances by health.
  * @param {number | undefined} limit - Amount of instances to fetch.
  */
 export interface InstanceFetchOptions extends CommonOptions {
@@ -30,6 +31,7 @@ export interface InstanceFetchOptions extends CommonOptions {
   type?: InstanceTypes;
   region?: string;
   api_allowed?: boolean | "any";
+  health?: number | "any";
 }
 
 /**
