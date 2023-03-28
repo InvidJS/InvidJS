@@ -9,11 +9,14 @@ describe("Source fetch test", () => {
     });
     const video = await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ");
     if (video.formats) {
-        let source = video.formats[4];
-        await InvidJS.fetchSource(instances[0], video, source, {saveTo: SaveSourceTo.File, parts: 5});
-        let exists = await fs.exists(`${video.id}.${source.container}`);
-        expect(exists).toBe(true);
-        fs.unlink(`${video.id}.${source.container}`);
+      let source = video.formats[4];
+      await InvidJS.fetchSource(instances[0], video, source, {
+        saveTo: SaveSourceTo.File,
+        parts: 5,
+      });
+      let exists = await fs.exists(`${video.id}.${source.container}`);
+      expect(exists).toBe(true);
+      fs.unlink(`${video.id}.${source.container}`);
     }
   }, 500000);
 
@@ -23,9 +26,12 @@ describe("Source fetch test", () => {
     });
     const video = await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ");
     if (video.formats) {
-        let source = video.formats[4];
-        let buffer = await InvidJS.fetchSource(instances[0], video, source, {saveTo: SaveSourceTo.Memory, parts: 5});
-        expect(buffer).not.toBeUndefined();
+      let source = video.formats[4];
+      let buffer = await InvidJS.fetchSource(instances[0], video, source, {
+        saveTo: SaveSourceTo.Memory,
+        parts: 5,
+      });
+      expect(buffer).not.toBeUndefined();
     }
-  }, 500000);  
+  }, 500000);
 });

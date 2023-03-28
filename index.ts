@@ -835,15 +835,22 @@ async function fetchSource(
         let files: Array<string> = [];
         responses.forEach((response) => {
           let file = fs.createWriteStream(
-            `${opts.path}${video.id}-${responses.indexOf(response)}.${source.container}`
+            `${opts.path}${video.id}-${responses.indexOf(response)}.${
+              source.container
+            }`
           );
           file.write(response.data);
-          files.push(`${opts.path}${video.id}-${responses.indexOf(response)}.${source.container}`);
-        })
+          files.push(
+            `${opts.path}${video.id}-${responses.indexOf(response)}.${
+              source.container
+            }`
+          );
+        });
         await fs.createFile(`${opts.path}${video.id}.${source.container}`);
         files.forEach((file) => {
           let master = fs.createWriteStream(
-            `${opts.path}${video.id}.${source.container}`, {
+            `${opts.path}${video.id}.${source.container}`,
+            {
               start: files.indexOf(file) * parts,
             }
           );
