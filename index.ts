@@ -833,28 +833,27 @@ async function fetchSource(
     switch (opts.saveTo) {
       case SaveSourceTo.File: {
         let files: Array<string> = [];
-        for (let i = 0; i < responses.length; i++) {
-          let response = responses[i];
+        responses.forEach((response) => {
           let file = fs.createWriteStream(
-            `${opts.path}${video.id}-${i}.${source.container}`
+            `${opts.path}${video.id}-${responses.indexOf(response)}.${source.container}`
           );
           file.write(response.data);
-          files.push(`${opts.path}${video.id}-${i}.${source.container}`);
-        }
-        for (let i = 0; i < files.length; i++) {
-          let result = fs.createWriteStream(
-            `${opts.path}${video.id}.${source.container}`,
-            {
-              start: i * parts,
+          files.push(`${opts.path}${video.id}-${responses.indexOf(response)}.${source.container}`);
+        })
+        await fs.createFile(`${opts.path}${video.id}.${source.container}`);
+        files.forEach((file) => {
+          let master = fs.createWriteStream(
+            `${opts.path}${video.id}.${source.container}`, {
+              start: files.indexOf(file) * parts,
             }
           );
-          let readable = fs.createReadStream(files[i]);
-          readable.pipe(result);
-          readable.on("close", () => {
-            fs.unlink(files[i]);
+          let readStream = fs.createReadStream(file);
+          readStream.pipe(master);
+          readStream.on("end", async () => {
+            await fs.unlink(file);
           });
-        }
-        break;
+        });
+        return `${opts.path}${video.id}.${source.container}`;
       }
       case SaveSourceTo.Memory: {
         let blob = new Blob(responses);
