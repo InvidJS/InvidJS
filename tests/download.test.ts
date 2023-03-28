@@ -13,6 +13,7 @@ describe("Source fetch test", () => {
         await InvidJS.fetchSource(instances[0], video, source, {saveTo: SaveSourceTo.File, parts: 5});
         let exists = await fs.exists(`${video.id}.${source.container}`);
         expect(exists).toBe(true);
+        fs.unlink(`${video.id}.${source.container}`);
     }
   }, 500000);
 });
