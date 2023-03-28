@@ -856,8 +856,19 @@ async function fetchSource(
         return `${opts.path}${video.id}.${source.container}`;
       }
       case SaveSourceTo.Memory: {
-        let blob = new Blob(responses);
-        return blob.stream();
+        //Create a single ArrayBuffer from all the parts
+        let buffer = new ArrayBuffer(parseInt(length));
+        let view = new DataView(buffer);
+        let offset = 0;
+        responses.forEach((response) => {
+          let array = new Uint8Array(response.data);
+          for (let i = 0; i < array.length; i++) {
+            view.setUint8(offset + i, array[i]);
+          }
+          offset += array.length;
+        });
+        console.log(buffer);
+        return buffer;
       }
       default: {
         break;
