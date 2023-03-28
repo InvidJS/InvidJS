@@ -1,5 +1,6 @@
 import * as InvidJS from "../index";
 
+jest.retryTimes(5);
 describe("Comments fetch test", () => {
   test("Comments must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({

@@ -1,6 +1,7 @@
 import { Channel, Playlist, Video, FetchTypes } from "../classes";
 import * as InvidJS from "../index";
 
+jest.retryTimes(5);
 describe("Channel fetch test", () => {
   test("Channel must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({

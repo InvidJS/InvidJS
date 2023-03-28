@@ -1,6 +1,7 @@
 import { ContentTypes, Channel } from "../classes";
 import * as InvidJS from "../index";
 
+jest.retryTimes(5);
 describe("Search test", () => {
   test("Content must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({

@@ -2,6 +2,7 @@
 import { ErrorCodes } from "../classes";
 import * as InvidJS from "../index";
 
+jest.retryTimes(5);
 describe("Errors test", () => {
   test("Must throw an error if arguments are missing.", async () => {
     try {

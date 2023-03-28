@@ -1,6 +1,7 @@
 import { FetchTypes } from "../classes";
 import * as InvidJS from "../index";
 
+jest.retryTimes(5);
 describe("Video fetch test", () => {
   test("Video must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({

@@ -2,6 +2,7 @@ import * as InvidJS from "../index";
 import fs from "fs-extra";
 import { SaveSourceTo } from "../classes";
 
+jest.retryTimes(5);
 describe("Source fetch test", () => {
   test("Source must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({

@@ -1,6 +1,7 @@
 import { InstanceTypes } from "../classes";
 import * as InvidJS from "../index";
 
+jest.retryTimes(5);
 describe("Instance fetch test", () => {
   test("Instances should fetch correctly.", async () => {
     const instances = await InvidJS.fetchInstances();
