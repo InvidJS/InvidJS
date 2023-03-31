@@ -1,5 +1,5 @@
 name: Report a bug
-about: Report a bug with InvidJS.
+description: Report a bug with InvidJS.
 title: "[Bug]"
 labels: ["bug"]
 body:
