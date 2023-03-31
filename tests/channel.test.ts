@@ -5,8 +5,10 @@ jest.retryTimes(5);
 describe("Channel fetch test", () => {
   test("Channel must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
+    console.log(instances);
     expect(
       await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A")
     ).not.toBeUndefined();
@@ -14,7 +16,8 @@ describe("Channel fetch test", () => {
 
   test("Must be able to fetch minimal channel.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (
@@ -27,7 +30,8 @@ describe("Channel fetch test", () => {
 
   test("Must be able to fetch basic channel.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (
@@ -40,7 +44,8 @@ describe("Channel fetch test", () => {
 
   test("Must be able to fetch full channel.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (
@@ -55,7 +60,8 @@ describe("Channel fetch test", () => {
 describe("Channel endpoint test", () => {
   test("Must fetch related channels correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const channel = await InvidJS.fetchChannel(
       instances[0],
@@ -68,7 +74,8 @@ describe("Channel endpoint test", () => {
 
   test("Must respect limit on related channels.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const channel = await InvidJS.fetchChannel(
       instances[0],
@@ -83,7 +90,8 @@ describe("Channel endpoint test", () => {
 
   test("Must fetch playlists correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const channel = await InvidJS.fetchChannel(
       instances[0],
@@ -99,7 +107,8 @@ describe("Channel endpoint test", () => {
 
   test("Must respect limit on playlists.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const channel = await InvidJS.fetchChannel(
       instances[0],
@@ -118,7 +127,8 @@ describe("Channel endpoint test", () => {
 
   test("Must fetch videos correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const channel = await InvidJS.fetchChannel(
       instances[0],
@@ -131,7 +141,8 @@ describe("Channel endpoint test", () => {
 
   test("Must respect limit on videos.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const channel = await InvidJS.fetchChannel(
       instances[0],

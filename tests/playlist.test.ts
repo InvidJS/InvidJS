@@ -5,7 +5,8 @@ jest.retryTimes(5);
 describe("Playlist fetch test", () => {
   test("Playlist must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       await InvidJS.fetchPlaylist(
@@ -17,7 +18,8 @@ describe("Playlist fetch test", () => {
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (
@@ -32,7 +34,8 @@ describe("Playlist fetch test", () => {
 
   test("Must be able to fetch minimal playlist.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (
@@ -47,7 +50,8 @@ describe("Playlist fetch test", () => {
 
   test("Must be able to fetch basic playlist.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (
@@ -62,7 +66,8 @@ describe("Playlist fetch test", () => {
 
   test("Must be able to fetch full playlist.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (
@@ -77,7 +82,8 @@ describe("Playlist fetch test", () => {
 
   test("Must be able to fetch a mix and fill it with data.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       (

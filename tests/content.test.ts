@@ -5,7 +5,8 @@ jest.retryTimes(5);
 describe("Search test", () => {
   test("Content must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       await InvidJS.searchContent(instances[0], "typescript")
@@ -14,7 +15,8 @@ describe("Search test", () => {
 
   test("Content type must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const result = await InvidJS.searchContent(instances[0], "typescript", {
       type: ContentTypes.Channel,
@@ -26,7 +28,8 @@ describe("Search test", () => {
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       await InvidJS.searchContent(instances[0], "typescript", { limit: 5 })
@@ -35,7 +38,8 @@ describe("Search test", () => {
 
   test("Multiple filters must apply correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const result = await InvidJS.searchContent(instances[0], "typescript", {
       type: ContentTypes.Channel,
@@ -50,12 +54,18 @@ describe("Search test", () => {
 
 describe("Popular fetch test", () => {
   test("Popular content must be fetched correctly.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({
+      health: 95,
+      api_allowed: true,
+    });
     expect(await InvidJS.fetchPopular(instances[0])).not.toHaveLength(0);
   }, 50000);
 
   test("Limit must be respected.", async () => {
-    const instances = await InvidJS.fetchInstances({ url: "https://y.com.sb" });
+    const instances = await InvidJS.fetchInstances({
+      health: 95,
+      api_allowed: true,
+    });
     expect(await InvidJS.fetchPopular(instances[0], { limit: 3 })).toHaveLength(
       3
     );
@@ -65,14 +75,16 @@ describe("Popular fetch test", () => {
 describe("Trending fetch test", () => {
   test("Trending content must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(await InvidJS.fetchTrending(instances[0])).not.toHaveLength(0);
   }, 50000);
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(
       await InvidJS.fetchTrending(instances[0], { limit: 3 })

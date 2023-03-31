@@ -6,7 +6,8 @@ jest.retryTimes(5);
 describe("Source fetch test", () => {
   test("Source must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const video = await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ");
     if (video.formats) {
@@ -23,7 +24,8 @@ describe("Source fetch test", () => {
 
   test("Memory source must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     const video = await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ");
     if (video.formats) {

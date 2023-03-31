@@ -37,7 +37,7 @@ describe("Instance fetch test", () => {
   }, 50000);
 
   test("Instances health should be respected.", async () => {
-    const instances = await InvidJS.fetchInstances({ health: 90 });
+    const instances = await InvidJS.fetchInstances({ health: 95 });
     expect(instances[0].health).toBeGreaterThanOrEqual(90);
   }, 50000);
 
@@ -56,7 +56,8 @@ describe("Instance fetch test", () => {
 describe("Instance stats fetch test", () => {
   test("Instance stats must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      health: 95,
+      api_allowed: true,
     });
     expect(await InvidJS.fetchStats(instances[0])).not.toBeUndefined();
   }, 50000);
