@@ -35,7 +35,6 @@ import {
 } from "./classes/index";
 import axios from "axios";
 import fs from "fs-extra";
-import { Readable } from 'stream';
 
 /**
  * @name fetchInstances
@@ -831,55 +830,26 @@ async function fetchSource(
       );
     });
     let responses = await axios.all(promises);
-    switch (opts.saveTo) {
-      case SaveSourceTo.File: {
-        let files: Array<string> = [];
-        responses.forEach((response) => {
-          let file = fs.createWriteStream(
-            `${opts.path}${video.id}-${responses.indexOf(response)}.${
-              source.container
-            }`
-          );
-          file.write(response.data);
-          files.push(
-            `${opts.path}${video.id}-${responses.indexOf(response)}.${
-              source.container
-            }`
-          );
-        });
-        await fs.createFile(`${opts.path}${video.id}.${source.container}`);
-        files.forEach((file) => {
-          let master = fs.createWriteStream(
-            `${opts.path}${video.id}.${source.container}`,
-            {
-              start: files.indexOf(file) * parts,
-            }
-          );
-          let readStream = fs.createReadStream(file);
-          readStream.pipe(master);
-          readStream.on("end", async () => {
-            await fs.unlink(file);
-          });
-        });
-        return `${opts.path}${video.id}.${source.container}`;
+    //Create a single ArrayBuffer from all the parts
+    let buffer = new ArrayBuffer(parseInt(length));
+    let view = new DataView(buffer);
+    let offset = 0;
+    responses.forEach((response) => {
+      let array = new Uint8Array(response.data);
+      for (let i = 0; i < array.length; i++) {
+        view.setUint8(offset + i, array[i]);
       }
+      offset += array.length;
+    });
+    switch (opts.saveTo) {
       case SaveSourceTo.Memory: {
-        //Create a single ArrayBuffer from all the parts
-        let buffer = new ArrayBuffer(parseInt(length));
-        let view = new DataView(buffer);
-        let offset = 0;
-        responses.forEach((response) => {
-          let array = new Uint8Array(response.data);
-          for (let i = 0; i < array.length; i++) {
-            view.setUint8(offset + i, array[i]);
-          }
-          offset += array.length;
-        });
         let blob = new Blob([buffer], { type: source.type.split("/")[0] });
         return blob.stream();
       }
-      default: {
-        break;
+      case SaveSourceTo.File: {
+        let file = fs.createWriteStream(`${opts.path}${video.id}.${source.container}`);
+        file.write(Buffer.from(buffer));
+        return `${opts.path}${video.id}.${source.container}`;
       }
     }
   }
