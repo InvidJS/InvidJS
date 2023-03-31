@@ -1,0 +1,31 @@
+name: Report a bug
+about: Report a bug with InvidJS.
+title: "[Bug]"
+labels: ["bug"]
+body:
+  - type: textarea
+    id: info
+    attributes:
+      label: Describe the bug.
+      description: What is broken?
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Code and Stack Trace
+      description: Provide a part of your code and the stack trace of the error.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+      description: What was supposed to happen?
+    validations:
+      required: true      
+  - type: textarea
+    id: extra-info
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the bug here.

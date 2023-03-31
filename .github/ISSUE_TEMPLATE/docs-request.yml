@@ -1,0 +1,17 @@
+name: Documentation
+description: Propose a change for the documentation.
+title: "[Documentation]"
+labels: ["documentation", "enhancement"]
+body:
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Please describe your request.
+      description: What needs to be changed?
+    validations:
+      required: true
+  - type: textarea
+    id: extra-info
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the request here.
