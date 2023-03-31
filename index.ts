@@ -35,6 +35,7 @@ import {
 } from "./classes/index";
 import axios from "axios";
 import fs from "fs-extra";
+import { Readable } from 'stream';
 
 /**
  * @name fetchInstances
@@ -874,7 +875,8 @@ async function fetchSource(
           }
           offset += array.length;
         });
-        return buffer;
+        let blob = new Blob([buffer], { type: source.type.split("/")[0] });
+        return blob.stream();
       }
       default: {
         break;
