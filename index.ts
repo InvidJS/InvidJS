@@ -38,8 +38,8 @@ import fs from "fs-extra";
 
 /**
  * @name fetchInstances
- * @description Fetches active instances.
- * @param {InstanceFetchOptions} [opts] - Search options.
+ * @description Fetches public Invidious instances.
+ * @param {InstanceFetchOptions} [opts] - Instance filtering options.
  * @example await InvidJS.fetchInstances();
  * @example await InvidJS.fetchInstances({limit: 10});
  * @returns {Promise<Instance[]>} Array of instance objects.
@@ -111,7 +111,7 @@ async function fetchInstances(
  * @description Fetches stats of an instance.
  * @param {Instance} instance - Instance to fetch data from.
  * @example await InvidJS.fetchStats(instance);
- * @returns {Promise<InstanceStats>} Instance stats.
+ * @returns {Promise<InstanceStats>} Instance stats object.
  */
 async function fetchStats(instance: Instance): Promise<InstanceStats> {
   if (!instance)
@@ -146,10 +146,10 @@ async function fetchStats(instance: Instance): Promise<InstanceStats> {
 
 /**
  * @name fetchVideo
- * @description Fetches a video and converts it into an object.
+ * @description Fetches a video as an object.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Video ID.
- * @param {VideoFetchOptions} [opts] - Fetch options.
+ * @param {VideoFetchOptions} [opts] - Video fetch options.
  * @example await InvidJS.fetchVideo(instance, "id");
  * @returns {Promise<Video>} Video object.
  */
@@ -243,7 +243,7 @@ async function fetchVideo(
  * @description Fetches comments of a video.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Video} video - Video object.
- * @param {CommentFetchOptions} [opts] - Fetch options.
+ * @param {CommentFetchOptions} [opts] - Comment fetch options.
  * @example await InvidJS.fetchComments(instance, video);
  * @returns {Promise<Comment[]>} Comments array.
  */
@@ -294,10 +294,10 @@ async function fetchComments(
 
 /**
  * @name fetchPlaylist
- * @description Fetches a playlist and converts it into an object.
+ * @description Fetches a playlist as an object.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Playlist ID.
- * @param {PlaylistFetchOptions} [opts] - Fetch options.
+ * @param {PlaylistFetchOptions} [opts] - Playlist fetch options.
  * @example await InvidJS.fetchPlaylist(instance, "id");
  * @returns {Promise<Playlist>} Playlist object.
  */
@@ -375,10 +375,10 @@ async function fetchPlaylist(
 
 /**
  * @name fetchChannel
- * @description Fetches a channel and converts it into an object.
+ * @description Fetches a channel as an object.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
- * @param {ChannelFetchOptions} [opts] - Fetch options.
+ * @param {ChannelFetchOptions} [opts] - Channel fetch options.
  * @example await InvidJS.fetchChannel(instance, "id");
  * @returns {Promise<Channel>} Channel object.
  */
@@ -445,10 +445,10 @@ async function fetchChannel(
 
 /**
  * @name fetchRelatedChannels
- * @description Fetches related channels and converts them into an object.
+ * @description Fetches related channels.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Channel} channel - Channel object.
- * @param {ChannelRelatedOptions} [opts] - Fetch options.
+ * @param {ChannelRelatedOptions} [opts] - Related fetch options.
  * @example await InvidJS.fetchRelatedChannels(instance, channel);
  * @returns {Promise<Array<Channel>>} Array of related channels.
  */
@@ -496,10 +496,10 @@ async function fetchRelatedChannels(
 
 /**
  * @name fetchChannelPlaylists
- * @description Fetches latest channel playlists and converts them into an object.
+ * @description Fetches latest channel playlists.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Channel} channel - Channel object.
- * @param {ChannelPlaylistsOptions} [opts] - Fetch options.
+ * @param {ChannelPlaylistsOptions} [opts] -  Playlist fetch options.
  * @example await InvidJS.fetchChannelPlaylists(instance, channel);
  * @returns {Promise<Array<Playlist>>} Array of channel playlists.
  */
@@ -548,10 +548,10 @@ async function fetchChannelPlaylists(
 
 /**
  * @name fetchChannelVideos
- * @description Fetches latest channel videos and converts them into an object.
+ * @description Fetches latest channel videos.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Channel} channel - Channel object.
- * @param {ChannelVideosOptions} [opts] - Fetch options.
+ * @param {ChannelVideosOptions} [opts] - Video fetch options.
  * @example await InvidJS.fetchChannelVideos(instance, channel);
  * @returns {Promise<Array<Video>>} Array of channel videos.
  */
@@ -605,7 +605,7 @@ async function fetchChannelVideos(
  * @param {string} query - Search query.
  * @param {SearchOptions} [opts] - Search options.
  * @example await InvidJS.searchContent(instance, "search");
- * @returns {Promise<Array<Channel | Playlist | Video>>} Array of search results.
+ * @returns {Promise<Array<Channel | Playlist | Video>>} Array of search results (channels, playlists, videos).
  */
 async function searchContent(
   instance: Instance,
@@ -683,9 +683,9 @@ async function searchContent(
  * @name fetchTrending
  * @description Fetches trending videos.
  * @param {Instance} instance - Instance to fetch data from.
- * @param {TrendingOptions} [opts] - Search options.
+ * @param {TrendingOptions} [opts] - Trending fetch options.
  * @example await InvidJS.fetchTrending(instance);
- * @returns {Promise<Array<Video>>} Array of search results.
+ * @returns {Promise<Array<Video>>} Array of trending videos.
  */
 async function fetchTrending(
   instance: Instance,
@@ -730,11 +730,11 @@ async function fetchTrending(
 
 /**
  * @name fetchPopular
- * @description Searches content based on the query and search options.
+ * @description Fetches popular videos.
  * @param {Instance} instance - Instance to fetch data from.
- * @param {PopularOptions} [opts] - Search options.
+ * @param {PopularOptions} [opts] - Popular fetch options.
  * @example await InvidJS.fetchPopular(instance);
- * @returns {Promise<Array<Video>>} Array of search results.
+ * @returns {Promise<Array<Video>>} Array of popular videos.
  */
 async function fetchPopular(
   instance: Instance,
@@ -775,12 +775,12 @@ async function fetchPopular(
 
 /**
  * @name fetchSource
- * @description Fetches a video stream for later use.
+ * @description Fetches a video stream for later use in memory or as a file.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Video} video - Video to fetch stream from.
  * @param {Format} source - Format to download.
  * @param {StreamOptions} [opts] - Options for fetching the source.
- * @returns {File} Source file.
+ * @returns {Promise<ReadableStream | string>} Memory stream or file path of the source.
  */
 async function fetchSource(
   instance: Instance,
@@ -791,7 +791,7 @@ async function fetchSource(
     path: "./",
     parts: 5,
   }
-): Promise<any> {
+): Promise<ReadableStream | string> {
   if (!instance)
     throw new MissingArgumentError(
       "You must provide an instance to fetch data from!"
@@ -830,7 +830,6 @@ async function fetchSource(
       );
     });
     let responses = await axios.all(promises);
-    //Create a single ArrayBuffer from all the parts
     let buffer = new ArrayBuffer(parseInt(length));
     let view = new DataView(buffer);
     let offset = 0;
@@ -846,7 +845,8 @@ async function fetchSource(
         let blob = new Blob([buffer], { type: source.type.split("/")[0] });
         return blob.stream();
       }
-      case SaveSourceTo.File: {
+      case SaveSourceTo.File:
+      default: {
         let file = fs.createWriteStream(
           `${opts.path}${video.id}.${source.container}`
         );
@@ -854,7 +854,7 @@ async function fetchSource(
         return `${opts.path}${video.id}.${source.container}`;
       }
     }
-  }
+  } else return "";
 }
 
 export {
