@@ -847,7 +847,9 @@ async function fetchSource(
         return blob.stream();
       }
       case SaveSourceTo.File: {
-        let file = fs.createWriteStream(`${opts.path}${video.id}.${source.container}`);
+        let file = fs.createWriteStream(
+          `${opts.path}${video.id}.${source.container}`
+        );
         file.write(Buffer.from(buffer));
         return `${opts.path}${video.id}.${source.container}`;
       }
