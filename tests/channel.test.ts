@@ -8,7 +8,6 @@ describe("Channel fetch test", () => {
       health: 95,
       api_allowed: true,
     });
-    console.log(instances);
     expect(
       await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A")
     ).not.toBeUndefined();
