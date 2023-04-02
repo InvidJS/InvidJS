@@ -22,6 +22,8 @@ import {
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
   SaveSourceTo,
+  Duration,
+  DateValues,
 } from "./options";
 import {
   MissingArgumentError,
@@ -65,4 +67,6 @@ export {
   APINotAvailableError,
   ErrorCodes,
   SaveSourceTo,
+  Duration,
+  DateValues,
 };

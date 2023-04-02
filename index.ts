@@ -32,6 +32,8 @@ import {
   APINotAvailableError,
   ErrorCodes,
   SaveSourceTo,
+  Duration,
+  DateValues,
 } from "./classes/index";
 import axios from "axios";
 import fs from "fs-extra";
@@ -872,4 +874,15 @@ export {
   fetchPopular,
   fetchSource,
   ErrorCodes,
+  FetchTypes,
+  InstanceTypes,
+  ContentTypes,
+  TrendingTypes,
+  VideoSorting,
+  CommentSorting,
+  SaveSourceTo,
+  Duration,
+  DateValues,
+  ChannelPlaylistsSorting,
+  ChannelVideosSorting
 };
