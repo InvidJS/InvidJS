@@ -9,7 +9,7 @@ describe("Video fetch test", () => {
       api_allowed: true,
     });
     expect(
-      await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ")
+      await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw")
     ).not.toBeUndefined();
   }, 50000);
 
@@ -20,7 +20,7 @@ describe("Video fetch test", () => {
     });
     expect(
       (
-        await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ", {
+        await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw", {
           type: FetchTypes.Minimal,
         })
       ).id
@@ -34,7 +34,7 @@ describe("Video fetch test", () => {
     });
     expect(
       (
-        await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ", {
+        await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw", {
           type: FetchTypes.Basic,
         })
       ).formats
@@ -48,7 +48,7 @@ describe("Video fetch test", () => {
     });
     expect(
       (
-        await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ", {
+        await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw", {
           type: FetchTypes.Full,
         })
       ).description

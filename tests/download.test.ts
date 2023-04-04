@@ -9,7 +9,7 @@ describe("Source fetch test", () => {
       health: 95,
       api_allowed: true,
     });
-    const video = await InvidJS.fetchVideo(instances[0], "dQw4w9WgXcQ");
+    const video = await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw");
     if (video.formats) {
       let source = video.formats[4];
       await InvidJS.fetchSource(instances[0], video, source, {
