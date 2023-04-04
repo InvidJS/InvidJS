@@ -9,7 +9,7 @@ describe("Channel fetch test", () => {
       api_allowed: true,
     });
     expect(
-      await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A")
+      await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw")
     ).not.toBeUndefined();
   }, 50000);
 
@@ -20,7 +20,7 @@ describe("Channel fetch test", () => {
     });
     expect(
       (
-        await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A", {
+        await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw", {
           type: FetchTypes.Minimal,
         })
       ).id
@@ -34,7 +34,7 @@ describe("Channel fetch test", () => {
     });
     expect(
       (
-        await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A", {
+        await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw", {
           type: FetchTypes.Basic,
         })
       ).subs
@@ -48,7 +48,7 @@ describe("Channel fetch test", () => {
     });
     expect(
       (
-        await InvidJS.fetchChannel(instances[0], "UCzm1WKIw8XK4x7HNkHhOM_A", {
+        await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw", {
           type: FetchTypes.Full,
         })
       ).isVerified
