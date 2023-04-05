@@ -3,6 +3,16 @@ import * as InvidJS from "../index";
 
 jest.retryTimes(5);
 describe("Search test", () => {
+  test("Suggestions must be fetched correctly.", async () => {
+    const instances = await InvidJS.fetchInstances({
+      health: 95,
+      api_allowed: true,
+    });
+    expect(
+      await InvidJS.fetchSearchSuggestions(instances[0], "typescript")
+    ).not.toHaveLength(0);
+  }, 50000);
+
   test("Content must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
       health: 95,

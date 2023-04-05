@@ -601,6 +601,48 @@ async function fetchChannelVideos(
 }
 
 /**
+ * @name fetchSearchSuggestions
+ * @description Fetches suggestions for a search query.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {string} query - Search query.
+ * @example await InvidJS.fetchSearchSuggestions(instance, "search");
+ * @returns {Promise<Array<string>>} Array of search results (channels, playlists, videos).
+ */
+async function fetchSearchSuggestions(
+  instance: Instance,
+  query: string,
+) {
+  if (!instance)
+    throw new MissingArgumentError(
+      "You must provide an instance to fetch data from!"
+    );
+  if (!query)
+    throw new MissingArgumentError("You must provide a search query!");
+  if (instance.api_allowed === false || instance.api_allowed === null)
+    throw new APINotAvailableError(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let suggestions: Array<string> = [];
+  let params = `${instance.url}/api/v1/search/suggestions?q=${query}`;
+  await axios
+    .get(params)
+    .then((res) => {
+      if (res.data.error) throw new APIError(res.data.error);
+      res.data.suggestions.forEach((suggestion: any) => {
+        suggestions.push(suggestion);
+      });
+    })
+    .catch((err) => {
+      if (err.name === "AxiosError") {
+        throw new APIError(err.message);
+      }
+    });
+  return suggestions;
+}
+  
+
+
+/**
  * @name searchContent
  * @description Searches content based on the query and search options.
  * @param {Instance} instance - Instance to fetch data from.
@@ -869,6 +911,7 @@ export {
   fetchRelatedChannels,
   fetchChannelPlaylists,
   fetchChannelVideos,
+  fetchSearchSuggestions,
   searchContent,
   fetchTrending,
   fetchPopular,

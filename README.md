@@ -18,7 +18,7 @@ const InvidJS = require("@invidjs/invid-js") //CSM Node.js
 ```
 
 # Changes from the stock Invidious API
-- Useless/broken endpoints, such as annotations, captions and search suggestions are not carried over. This might be reconsidered in the future.
+- Useless/broken endpoints, such as annotations and captions are not carried over. This might be reconsidered in the future.
 - To reduce noise, only the most important data is fetched in the case of big objects.
 - Some unavailable data is filled in for you where possible.
 - Minimal and basic versions of objects are available to be consistent with different outputs.
