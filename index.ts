@@ -374,8 +374,8 @@ async function fetchPlaylist(
     .catch((err) => {
       if (err.name === "AxiosError") {
         if (err.message.includes("404"))
-        throw new NotFoundError("The playlist you provided was not found!");
-      else throw new APIError(err.message);
+          throw new NotFoundError("The playlist you provided was not found!");
+        else throw new APIError(err.message);
       }
     });
   return info;
@@ -446,8 +446,8 @@ async function fetchChannel(
     .catch((err) => {
       if (err.name === "AxiosError") {
         if (err.message.includes("404"))
-        throw new NotFoundError("The channel you provided was not found!");
-      else throw new APIError(err.message);
+          throw new NotFoundError("The channel you provided was not found!");
+        else throw new APIError(err.message);
       }
     });
   return info;
@@ -618,7 +618,7 @@ async function fetchChannelVideos(
  */
 async function fetchSearchSuggestions(
   instance: Instance,
-  query: string,
+  query: string
 ): Promise<Array<string>> {
   if (!instance)
     throw new MissingArgumentError(
@@ -647,8 +647,6 @@ async function fetchSearchSuggestions(
     });
   return suggestions;
 }
-  
-
 
 /**
  * @name searchContent
@@ -864,7 +862,7 @@ async function fetchSource(
   try {
     let lengthQuery = await axios.get(params, {
       headers: { Range: `bytes=0-0` },
-    })
+    });
     let length = lengthQuery.headers["content-range"].split("/")[1];
     if (opts.parts) {
       let parts = Math.ceil(parseInt(length) / opts.parts);
@@ -909,11 +907,13 @@ async function fetchSource(
       }
     } else return "";
   } catch (err: any) {
-      if (err.name === "AxiosError") {
-        if (err.message.includes("403")) {
-          throw new BlockedVideoError("Not allowed to download this video! Perhaps it's from a generated channel?")
-        } else throw new APIError(err.message);
-      }
+    if (err.name === "AxiosError") {
+      if (err.message.includes("403")) {
+        throw new BlockedVideoError(
+          "Not allowed to download this video! Perhaps it's from a generated channel?"
+        );
+      } else throw new APIError(err.message);
+    }
   }
   return "";
 }
@@ -944,5 +944,5 @@ export {
   Duration,
   DateValues,
   ChannelPlaylistsSorting,
-  ChannelVideosSorting
+  ChannelVideosSorting,
 };
