@@ -28,8 +28,9 @@ import {
 import {
   MissingArgumentError,
   InvalidArgumentError,
-  APINotAvailableError,
   APIError,
+  APINotAvailableError,
+  BlockedVideoError,
   ErrorCodes,
 } from "./errors";
 export {
@@ -65,6 +66,7 @@ export {
   InvalidArgumentError,
   APIError,
   APINotAvailableError,
+  BlockedVideoError,
   ErrorCodes,
   SaveSourceTo,
   Duration,

@@ -27,20 +27,6 @@ export class InvalidArgumentError extends Error {
 }
 
 /**
- * @name APIError
- * @description Error thrown when the API returns an error.
- */
-export class APIError extends Error {
-  code: number;
-  constructor(message: string) {
-    super(message);
-    this.name = "APIError";
-    this.code = ErrorCodes.APIError;
-    Object.setPrototypeOf(this, APIError.prototype);
-  }
-}
-
-/**
  * @name APINotAvailableError
  * @description Error thrown when the API is not available.
  */
@@ -55,6 +41,34 @@ export class APINotAvailableError extends Error {
 }
 
 /**
+ * @name APIError
+ * @description Error thrown when the API returns an error.
+ */
+export class APIError extends Error {
+  code: number;
+  constructor(message: string) {
+    super(message);
+    this.name = "APIError";
+    this.code = ErrorCodes.APIError;
+    Object.setPrototypeOf(this, APIError.prototype);
+  }
+}
+
+/**
+ * @name BlockedVideoError
+ * @description Error thrown when the video is blocked.
+ */
+export class BlockedVideoError extends Error {
+  code: number;
+  constructor(message: string) {
+    super(message);
+    this.name = "BlockedVideoError";
+    this.code = ErrorCodes.BlockedVideo;
+    Object.setPrototypeOf(this, BlockedVideoError.prototype);
+  }
+}
+
+/**
  * @name ErrorCodes
  * @description Error codes.
  */
@@ -63,4 +77,5 @@ export enum ErrorCodes {
   InvalidArgument = 10001,
   APIBlocked = 10002,
   APIError = 10003,
+  BlockedVideo = 10004,
 }

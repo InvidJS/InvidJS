@@ -30,6 +30,7 @@ import {
   InvalidArgumentError,
   APIError,
   APINotAvailableError,
+  BlockedVideoError,
   ErrorCodes,
   SaveSourceTo,
   Duration,
@@ -902,7 +903,9 @@ async function fetchSource(
     } else return "";
   } catch (err: any) {
       if (err.name === "AxiosError") {
-        throw new APIError(err.message);
+        if (err.message.includes("403")) {
+          throw new BlockedVideoError("Not allowed to download this video! Perhaps it's from a generated channel?")
+        } else throw new APIError(err.message);
       }
   }
   return "";
