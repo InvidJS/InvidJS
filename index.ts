@@ -606,12 +606,12 @@ async function fetchChannelVideos(
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} query - Search query.
  * @example await InvidJS.fetchSearchSuggestions(instance, "search");
- * @returns {Promise<Array<string>>} Array of search results (channels, playlists, videos).
+ * @returns {Promise<Array<string>>} Array of search suggestions.
  */
 async function fetchSearchSuggestions(
   instance: Instance,
   query: string,
-) {
+): Promise<Array<string>> {
   if (!instance)
     throw new MissingArgumentError(
       "You must provide an instance to fetch data from!"
