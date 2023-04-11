@@ -69,6 +69,20 @@ export class BlockedVideoError extends Error {
 }
 
 /**
+ * @name NotFoundError
+ * @description Error thrown when the content is invalid.
+ */
+export class NotFoundError extends Error {
+  code: number;
+  constructor(message: string) {
+    super(message);
+    this.name = "VideoNotFoundError";
+    this.code = ErrorCodes.InvalidContent;
+    Object.setPrototypeOf(this, NotFoundError.prototype);
+  }
+}
+
+/**
  * @name ErrorCodes
  * @description Error codes.
  */
@@ -78,4 +92,5 @@ export enum ErrorCodes {
   APIBlocked = 10002,
   APIError = 10003,
   BlockedVideo = 10004,
+  InvalidContent = 10005,
 }

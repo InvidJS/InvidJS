@@ -31,6 +31,7 @@ import {
   APIError,
   APINotAvailableError,
   BlockedVideoError,
+  NotFoundError,
   ErrorCodes,
 } from "./errors";
 export {
@@ -67,6 +68,7 @@ export {
   APIError,
   APINotAvailableError,
   BlockedVideoError,
+  NotFoundError,
   ErrorCodes,
   SaveSourceTo,
   Duration,

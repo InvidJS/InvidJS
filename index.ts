@@ -31,6 +31,7 @@ import {
   APIError,
   APINotAvailableError,
   BlockedVideoError,
+  NotFoundError,
   ErrorCodes,
   SaveSourceTo,
   Duration,
@@ -235,7 +236,9 @@ async function fetchVideo(
     })
     .catch((err) => {
       if (err.name === "AxiosError") {
-        throw new APIError(err.message);
+        if (err.message.includes("404"))
+          throw new NotFoundError("The video you provided was not found!");
+        else throw new APIError(err.message);
       }
     });
   return info;
@@ -370,7 +373,9 @@ async function fetchPlaylist(
     })
     .catch((err) => {
       if (err.name === "AxiosError") {
-        throw new APIError(err.message);
+        if (err.message.includes("404"))
+        throw new NotFoundError("The playlist you provided was not found!");
+      else throw new APIError(err.message);
       }
     });
   return info;
@@ -440,7 +445,9 @@ async function fetchChannel(
     })
     .catch((err) => {
       if (err.name === "AxiosError") {
-        throw new APIError(err.message);
+        if (err.message.includes("404"))
+        throw new NotFoundError("The channel you provided was not found!");
+      else throw new APIError(err.message);
       }
     });
   return info;
