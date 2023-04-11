@@ -853,52 +853,59 @@ async function fetchSource(
       "A source must be downloaded in at least a single part!"
     );
   let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
-  let lengthQuery = await axios.get(params, {
-    headers: { Range: `bytes=0-0` },
-  });
-  let length = lengthQuery.headers["content-range"].split("/")[1];
-  if (opts.parts) {
-    let parts = Math.ceil(parseInt(length) / opts.parts);
-    let positions: Array<number> = [];
-    for (let i = 0; i < opts.parts; i++) {
-      positions.push(i * parts);
-    }
-    let promises: Array<Promise<any>> = [];
-    positions.forEach((position) => {
-      let range = `bytes=${position}-${position + parts - 1}`;
-      promises.push(
-        axios.get(params, {
-          headers: { Range: range },
-          responseType: "arraybuffer",
-        })
-      );
-    });
-    let responses = await axios.all(promises);
-    let buffer = new ArrayBuffer(parseInt(length));
-    let view = new DataView(buffer);
-    let offset = 0;
-    responses.forEach((response) => {
-      let array = new Uint8Array(response.data);
-      for (let i = 0; i < array.length; i++) {
-        view.setUint8(offset + i, array[i]);
+  try {
+    let lengthQuery = await axios.get(params, {
+      headers: { Range: `bytes=0-0` },
+    })
+    let length = lengthQuery.headers["content-range"].split("/")[1];
+    if (opts.parts) {
+      let parts = Math.ceil(parseInt(length) / opts.parts);
+      let positions: Array<number> = [];
+      for (let i = 0; i < opts.parts; i++) {
+        positions.push(i * parts);
       }
-      offset += array.length;
-    });
-    switch (opts.saveTo) {
-      case SaveSourceTo.Memory: {
-        let blob = new Blob([buffer], { type: source.type.split("/")[0] });
-        return blob.stream();
-      }
-      case SaveSourceTo.File:
-      default: {
-        let file = fs.createWriteStream(
-          `${opts.path}${video.id}.${source.container}`
+      let promises: Array<Promise<any>> = [];
+      positions.forEach((position) => {
+        let range = `bytes=${position}-${position + parts - 1}`;
+        promises.push(
+          axios.get(params, {
+            headers: { Range: range },
+            responseType: "arraybuffer",
+          })
         );
-        file.write(Buffer.from(buffer));
-        return `${opts.path}${video.id}.${source.container}`;
+      });
+      let responses = await axios.all(promises);
+      let buffer = new ArrayBuffer(parseInt(length));
+      let view = new DataView(buffer);
+      let offset = 0;
+      responses.forEach((response) => {
+        let array = new Uint8Array(response.data);
+        for (let i = 0; i < array.length; i++) {
+          view.setUint8(offset + i, array[i]);
+        }
+        offset += array.length;
+      });
+      switch (opts.saveTo) {
+        case SaveSourceTo.Memory: {
+          let blob = new Blob([buffer], { type: source.type.split("/")[0] });
+          return blob.stream();
+        }
+        case SaveSourceTo.File:
+        default: {
+          let file = fs.createWriteStream(
+            `${opts.path}${video.id}.${source.container}`
+          );
+          file.write(Buffer.from(buffer));
+          return `${opts.path}${video.id}.${source.container}`;
+        }
       }
-    }
-  } else return "";
+    } else return "";
+  } catch (err: any) {
+      if (err.name === "AxiosError") {
+        throw new APIError(err.message);
+      }
+  }
+  return "";
 }
 
 export {
