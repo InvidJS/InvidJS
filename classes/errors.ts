@@ -76,7 +76,7 @@ export class NotFoundError extends Error {
   code: number;
   constructor(message: string) {
     super(message);
-    this.name = "VideoNotFoundError";
+    this.name = "NotFoundError";
     this.code = ErrorCodes.InvalidContent;
     Object.setPrototypeOf(this, NotFoundError.prototype);
   }
