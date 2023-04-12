@@ -816,6 +816,48 @@ async function fetchPopular(
 }
 
 /**
+ * @name validateSource
+ * @description Mocks a download of a format stream.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {Video} video - Video to fetch stream from.
+ * @param {Format} source - Format to validate.
+ * @returns {Promise<boolean | undefined>} Memory stream or file path of the source.
+ */
+async function validateSource(
+  instance: Instance,
+  video: Video,
+  source: Format,
+): Promise<boolean | undefined> {
+  if (!instance)
+    throw new MissingArgumentError(
+      "You must provide an instance to fetch data from!"
+    );
+  if (!video)
+    throw new MissingArgumentError("You must provide a valid video object!");
+  if (!source)
+    throw new MissingArgumentError(
+      "You must provide a valid video or audio source to fetch a stream from!"
+    );
+  let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
+  try {
+    let lengthQuery = await axios.get(params, {
+      headers: { Range: `bytes=0-0` },
+    });
+    let length = lengthQuery.headers["content-range"].split("/")[1];
+    if (parseInt(length) > 0) return true;
+    if (!length || length === undefined) return false;
+  } catch (err: any) {
+    if (err.name === "AxiosError") {
+      if (err.message.includes("403")) {
+        throw new BlockedVideoError(
+          "Not allowed to download this video! Perhaps it's from a generated channel?"
+        );
+      } else throw new APIError(err.message);
+    }
+  }
+}
+
+/**
  * @name fetchSource
  * @description Fetches a video stream for later use in memory or as a file.
  * @param {Instance} instance - Instance to fetch data from.
@@ -924,6 +966,7 @@ export {
   searchContent,
   fetchTrending,
   fetchPopular,
+  validateSource,
   fetchSource,
   ErrorCodes,
   FetchTypes,
