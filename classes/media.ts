@@ -208,3 +208,12 @@ export class Comment {
     this.text = text;
   }
 }
+
+/**
+ * @name AudioQuality
+ * @description Possible values for audio quality.
+ */
+export enum AudioQuality {
+  Low = "AUDIO_QUALITY_LOW",
+  Medium = "AUDIO_QUALITY_MEDIUM",
+}

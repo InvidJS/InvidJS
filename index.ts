@@ -36,6 +36,7 @@ import {
   SaveSourceTo,
   Duration,
   DateValues,
+  AudioQuality,
 } from "./classes/index";
 import axios from "axios";
 import fs from "fs-extra";
@@ -538,7 +539,7 @@ async function fetchChannelPlaylists(
   let params = `${instance.url}/api/v1/channels/${channel.id}/playlists`;
   await axios
     .get(params)
-    .then((res) => { 
+    .then((res) => {
       res.data.playlists.forEach((playlist: any) => {
         if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
           playlists.push(new Playlist(playlist.title, playlist.playlistId));
@@ -589,7 +590,7 @@ async function fetchChannelVideos(
   let params = `${instance.url}/api/v1/channels/${channel.id}/videos`;
   await axios
     .get(params)
-    .then((res) => { 
+    .then((res) => {
       res.data.videos.forEach((video: any) => {
         if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
           videos.push(new Video(video.title, video.videoId));
@@ -629,7 +630,7 @@ async function fetchSearchSuggestions(
   let params = `${instance.url}/api/v1/search/suggestions?q=${query}`;
   await axios
     .get(params)
-    .then((res) => {      
+    .then((res) => {
       res.data.suggestions.forEach((suggestion: any) => {
         suggestions.push(suggestion);
       });
@@ -687,7 +688,7 @@ async function searchContent(
   let results: Array<Channel | Playlist | Video> = [];
   await axios
     .get(params)
-    .then((res) => {      
+    .then((res) => {
       res.data.forEach((result: any) => {
         if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
           switch (result.type) {
@@ -936,4 +937,5 @@ export {
   DateValues,
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
+  AudioQuality,
 };

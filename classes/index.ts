@@ -1,4 +1,12 @@
-import { Channel, Playlist, Video, Format, Image, Comment } from "./media";
+import {
+  Channel,
+  Playlist,
+  Video,
+  Format,
+  Image,
+  Comment,
+  AudioQuality,
+} from "./media";
 import { Instance, InstanceStats } from "./instance";
 import {
   InstanceFetchOptions,
@@ -41,6 +49,7 @@ export {
   Format,
   Image,
   Comment,
+  AudioQuality,
   Instance,
   InstanceStats,
   InstanceFetchOptions,
