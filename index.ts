@@ -213,6 +213,7 @@ async function fetchVideo(
             res.data.title,
             id,
             formats,
+            res.data.lengthSeconds,
             res.data.author,
             res.data.authorId,
             res.data.description,
@@ -220,13 +221,12 @@ async function fetchVideo(
             res.data.viewCount,
             res.data.likeCount,
             res.data.dislikeCount,
-            res.data.lengthSeconds
           );
           break;
         }
         case "basic":
         default: {
-          info = new Video(res.data.title, id, formats);
+          info = new Video(res.data.title, id, formats, res.data.lengthSeconds);
           break;
         }
         case "minimal": {

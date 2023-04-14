@@ -81,6 +81,7 @@ export class Playlist {
  * @param {string} title - Title of the video.
  * @param {string} id - ID of the video.
  * @param {Array<Format>} [formats] - List of available formats (basic or full only).
+ * @param {number} [length] - Length of the video (basic or full only).
  * @param {string} [author] - Author username. (full only).
  * @param {string} [author_id] - Author ID. (full only).
  * @param {string} [description] - Description of the video (full only).
@@ -88,12 +89,12 @@ export class Playlist {
  * @param {number} [views] - Number of views (full only).
  * @param {number} [likes] - Number of likes (full only).
  * @param {number} [dislikes] - Number of dislikes (full only).
- * @param {number} [length] - Length of the video (full only).
  */
 export class Video {
   public title: string;
   public id: string;
   public formats?: Array<Format>;
+  public length?: number;
   public author?: string;
   public author_id?: string;
   public description?: string;
@@ -101,11 +102,11 @@ export class Video {
   public views?: number;
   public likes?: number;
   public dislikes?: number;
-  public length?: number;
   constructor(
     title: string,
     id: string,
     formats?: Array<Format>,
+    length?: number,
     author?: string,
     author_id?: string,
     description?: string,
@@ -113,11 +114,11 @@ export class Video {
     views?: number,
     likes?: number,
     dislikes?: number,
-    length?: number
   ) {
     this.title = title;
     this.id = id;
     this.formats = formats;
+    this.length = length;
     this.author = author;
     this.author_id = author_id;
     this.description = description;
@@ -125,7 +126,6 @@ export class Video {
     this.views = views;
     this.likes = likes;
     this.dislikes = dislikes;
-    this.length = length;
   }
 }
 
