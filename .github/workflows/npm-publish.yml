@@ -1,4 +1,4 @@
-name: CI - npmjs
+name: CI - Publish
 
 on:
   release:
@@ -30,3 +30,21 @@ jobs:
       - run: cd dist && npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  publish-gpr:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - run: npm install
+      - run: npm run build
+      - run: cd dist && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GH_TOKEN}}
