@@ -29,7 +29,8 @@
     "url": "https://github.com/InvidJS/InvidJS.git"
   },
   "author": "alexavil",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
+  "keywords": ["invidious", "invidious-api"],
   "bugs": {
     "url": "https://github.com/InvidJS/InvidJS/issues"
   },
