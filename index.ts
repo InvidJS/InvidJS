@@ -892,6 +892,7 @@ async function fetchSource(
     throw new InvalidArgumentError(
       "A source must be downloaded in at least a single part!"
     );
+  if (opts.parts && opts.parts > 10) opts.parts = 10;
   let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
   try {
     let lengthQuery = await axios.get(params, {
