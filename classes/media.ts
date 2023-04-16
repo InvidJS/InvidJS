@@ -116,7 +116,7 @@ export class Video {
     published?: string,
     views?: number,
     likes?: number,
-    dislikes?: number,
+    dislikes?: number
   ) {
     this.title = title;
     this.id = id;

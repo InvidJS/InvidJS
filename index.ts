@@ -183,13 +183,13 @@ async function fetchVideo(
   await axios
     .get(params)
     .then((res) => {
-      let hours = Math.floor(res.data.lengthSeconds / 3600)
-      let minutes = Math.floor(res.data.lengthSeconds / 60) % 60
+      let hours = Math.floor(res.data.lengthSeconds / 3600);
+      let minutes = Math.floor(res.data.lengthSeconds / 60) % 60;
       let seconds = res.data.lengthSeconds % 60;
-      let lengthString = [hours,minutes,seconds]
-          .map(v => v < 10 ? "0" + v : v)
-          .filter((v,i) => v !== "00" || i > 0)
-          .join(":");  
+      let lengthString = [hours, minutes, seconds]
+        .map((v) => (v < 10 ? "0" + v : v))
+        .filter((v, i) => v !== "00" || i > 0)
+        .join(":");
       res.data.formatStreams
         .concat(res.data.adaptiveFormats)
         .forEach((format: any) => {
@@ -228,13 +228,19 @@ async function fetchVideo(
             res.data.publishedText,
             res.data.viewCount,
             res.data.likeCount,
-            res.data.dislikeCount,
+            res.data.dislikeCount
           );
           break;
         }
         case "basic":
         default: {
-          info = new Video(res.data.title, id, formats, res.data.lengthSeconds, lengthString);
+          info = new Video(
+            res.data.title,
+            id,
+            formats,
+            res.data.lengthSeconds,
+            lengthString
+          );
           break;
         }
         case "minimal": {
@@ -834,7 +840,7 @@ async function fetchPopular(
 async function validateSource(
   instance: Instance,
   video: Video,
-  source: Format,
+  source: Format
 ): Promise<boolean | undefined> {
   if (!instance)
     throw new MissingArgumentError(
