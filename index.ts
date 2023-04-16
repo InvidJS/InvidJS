@@ -108,6 +108,11 @@ async function fetchInstances(
         throw new APIError(err.message);
       }
     });
+  instances.sort((a, b) => {
+    if (a.health && b.health && a.health < b.health) return 1;
+    if (a.health && b.health && a.health > b.health) return -1;
+    return 0;
+  });
   return instances;
 }
 
