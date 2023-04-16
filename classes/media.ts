@@ -81,7 +81,8 @@ export class Playlist {
  * @param {string} title - Title of the video.
  * @param {string} id - ID of the video.
  * @param {Array<Format>} [formats] - List of available formats (basic or full only).
- * @param {number} [length] - Length of the video (basic or full only).
+ * @param {number} [length] - Length of the video in seconds (basic or full only).
+ * @param {number} [lengthString] - Humanly-readable length of the video (basic or full only).
  * @param {string} [author] - Author username. (full only).
  * @param {string} [author_id] - Author ID. (full only).
  * @param {string} [description] - Description of the video (full only).
@@ -95,6 +96,7 @@ export class Video {
   public id: string;
   public formats?: Array<Format>;
   public length?: number;
+  public lengthString?: string;
   public author?: string;
   public author_id?: string;
   public description?: string;
@@ -107,6 +109,7 @@ export class Video {
     id: string,
     formats?: Array<Format>,
     length?: number,
+    lengthString?: string,
     author?: string,
     author_id?: string,
     description?: string,
@@ -119,6 +122,7 @@ export class Video {
     this.id = id;
     this.formats = formats;
     this.length = length;
+    this.lengthString = lengthString;
     this.author = author;
     this.author_id = author_id;
     this.description = description;
