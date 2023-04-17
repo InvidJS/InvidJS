@@ -4,10 +4,10 @@ on:
     branches:
       - master
     paths:
-      - ./index.ts
-      - ./jest.config.js
-      - ./classes/**
-      - ./tests/**
+      - 'index.ts'
+      - 'jest.config.js'
+      - 'classes/**'
+      - 'tests/**'
   workflow_dispatch:
 
 jobs:
