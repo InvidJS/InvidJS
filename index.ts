@@ -917,6 +917,7 @@ async function fetchSource(
     throw new MissingArgumentError(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
+  if (opts && !opts.saveTo) opts.saveTo = SaveSourceTo.File;  
   if (opts && opts.saveTo === SaveSourceTo.File && !opts.path) opts.path = "./";
   if (opts && !opts.parts) opts.parts = 1;
   if (opts.parts && opts.parts < 1)
