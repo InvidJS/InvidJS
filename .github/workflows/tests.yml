@@ -3,9 +3,11 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    branches:
-      - master
+    paths:
+      - ./index.ts
+      - ./jest.config.js
+      - ./classes/**
+      - ./tests/**
   workflow_dispatch:
 
 jobs:
