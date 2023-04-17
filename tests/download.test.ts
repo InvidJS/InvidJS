@@ -13,8 +13,7 @@ describe("Source fetch test", () => {
     if (video.formats) {
       let source = video.formats[4];
       await InvidJS.fetchSource(instances[0], video, source, {
-        saveTo: SaveSourceTo.File,
-        parts: 5,
+        parts: 10,
       });
       let exists = await fs.exists(`${video.id}.${source.container}`);
       expect(exists).toBe(true);
