@@ -3,13 +3,13 @@
 [![CI - Run tests](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml)
 [![CI - Build docs](https://github.com/InvidJS/InvidJS/actions/workflows/docs.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/docs.yml)
 [![CI - Publish](https://github.com/InvidJS/InvidJS/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/npm-publish.yml)
-![npm](https://img.shields.io/npm/dt/@invidjs/invid-js)
 
 An attempt to bring Invidious support to Node.js.
 
 # Installation and usage
 
-Your Node.js version must be 16.9.0 or greater. 
+Your Node.js version must be 16.9.0 or greater.
+
 You can check your version by typing `node -v` in the terminal.
 
 To install InvidJS, type `npm install @invidjs/invid-js` in your terminal.
