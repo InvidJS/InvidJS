@@ -1,6 +1,5 @@
 import * as InvidJS from "../index";
 import fs from "fs-extra";
-import { SaveSourceTo } from "../classes";
 
 jest.retryTimes(5);
 describe("Source fetch test", () => {
