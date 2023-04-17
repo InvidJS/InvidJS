@@ -44,7 +44,7 @@ import fs from "fs-extra";
 /**
  * @name fetchInstances
  * @description Fetches public Invidious instances.
- * @param {InstanceFetchOptions} [opts] - Instance filtering options.
+ * @param {InstanceFetchOptions} [opts] - Instance fetch options.
  * @example await InvidJS.fetchInstances();
  * @example await InvidJS.fetchInstances({limit: 10});
  * @returns {Promise<Instance[]>} Array of instance objects.
@@ -59,11 +59,11 @@ async function fetchInstances(
 ): Promise<Instance[]> {
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   if (opts.health && (typeof opts.health !== "number" || opts.health < 0))
     throw new InvalidArgumentError(
-      "Health is invalid - must be a number bigger than 0!"
+      "Health is invalid - must be a number greater than 0!"
     );
   let instances: Array<Instance> = [];
   await axios
@@ -156,11 +156,12 @@ async function fetchStats(instance: Instance): Promise<InstanceStats> {
 
 /**
  * @name fetchVideo
- * @description Fetches a video as an object.
+ * @description Fetches video data.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Video ID.
  * @param {VideoFetchOptions} [opts] - Video fetch options.
  * @example await InvidJS.fetchVideo(instance, "id");
+ * @example await InvidJS.fetchVideo(instance, "id", {region: "US"});
  * @returns {Promise<Video>} Video object.
  */
 async function fetchVideo(
@@ -271,6 +272,7 @@ async function fetchVideo(
  * @param {Video} video - Video object.
  * @param {CommentFetchOptions} [opts] - Comment fetch options.
  * @example await InvidJS.fetchComments(instance, video);
+ * @example await InvidJS.fetchComments(instance, video, {limit: 5});
  * @returns {Promise<Comment[]>} Comments array.
  */
 async function fetchComments(
@@ -295,7 +297,7 @@ async function fetchComments(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let comments: Array<Comment> = [];
   let params = `${instance.url}/api/v1/comments/${video.id}`;
@@ -320,11 +322,12 @@ async function fetchComments(
 
 /**
  * @name fetchPlaylist
- * @description Fetches a playlist as an object.
+ * @description Fetches playlist data.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Playlist ID.
  * @param {PlaylistFetchOptions} [opts] - Playlist fetch options.
  * @example await InvidJS.fetchPlaylist(instance, "id");
+ * @example await InvidJS.fetchPlaylist(instance, "id". {limit: 10});
  * @returns {Promise<Playlist>} Playlist object.
  */
 async function fetchPlaylist(
@@ -349,7 +352,7 @@ async function fetchPlaylist(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let info!: Playlist;
   let videos: Array<Video> = [];
@@ -402,7 +405,7 @@ async function fetchPlaylist(
 
 /**
  * @name fetchChannel
- * @description Fetches a channel as an object.
+ * @description Fetches channel data.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
  * @param {ChannelFetchOptions} [opts] - Channel fetch options.
@@ -478,6 +481,7 @@ async function fetchChannel(
  * @param {Channel} channel - Channel object.
  * @param {ChannelRelatedOptions} [opts] - Related fetch options.
  * @example await InvidJS.fetchRelatedChannels(instance, channel);
+ * @example await InvidJS.fetchRelatedChannels(instance, channel, {limit: 5});
  * @returns {Promise<Array<Channel>>} Array of related channels.
  */
 async function fetchRelatedChannels(
@@ -501,7 +505,7 @@ async function fetchRelatedChannels(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let channels: Array<Channel> = [];
   let params = `${instance.url}/api/v1/channels/${channel.id}/channels`;
@@ -528,6 +532,7 @@ async function fetchRelatedChannels(
  * @param {Channel} channel - Channel object.
  * @param {ChannelPlaylistsOptions} [opts] -  Playlist fetch options.
  * @example await InvidJS.fetchChannelPlaylists(instance, channel);
+ * @example await InvidJS.fetchChannelPlaylists(instance, channel, {limit: 3});
  * @returns {Promise<Array<Playlist>>} Array of channel playlists.
  */
 async function fetchChannelPlaylists(
@@ -552,7 +557,7 @@ async function fetchChannelPlaylists(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let playlists: Array<Playlist> = [];
   let params = `${instance.url}/api/v1/channels/${channel.id}/playlists`;
@@ -579,6 +584,7 @@ async function fetchChannelPlaylists(
  * @param {Channel} channel - Channel object.
  * @param {ChannelVideosOptions} [opts] - Video fetch options.
  * @example await InvidJS.fetchChannelVideos(instance, channel);
+ * @example await InvidJS.fetchChannelVideos(instance, channel, {limit: 7});
  * @returns {Promise<Array<Video>>} Array of channel videos.
  */
 async function fetchChannelVideos(
@@ -603,7 +609,7 @@ async function fetchChannelVideos(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let videos: Array<Video> = [];
   let params = `${instance.url}/api/v1/channels/${channel.id}/videos`;
@@ -669,6 +675,7 @@ async function fetchSearchSuggestions(
  * @param {string} query - Search query.
  * @param {SearchOptions} [opts] - Search options.
  * @example await InvidJS.searchContent(instance, "search");
+ * @example await InvidJS.searchContent(instance, "search", {type: ContentTypes.Playlist});
  * @returns {Promise<Array<Channel | Playlist | Video>>} Array of search results (channels, playlists, videos).
  */
 async function searchContent(
@@ -694,7 +701,7 @@ async function searchContent(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let params = `${instance.url}/api/v1/search?q=${query}`;
   if (opts.page) params += `&page=${opts.page}`;
@@ -748,6 +755,7 @@ async function searchContent(
  * @param {Instance} instance - Instance to fetch data from.
  * @param {TrendingOptions} [opts] - Trending fetch options.
  * @example await InvidJS.fetchTrending(instance);
+ * @example await InvidJS.fetchTrending(instance, {limit: 6});
  * @returns {Promise<Array<Video>>} Array of trending videos.
  */
 async function fetchTrending(
@@ -768,7 +776,7 @@ async function fetchTrending(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let params = `${instance.url}/api/v1/trending`;
   if (opts.region) params += `?region=${opts.region}`;
@@ -796,6 +804,7 @@ async function fetchTrending(
  * @param {Instance} instance - Instance to fetch data from.
  * @param {PopularOptions} [opts] - Popular fetch options.
  * @example await InvidJS.fetchPopular(instance);
+ * @example await InvidJS.fetchPopular(instance, {limit: 10});
  * @returns {Promise<Array<Video>>} Array of popular videos.
  */
 async function fetchPopular(
@@ -814,7 +823,7 @@ async function fetchPopular(
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number bigger than 0!"
+      "Limit is invalid - must be a number greater than 0!"
     );
   let params = `${instance.url}/api/v1/popular`;
   let results: Array<Video> = [];
@@ -836,11 +845,12 @@ async function fetchPopular(
 
 /**
  * @name validateSource
- * @description Mocks a download of a format stream.
+ * @description Validates length of a format stream.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Video} video - Video to fetch stream from.
  * @param {Format} source - Format to validate.
- * @returns {Promise<boolean | undefined>} Memory stream or file path of the source.
+ * @example await InvidJS.validateSource(instance, video, format);
+ * @returns {Promise<boolean | undefined>} Is source valid?
  */
 async function validateSource(
   instance: Instance,
@@ -883,6 +893,8 @@ async function validateSource(
  * @param {Video} video - Video to fetch stream from.
  * @param {Format} source - Format to download.
  * @param {StreamOptions} [opts] - Options for fetching the source.
+ * @example await InvidJS.fetchSource(instance, video, format);
+ * @example await InvidJS.fetchSource(instance, video, format, {saveTo: SaveSourceTo.Memory});
  * @returns {Promise<ReadableStream | string>} Memory stream or file path of the source.
  */
 async function fetchSource(
