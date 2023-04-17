@@ -22,7 +22,7 @@
     "prettier": "npx prettier index.ts ./classes/* ./tests/* --write",
     "test": "jest ./tests/ --verbose",
     "build": "tsup index.ts --format cjs,esm --dts --clean && cp package.json dist && cp README.md dist",
-    "docs:build": "npx typedoc --name InvidJS --cleanOutputDir false"
+    "docs:build": "npx typedoc --plugin typedoc-plugin-missing-exports --name InvidJS --cleanOutputDir false"
   },
   "repository": {
     "type": "git",
@@ -50,8 +50,8 @@
     "prettier": "^2.8.4",
     "ts-jest": "^29.1.0",
     "tsup": "^6.6.3",
-    "typedoc": "^0.23.28",
-    "typedoc-plugin-missing-exports": "^1.0.0",
+    "typedoc": "^0.24.4",
+    "typedoc-plugin-missing-exports": "^2.0.0",
     "typescript": "^5.0.4"
   }
 }
