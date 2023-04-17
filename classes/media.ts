@@ -141,34 +141,34 @@ export class Video {
  * @param {string} tag - ID of the format.
  * @param {string} type - Type of the format (codecs).
  * @param {string} container - Container of the format (mp4, webm, etc.).
- * @param {string} [quality] - Quality (audio only).
- * @param {number} [sampleRate] -  Sample rate (audio only).
- * @param {number} [channels] - Number of channels (audio only).
+ * @param {string} [audio_quality] - Quality (audio only).
+ * @param {number} [audio_sampleRate] -  Sample rate (audio only).
+ * @param {number} [audio_channels] - Number of channels (audio only).
  */
 export class Format {
   public url: string;
   public tag: string;
   public type: string;
   public container: string;
-  public quality?: string;
-  public sampleRate?: number;
-  public channels?: number;
+  public audio_quality?: string;
+  public audio_sampleRate?: number;
+  public audio_channels?: number;
   constructor(
     url: string,
     tag: string,
     type: string,
     container: string,
-    quality?: string,
-    sampleRate?: number,
-    channels?: number
+    audio_quality?: string,
+    audio_sampleRate?: number,
+    audio_channels?: number
   ) {
     this.url = url;
     this.tag = tag;
     this.type = type;
     this.container = container;
-    this.quality = quality;
-    this.sampleRate = sampleRate;
-    this.channels = channels;
+    this.audio_quality = audio_quality;
+    this.audio_sampleRate = audio_sampleRate;
+    this.audio_channels = audio_channels;
   }
 }
 
