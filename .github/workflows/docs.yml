@@ -1,5 +1,10 @@
 name: CI - Build docs
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'README.md'
   release:
     types: [created]    
   workflow_dispatch:
