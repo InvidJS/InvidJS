@@ -1,6 +1,6 @@
 /**
  * @name Channel
- * @description Channel object.
+ * @description Channel object. Can be Minimal, Basic or Full.
  * @param {string} name - Channel name.
  * @param {string} id - Channel ID.
  * @param {number} [subs] - Number of subscribers (basic or full only).
@@ -43,35 +43,39 @@ export class Channel {
  * @param {string} title - Title of the playlist.
  * @param {string} id - ID of the playlist.
  * @param {Array<Video>} [videos] - Videos in the playlist (basic or full only).
+ * @param {number} [videoCount] - Number of videos in the playlist (basic or full only).
  * @param {string} [author] - Author username (full only).
  * @param {string} [author_id] - Author ID (full only).
  * @param {string} [description] - Description of the playlist (full only).
- * @param {number} [videoCount] - Number of videos in the playlist (full only).
+ * @param {Image} [thumbnail] - Thumbnail of the playlist (full only).
  */
 export class Playlist {
   public title: string;
   public id: string;
   public videos?: Array<Video>;
+  public videoCount?: number;
   public author?: string;
   public author_id?: string;
   public description?: string;
-  public videoCount?: number;
+  public thumbnail?: Image;
   constructor(
     title: string,
     id: string,
     videos?: Array<Video>,
+    videoCount?: number,
     author?: string,
     author_id?: string,
     description?: string,
-    videoCount?: number
+    thumbnail?: Image
   ) {
     this.title = title;
     this.id = id;
     this.videos = videos;
+    this.videoCount = videoCount;
     this.author = author;
     this.author_id = author_id;
     this.description = description;
-    this.videoCount = videoCount;
+    this.thumbnail = thumbnail;
   }
 }
 
@@ -90,6 +94,7 @@ export class Playlist {
  * @param {number} [views] - Number of views (full only).
  * @param {number} [likes] - Number of likes (full only).
  * @param {number} [dislikes] - Number of dislikes (full only).
+ * @param {Array<Image>} [thumbnails] - Video thumbnails (full only).
  */
 export class Video {
   public title: string;
@@ -104,6 +109,7 @@ export class Video {
   public views?: number;
   public likes?: number;
   public dislikes?: number;
+  public thumbnails?: Array<Image>;
   constructor(
     title: string,
     id: string,
@@ -116,7 +122,8 @@ export class Video {
     published?: string,
     views?: number,
     likes?: number,
-    dislikes?: number
+    dislikes?: number,
+    thumbnails?: Array<Image>
   ) {
     this.title = title;
     this.id = id;
@@ -130,6 +137,7 @@ export class Video {
     this.views = views;
     this.likes = likes;
     this.dislikes = dislikes;
+    this.thumbnails = thumbnails;
   }
 }
 
@@ -186,7 +194,7 @@ export class Image {
   public width: number;
   public height: number;
   public quality?: string;
-  constructor(url: string, width: number, height: number, quality: string) {
+  constructor(url: string, width: number, height: number, quality?: string) {
     this.url = url;
     this.width = width;
     this.height = height;

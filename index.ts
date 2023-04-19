@@ -37,6 +37,7 @@ import {
   Duration,
   DateValues,
   AudioQuality,
+  Image,
 } from "./classes/index";
 import axios from "axios";
 import fs from "fs-extra";
@@ -184,7 +185,8 @@ async function fetchVideo(
     );
   let info!: Video;
   let formats: Array<Format> = [];
-  let params = `${instance.url}/api/v1/videos/${id}?fields=title,videoId,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`;
+  let thumbnails: Array<Image> = [];
+  let params = `${instance.url}/api/v1/videos/${id}?fields=title,videoId,videoThumbnails,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`;
   if (opts.region) params += `&region=${opts.region}`;
   await axios
     .get(params)
@@ -220,6 +222,11 @@ async function fetchVideo(
             );
           }
         });
+        res.data.videoThumbnails.forEach((thumb: any) => {
+          thumbnails.push(
+            new Image(thumb.url, thumb.width, thumb.height, thumb.quality)
+          )
+        });
       switch (opts.type) {
         case "full": {
           info = new Video(
@@ -234,7 +241,8 @@ async function fetchVideo(
             res.data.publishedText,
             res.data.viewCount,
             res.data.likeCount,
-            res.data.dislikeCount
+            res.data.dislikeCount,
+            thumbnails
           );
           break;
         }
@@ -356,7 +364,7 @@ async function fetchPlaylist(
     );
   let info!: Playlist;
   let videos: Array<Video> = [];
-  let params = `${instance.url}/api/v1/playlists/${id}?fields=title,playlistId,videos,author,authorId,description,videoCount`;
+  let params = `${instance.url}/api/v1/playlists/${id}?fields=title,playlistId,playlistThumbnail,videos,author,authorId,description,videoCount`;
   await axios
     .get(params)
     .then((res) => {
@@ -375,16 +383,17 @@ async function fetchPlaylist(
             res.data.title,
             id,
             videos,
+            res.data.videos.length,
             author,
             authorId,
             description,
-            res.data.videos.length
+            new Image(res.data.playlistThumbnail, 168, 94, "hqdefault"),
           );
           break;
         }
         case "basic":
         default: {
-          info = new Playlist(res.data.title, id, videos);
+          info = new Playlist(res.data.title, id, videos, res.data.videos.length);
           break;
         }
         case "minimal": {
