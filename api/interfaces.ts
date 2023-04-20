@@ -1,3 +1,5 @@
+import * as Enums from "./enums";
+
 /**
  * @name CommonOptions
  * @description Base options for all methods.
@@ -13,7 +15,7 @@ export interface CommonOptions {
  * @param {FetchTypes | undefined} type - Type of content to return.
  */
 export interface ContentOptions {
-  type?: FetchTypes;
+  type?: Enums.FetchTypes;
 }
 
 /**
@@ -28,7 +30,7 @@ export interface ContentOptions {
  */
 export interface InstanceFetchOptions extends CommonOptions {
   url?: string;
-  type?: InstanceTypes;
+  type?: Enums.InstanceTypes;
   region?: string;
   api_allowed?: boolean | "any";
   health?: number | "any";
@@ -66,7 +68,7 @@ export interface ChannelFetchOptions extends ContentOptions {}
  * @param {number | undefined} limit - Amount of comments to return.
  */
 export interface CommentFetchOptions extends CommonOptions {
-  sorting?: CommentSorting;
+  sorting?: Enums.CommentSorting;
 }
 
 /**
@@ -83,10 +85,10 @@ export interface CommentFetchOptions extends CommonOptions {
  */
 export interface SearchOptions extends CommonOptions {
   page?: number;
-  sorting?: VideoSorting;
-  date?: DateValues;
-  duration?: Duration;
-  type?: ContentTypes;
+  sorting?: Enums.VideoSorting;
+  date?: Enums.DateValues;
+  duration?: Enums.Duration;
+  type?: Enums.ContentTypes;
   features?: string;
   region?: string;
 }
@@ -100,7 +102,7 @@ export interface SearchOptions extends CommonOptions {
  */
 export interface TrendingOptions extends CommonOptions {
   region?: string;
-  type?: TrendingTypes;
+  type?: Enums.TrendingTypes;
 }
 
 /**
@@ -124,7 +126,7 @@ export interface ChannelRelatedOptions extends CommonOptions {}
  * @param {number | undefined} limit - How many videos to return.
  */
 export interface ChannelVideosOptions extends CommonOptions {
-  sorting?: ChannelVideosSorting;
+  sorting?: Enums.ChannelVideosSorting;
 }
 
 /**
@@ -134,7 +136,7 @@ export interface ChannelVideosOptions extends CommonOptions {
  * @param {number | undefined} limit - How many playlists to return.
  */
 export interface ChannelPlaylistsOptions extends CommonOptions {
-  sorting?: ChannelPlaylistsSorting;
+  sorting?: Enums.ChannelPlaylistsSorting;
 }
 
 /**
@@ -145,123 +147,7 @@ export interface ChannelPlaylistsOptions extends CommonOptions {
  * @param {string | undefined} path - Path to save the stream to. If not specified, the stream will be saved to the current directory.
  */
 export interface StreamOptions {
-  saveTo?: SaveSourceTo;
+  saveTo?: Enums.SaveSourceTo;
   parts?: number;
   path?: string;
-}
-
-/**
- * @name FetchTypes
- * @description Use this to determine how verbose you need your output to be. Minimal contains only the title and the ID. Basic, depending on the type, will contain all the objects necessary to have the fetched content work. Full will make all the fields available to you.
- */
-export enum FetchTypes {
-  Minimal = "minimal",
-  Basic = "basic",
-  Full = "full",
-}
-
-/**
- * @name InstanceTypes
- * @description Lists all types of Invidious instances.
- */
-export enum InstanceTypes {
-  https = "https",
-  tor = "onion",
-  i2p = "i2p",
-  ALL = "all",
-}
-
-/**
- * @name ContentTypes
- * @description Lists all types of Invidious content.
- */
-export enum ContentTypes {
-  Video = "video",
-  Playlist = "playlist",
-  Channel = "channel",
-  Movie = "movie",
-  Show = "show",
-  ALL = "all",
-}
-
-/**
- * @name TrendingTypes
- * @description Lists all types of trending content.
- */
-export enum TrendingTypes {
-  Music = "music",
-  Gaming = "gaming",
-  News = "news",
-  Movies = "movies",
-}
-
-/**
- * @name VideoSorting
- * @description Invidious search can sort the content by using one of these values.
- */
-export enum VideoSorting {
-  Relevance = "relevance",
-  Rating = "rating",
-  UploadDate = "upload_date",
-  ViewCount = "view_count",
-}
-
-/**
- * @name CommentSorting
- * @description Invidious can sort comments by using one of these values.
- */
-export enum CommentSorting {
-  Top = "top",
-  New = "new",
-}
-
-/**
- * @name Duration
- * @description Invidious can search for the following video duration.
- */
-export enum Duration {
-  Short = "short",
-  Medium = "medium",
-  Long = "long",
-}
-
-/**
- * @name DateValues
- * @description Invidious can search for the videos with the following upload dates.
- */
-export enum DateValues {
-  Hour = "hour",
-  Today = "today",
-  Week = "week",
-  Month = "month",
-  Year = "year",
-}
-
-/**
- * @name ChannelVideosSorting
- * @description Invidious can sort videos on a channel by using one of these values.
- */
-export enum ChannelVideosSorting {
-  Newest = "newest",
-  Popular = "popular",
-  Oldest = "oldest",
-}
-
-/**
- * @name ChannelPlaylistsSorting
- * @description Invidious can sort playlists on a channel by using one of these values.
- */
-export enum ChannelPlaylistsSorting {
-  Newest = "newest",
-  Popular = "popular",
-  Last = "last",
-}
-
-/**
- * @name SaveSourceTo
- * @description Possible values on where to save the source.
- */
-export enum SaveSourceTo {
-  Memory = "memory",
-  File = "file",
 }

@@ -1,3 +1,5 @@
+import * as Enums from "./enums";
+
 /**
  * @name MissingArgumentError
  * @description Error thrown when a required argument is missing.
@@ -7,7 +9,7 @@ export class MissingArgumentError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "MissingArgumentError";
-    this.code = ErrorCodes.MissingArgument;
+    this.code = Enums.ErrorCodes.MissingArgument;
     Object.setPrototypeOf(this, MissingArgumentError.prototype);
   }
 }
@@ -21,7 +23,7 @@ export class InvalidArgumentError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "InvalidArgumentError";
-    this.code = ErrorCodes.InvalidArgument;
+    this.code = Enums.ErrorCodes.InvalidArgument;
     Object.setPrototypeOf(this, InvalidArgumentError.prototype);
   }
 }
@@ -35,7 +37,7 @@ export class APINotAvailableError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "APINotAvailableError";
-    this.code = ErrorCodes.APIBlocked;
+    this.code = Enums.ErrorCodes.APIBlocked;
     Object.setPrototypeOf(this, APINotAvailableError.prototype);
   }
 }
@@ -49,7 +51,7 @@ export class APIError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "APIError";
-    this.code = ErrorCodes.APIError;
+    this.code = Enums.ErrorCodes.APIError;
     Object.setPrototypeOf(this, APIError.prototype);
   }
 }
@@ -63,7 +65,7 @@ export class BlockedVideoError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "BlockedVideoError";
-    this.code = ErrorCodes.BlockedVideo;
+    this.code = Enums.ErrorCodes.BlockedVideo;
     Object.setPrototypeOf(this, BlockedVideoError.prototype);
   }
 }
@@ -77,20 +79,7 @@ export class NotFoundError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "NotFoundError";
-    this.code = ErrorCodes.InvalidContent;
+    this.code = Enums.ErrorCodes.InvalidContent;
     Object.setPrototypeOf(this, NotFoundError.prototype);
   }
-}
-
-/**
- * @name ErrorCodes
- * @description Error codes.
- */
-export enum ErrorCodes {
-  MissingArgument = 10000,
-  InvalidArgument = 10001,
-  APIBlocked = 10002,
-  APIError = 10003,
-  BlockedVideo = 10004,
-  InvalidContent = 10005,
 }
