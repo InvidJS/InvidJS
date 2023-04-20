@@ -50,7 +50,7 @@ client.on("messageCreate", async (message) => {
 
     //Fetching the best format.
     let format = video.formats.find(
-      (format) => format.quality === InvidJS.AudioQuality.Medium
+      (format) => format.audio_quality === InvidJS.AudioQuality.Medium
     );
 
     //Fetching the given stream.
