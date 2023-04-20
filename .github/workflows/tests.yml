@@ -6,7 +6,7 @@ on:
     paths:
       - 'index.ts'
       - 'jest.config.js'
-      - 'classes/**'
+      - 'api/**'
       - 'tests/**'
   workflow_dispatch:
 
