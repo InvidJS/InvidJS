@@ -50,7 +50,7 @@ describe("Video fetch test", () => {
         await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw", {
           type: InvidJS.FetchTypes.Full,
         })
-      ).description
+      ).thumbnails
     ).not.toBeUndefined();
   }, 50000);
 });
