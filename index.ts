@@ -1,44 +1,52 @@
 import {
-  Channel,
-  Playlist,
-  Video,
-  Format,
-  Comment,
-  Instance,
-  InstanceStats,
-  InstanceFetchOptions,
-  VideoFetchOptions,
-  PlaylistFetchOptions,
-  ChannelFetchOptions,
-  CommentFetchOptions,
-  SearchOptions,
-  TrendingOptions,
-  PopularOptions,
-  StreamOptions,
+  ErrorCodes,
   FetchTypes,
   InstanceTypes,
   ContentTypes,
   TrendingTypes,
   VideoSorting,
   CommentSorting,
-  ChannelPlaylistsOptions,
-  ChannelVideosOptions,
-  ChannelRelatedOptions,
-  ChannelPlaylistsSorting,
-  ChannelVideosSorting,
-  MissingArgumentError,
-  InvalidArgumentError,
-  APIError,
-  APINotAvailableError,
-  BlockedVideoError,
-  NotFoundError,
-  ErrorCodes,
-  SaveSourceTo,
   Duration,
   DateValues,
+  ChannelPlaylistsSorting,
+  ChannelVideosSorting,
+  SaveSourceTo,
   AudioQuality,
+} from "./api/enums";
+import {
+  CommonOptions,
+  ContentOptions,
+  InstanceFetchOptions,
+  PlaylistFetchOptions,
+  VideoFetchOptions,
+  ChannelFetchOptions,
+  ChannelPlaylistsOptions,
+  ChannelRelatedOptions,
+  ChannelVideosOptions,
+  CommentFetchOptions,
+  SearchOptions,
+  TrendingOptions,
+  PopularOptions,
+  StreamOptions,
+} from "./api/interfaces";
+import {
+  MissingArgumentError,
+  InvalidArgumentError,
+  APINotAvailableError,
+  APIError,
+  BlockedVideoError,
+  NotFoundError,
+} from "./api/errors";
+import {
+  Instance,
+  InstanceStats,
+  Channel,
+  Playlist,
+  Video,
+  Format,
   Image,
-} from "./classes/index";
+  Comment,
+} from "./api/classes";
 import axios from "axios";
 import fs from "fs-extra";
 
@@ -222,11 +230,11 @@ async function fetchVideo(
             );
           }
         });
-        res.data.videoThumbnails.forEach((thumb: any) => {
-          thumbnails.push(
-            new Image(thumb.url, thumb.width, thumb.height, thumb.quality)
-          )
-        });
+      res.data.videoThumbnails.forEach((thumb: any) => {
+        thumbnails.push(
+          new Image(thumb.url, thumb.width, thumb.height, thumb.quality)
+        );
+      });
       switch (opts.type) {
         case "full": {
           info = new Video(
@@ -387,13 +395,18 @@ async function fetchPlaylist(
             author,
             authorId,
             description,
-            new Image(res.data.playlistThumbnail, 168, 94, "hqdefault"),
+            new Image(res.data.playlistThumbnail, 168, 94, "hqdefault")
           );
           break;
         }
         case "basic":
         default: {
-          info = new Playlist(res.data.title, id, videos, res.data.videos.length);
+          info = new Playlist(
+            res.data.title,
+            id,
+            videos,
+            res.data.videos.length
+          );
           break;
         }
         case "minimal": {
@@ -1017,10 +1030,10 @@ export {
   TrendingTypes,
   VideoSorting,
   CommentSorting,
-  SaveSourceTo,
   Duration,
   DateValues,
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
+  SaveSourceTo,
   AudioQuality,
 };
