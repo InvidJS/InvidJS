@@ -12,6 +12,7 @@ import {
   ChannelVideosSorting,
   SaveSourceTo,
   AudioQuality,
+  ImageQuality,
 } from "./api/enums";
 import {
   CommonOptions,
@@ -395,7 +396,7 @@ async function fetchPlaylist(
             author,
             authorId,
             description,
-            new Image(res.data.playlistThumbnail, 168, 94, "hqdefault")
+            new Image(res.data.playlistThumbnail, 168, 94, ImageQuality.High)
           );
           break;
         }
@@ -1036,4 +1037,5 @@ export {
   ChannelVideosSorting,
   SaveSourceTo,
   AudioQuality,
+  ImageQuality
 };

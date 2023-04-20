@@ -1,3 +1,5 @@
+import * as Enums from "./enums";
+
 /**
  * @name Instance
  * @description Basic information about an instance.
@@ -5,7 +7,7 @@
  * @param {string} region  - Region of the instance.
  * @param {boolean} cors_allowed  - Is CORS allowed?
  * @param {boolean} api_allowed  - Is API allowed?
- * @param {string} type  - Type of the instance.
+ * @param {Enums.InstanceTypes} type  - Type of the instance.
  * @param {string} url  - URL of the instance.
  * @param {string} health - Latest reported health of the instance.
  */
@@ -13,14 +15,14 @@ export class Instance {
   public region: string;
   public cors_allowed: boolean;
   public api_allowed: boolean;
-  public type: string;
+  public type: Enums.InstanceTypes;
   public url: string;
   public health?: number;
   constructor(
     region: string,
     cors_allowed: boolean,
     api_allowed: boolean,
-    type: string,
+    type: Enums.InstanceTypes,
     url: string,
     health?: number
   ) {
@@ -223,7 +225,7 @@ export class Video {
  * @param {string} tag - ID of the format.
  * @param {string} type - Type of the format (codecs).
  * @param {string} container - Container of the format (mp4, webm, etc.).
- * @param {string} [audio_quality] - Quality (audio only).
+ * @param {Enums.AudioQuality} [audio_quality] - Quality (audio only).
  * @param {number} [audio_sampleRate] -  Sample rate (audio only).
  * @param {number} [audio_channels] - Number of channels (audio only).
  */
@@ -232,7 +234,7 @@ export class Format {
   public tag: string;
   public type: string;
   public container: string;
-  public audio_quality?: string;
+  public audio_quality?: Enums.AudioQuality;
   public audio_sampleRate?: number;
   public audio_channels?: number;
   constructor(
@@ -240,7 +242,7 @@ export class Format {
     tag: string,
     type: string,
     container: string,
-    audio_quality?: string,
+    audio_quality?: Enums.AudioQuality,
     audio_sampleRate?: number,
     audio_channels?: number
   ) {
@@ -261,14 +263,14 @@ export class Format {
  * @param {string} url - Image URL.
  * @param {number} width - Image width.
  * @param {number} height - Image height.
- * @param {string} [quality] - Image quality (thumbnails only)
+ * @param {Enums.ImageQuality} [quality] - Image quality (thumbnails only)
  */
 export class Image {
   public url: string;
   public width: number;
   public height: number;
-  public quality?: string;
-  constructor(url: string, width: number, height: number, quality?: string) {
+  public quality?: Enums.ImageQuality;
+  constructor(url: string, width: number, height: number, quality?: Enums.ImageQuality) {
     this.url = url;
     this.width = width;
     this.height = height;
