@@ -1,5 +1,5 @@
-import { Channel, Playlist, Video, FetchTypes } from "../classes";
 import * as InvidJS from "../index";
+import { Channel, Playlist, Video } from "../api/classes";
 
 jest.retryTimes(5);
 describe("Channel fetch test", () => {
@@ -21,7 +21,7 @@ describe("Channel fetch test", () => {
     expect(
       (
         await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw", {
-          type: FetchTypes.Minimal,
+          type: InvidJS.FetchTypes.Minimal,
         })
       ).id
     ).not.toBeUndefined();
@@ -35,7 +35,7 @@ describe("Channel fetch test", () => {
     expect(
       (
         await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw", {
-          type: FetchTypes.Basic,
+          type: InvidJS.FetchTypes.Basic,
         })
       ).subs
     ).not.toBeUndefined();
@@ -49,7 +49,7 @@ describe("Channel fetch test", () => {
     expect(
       (
         await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw", {
-          type: FetchTypes.Full,
+          type: InvidJS.FetchTypes.Full,
         })
       ).isVerified
     ).not.toBeUndefined();

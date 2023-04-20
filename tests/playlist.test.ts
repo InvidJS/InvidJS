@@ -1,4 +1,3 @@
-import { FetchTypes } from "../classes";
 import * as InvidJS from "../index";
 
 jest.retryTimes(5);
@@ -42,7 +41,7 @@ describe("Playlist fetch test", () => {
         await InvidJS.fetchPlaylist(
           instances[0],
           "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN",
-          { type: FetchTypes.Minimal }
+          { type: InvidJS.FetchTypes.Minimal }
         )
       ).id
     ).not.toBeUndefined();
@@ -58,7 +57,7 @@ describe("Playlist fetch test", () => {
         await InvidJS.fetchPlaylist(
           instances[0],
           "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN",
-          { type: FetchTypes.Basic }
+          { type: InvidJS.FetchTypes.Basic }
         )
       ).videos
     ).not.toBeUndefined();
@@ -74,7 +73,7 @@ describe("Playlist fetch test", () => {
         await InvidJS.fetchPlaylist(
           instances[0],
           "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN",
-          { type: FetchTypes.Full }
+          { type: InvidJS.FetchTypes.Full }
         )
       ).description
     ).not.toBeUndefined();
@@ -88,7 +87,7 @@ describe("Playlist fetch test", () => {
     expect(
       (
         await InvidJS.fetchPlaylist(instances[0], "RDMM", {
-          type: FetchTypes.Full,
+          type: InvidJS.FetchTypes.Full,
         })
       ).description
     ).not.toBeUndefined();

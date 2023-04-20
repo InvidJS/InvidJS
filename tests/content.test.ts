@@ -1,5 +1,5 @@
-import { ContentTypes, Channel } from "../classes";
 import * as InvidJS from "../index";
+import { Channel } from "../api/classes";
 
 jest.retryTimes(5);
 describe("Search test", () => {
@@ -29,7 +29,7 @@ describe("Search test", () => {
       api_allowed: true,
     });
     const result = await InvidJS.searchContent(instances[0], "typescript", {
-      type: ContentTypes.Channel,
+      type: InvidJS.ContentTypes.Channel,
     });
     expect(result[0]).toBeInstanceOf(Channel);
     expect(result[1]).toBeInstanceOf(Channel);
@@ -52,7 +52,7 @@ describe("Search test", () => {
       api_allowed: true,
     });
     const result = await InvidJS.searchContent(instances[0], "typescript", {
-      type: ContentTypes.Channel,
+      type: InvidJS.ContentTypes.Channel,
       limit: 18,
     });
     expect(result[0]).toBeInstanceOf(Channel);

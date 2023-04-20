@@ -1,4 +1,3 @@
-import { FetchTypes } from "../classes";
 import * as InvidJS from "../index";
 
 jest.retryTimes(5);
@@ -21,7 +20,7 @@ describe("Video fetch test", () => {
     expect(
       (
         await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw", {
-          type: FetchTypes.Minimal,
+          type: InvidJS.FetchTypes.Minimal,
         })
       ).id
     ).not.toBeUndefined();
@@ -35,7 +34,7 @@ describe("Video fetch test", () => {
     expect(
       (
         await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw", {
-          type: FetchTypes.Basic,
+          type: InvidJS.FetchTypes.Basic,
         })
       ).formats
     ).not.toBeUndefined();
@@ -49,7 +48,7 @@ describe("Video fetch test", () => {
     expect(
       (
         await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw", {
-          type: FetchTypes.Full,
+          type: InvidJS.FetchTypes.Full,
         })
       ).description
     ).not.toBeUndefined();

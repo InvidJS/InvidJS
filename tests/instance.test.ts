@@ -1,4 +1,3 @@
-import { InstanceTypes } from "../classes";
 import * as InvidJS from "../index";
 
 jest.retryTimes(5);
@@ -17,8 +16,10 @@ describe("Instance fetch test", () => {
   }, 50000);
 
   test("Instances type should be respected.", async () => {
-    const instances = await InvidJS.fetchInstances({ type: InstanceTypes.i2p });
-    expect(instances[0].type).toBe(InstanceTypes.i2p);
+    const instances = await InvidJS.fetchInstances({
+      type: InvidJS.InstanceTypes.i2p,
+    });
+    expect(instances[0].type).toBe(InvidJS.InstanceTypes.i2p);
   }, 50000);
 
   test("Instances region should be respected.", async () => {
@@ -43,11 +44,11 @@ describe("Instance fetch test", () => {
 
   test("Multiple filters must apply correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
-      type: InstanceTypes.https,
+      type: InvidJS.InstanceTypes.https,
       api_allowed: true,
       limit: 3,
     });
-    expect(instances[0].type).toBe(InstanceTypes.https);
+    expect(instances[0].type).toBe(InvidJS.InstanceTypes.https);
     expect(instances[0].api_allowed).toBe(true);
     expect(instances).toHaveLength(3);
   }, 50000);
