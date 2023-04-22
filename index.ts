@@ -29,6 +29,7 @@ import {
   TrendingOptions,
   PopularOptions,
   StreamOptions,
+  QueryParams,
 } from "./api/interfaces";
 import {
   MissingArgumentError,
@@ -50,6 +51,8 @@ import {
   Image,
   Comment,
 } from "./api/classes";
+import { convertToString } from "./utils/LengthConverter";
+import { addFormats, addThumbnails } from "./utils/ObjectCreator";
 import axios from "axios";
 import fs from "fs-extra";
 
@@ -198,51 +201,33 @@ async function fetchVideo(
       "The instance you provided does not support API requests or is offline!"
     );
   let info!: Video;
-  let formats: Array<Format> = [];
-  let thumbnails: Array<Image> = [];
-  let params = `${instance.url}/api/v1/videos/${id}?fields=title,videoId,videoThumbnails,description,publishedText,viewCount,likeCount,dislikeCount,lengthSeconds,adaptiveFormats,formatStreams,author,authorId`;
-  if (opts.region) params += `&region=${opts.region}`;
+  let queryURL = `${instance.url}/api/v1/videos/${id}`;
+  let params = new QueryParams();
+  switch (opts.type) {
+    case FetchTypes.Minimal: {
+      params.fields = "title,videoId";
+      break;
+    }
+    case FetchTypes.Basic: {
+      params.fields =
+        "title,videoId,adaptiveFormats,formatStreams,lengthSeconds";
+      break;
+    }
+    case FetchTypes.Full: {
+      params.fields =
+        "title,videoId,adaptiveFormats,formatStreams,lengthSeconds,author,authorId,description,publishedText,viewCount,likeCount,dislikeCount,videoThumbnails";
+      break;
+    }
+  }
+  if (opts.region) params.region = opts.region;
   await axios
-    .get(params)
+    .get(queryURL, { params: params })
     .then((res) => {
-      let hours = Math.floor(res.data.lengthSeconds / 3600);
-      let minutes = Math.floor(res.data.lengthSeconds / 60) % 60;
-      let seconds = res.data.lengthSeconds % 60;
-      let lengthString = [hours, minutes, seconds]
-        .map((v) => (v < 10 ? "0" + v : v))
-        .filter((v, i) => v !== "00" || i > 0)
-        .join(":");
-      res.data.formatStreams
-        .concat(res.data.adaptiveFormats)
-        .forEach((format: any) => {
-          let container = format.container
-            ? format.container
-            : format.type.split("/")[1].split(";")[0];
-          if (!format.type.startsWith("audio")) {
-            formats.push(
-              new Format(format.url, format.itag, format.type, container)
-            );
-          } else {
-            formats.push(
-              new Format(
-                format.url,
-                format.itag,
-                format.type,
-                container,
-                format.audioQuality,
-                format.audioSampleRate,
-                format.audioChannels
-              )
-            );
-          }
-        });
-      res.data.videoThumbnails.forEach((thumb: any) => {
-        thumbnails.push(
-          new Image(thumb.url, thumb.width, thumb.height, thumb.quality)
-        );
-      });
       switch (opts.type) {
         case "full": {
+          let lengthString = convertToString(res.data.lengthSeconds);
+          let formats = addFormats(res.data.formatStreams.concat(res.data.adaptiveFormats));
+          let thumbnails = addThumbnails(res.data.videoThumbnails);
           info = new Video(
             res.data.title,
             id,
@@ -262,6 +247,8 @@ async function fetchVideo(
         }
         case "basic":
         default: {
+          let lengthString = convertToString(res.data.lengthSeconds);
+          let formats = addFormats(res.data.formatStreams.concat(res.data.adaptiveFormats));
           info = new Video(
             res.data.title,
             id,
@@ -322,10 +309,11 @@ async function fetchComments(
       "Limit is invalid - must be a number greater than 0!"
     );
   let comments: Array<Comment> = [];
-  let params = `${instance.url}/api/v1/comments/${video.id}`;
-  if (opts.sorting) params += `?sort_by=${opts.sorting}`;
+  let queryURL = `${instance.url}/api/v1/comments/${video.id}`;
+  let params = new QueryParams();
+  if (opts.sorting) params.sort_by = opts.sorting;
   await axios
-    .get(params)
+    .get(queryURL, { params: params })
     .then((res) => {
       res.data.comments.forEach((comment: any) => {
         if (!opts.limit || opts.limit === 0 || comments.length < opts.limit)
@@ -377,17 +365,32 @@ async function fetchPlaylist(
       "Limit is invalid - must be a number greater than 0!"
     );
   let info!: Playlist;
-  let videos: Array<Video> = [];
-  let params = `${instance.url}/api/v1/playlists/${id}?fields=title,playlistId,playlistThumbnail,videos,author,authorId,description,videoCount`;
+  let queryURL = `${instance.url}/api/v1/playlists/${id}?fields=title,playlistId,playlistThumbnail,videos,author,authorId,description,videoCount`;
+  let params = new QueryParams();
+  switch (opts.type) {
+    case FetchTypes.Minimal: {
+      params.fields = "title,playlistId";
+      break;
+    }
+    case FetchTypes.Basic: {
+      params.fields = "title,playlistId,videos";
+      break;
+    }
+    case FetchTypes.Full: {
+      params.fields = "title,playlistId,videos,author,authorId,description,playlistThumbnail";
+      break;
+    }
+  }
   await axios
-    .get(params)
+    .get(queryURL, {params: params})
     .then((res) => {
-      res.data.videos.forEach((video: any) => {
-        if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-          videos.push(new Video(video.title, video.videoId));
-      });
       switch (opts.type) {
         case "full": {
+          let videos: Array<Video> = [];
+          res.data.videos.forEach((video: any) => {
+            if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
+              videos.push(new Video(video.title, video.videoId));
+          });
           let author = res.data.author ? res.data.author : "SYSTEM";
           let authorId = res.data.authorId ? res.data.authorId : "-1";
           let description = res.data.description
@@ -407,6 +410,11 @@ async function fetchPlaylist(
         }
         case "basic":
         default: {
+          let videos: Array<Video> = [];
+          res.data.videos.forEach((video: any) => {
+            if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
+              videos.push(new Video(video.title, video.videoId));
+          });
           info = new Playlist(
             res.data.title,
             id,
@@ -460,9 +468,9 @@ async function fetchChannel(
       "The instance you provided does not support API requests or is offline!"
     );
   let info!: Channel;
-  let params = `${instance.url}/api/v1/channels/${id}?fields=author,authorId,subCount,totalViews,description,authorVerified,latestVideos`;
+  let queryURL = `${instance.url}/api/v1/channels/${id}?fields=author,authorId,subCount,totalViews,description,authorVerified,latestVideos`;
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       switch (opts.type) {
         case "full": {
@@ -536,9 +544,9 @@ async function fetchRelatedChannels(
       "Limit is invalid - must be a number greater than 0!"
     );
   let channels: Array<Channel> = [];
-  let params = `${instance.url}/api/v1/channels/${channel.id}/channels`;
+  let queryURL = `${instance.url}/api/v1/channels/${channel.id}/channels`;
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       res.data.relatedChannels.forEach((channel: any) => {
         if (!opts.limit || opts.limit === 0 || channels.length < opts.limit)
@@ -588,9 +596,9 @@ async function fetchChannelPlaylists(
       "Limit is invalid - must be a number greater than 0!"
     );
   let playlists: Array<Playlist> = [];
-  let params = `${instance.url}/api/v1/channels/${channel.id}/playlists`;
+  let queryURL = `${instance.url}/api/v1/channels/${channel.id}/playlists`;
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       res.data.playlists.forEach((playlist: any) => {
         if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
@@ -640,9 +648,9 @@ async function fetchChannelVideos(
       "Limit is invalid - must be a number greater than 0!"
     );
   let videos: Array<Video> = [];
-  let params = `${instance.url}/api/v1/channels/${channel.id}/videos`;
+  let queryURL = `${instance.url}/api/v1/channels/${channel.id}/videos`;
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       res.data.videos.forEach((video: any) => {
         if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
@@ -680,9 +688,9 @@ async function fetchSearchSuggestions(
       "The instance you provided does not support API requests or is offline!"
     );
   let suggestions: Array<string> = [];
-  let params = `${instance.url}/api/v1/search/suggestions?q=${query}`;
+  let queryURL = `${instance.url}/api/v1/search/suggestions?q=${query}`;
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       res.data.suggestions.forEach((suggestion: any) => {
         suggestions.push(suggestion);
@@ -731,17 +739,17 @@ async function searchContent(
     throw new InvalidArgumentError(
       "Limit is invalid - must be a number greater than 0!"
     );
-  let params = `${instance.url}/api/v1/search?q=${query}`;
-  if (opts.page) params += `&page=${opts.page}`;
-  if (opts.sorting) params += `&sort_by=${opts.sorting}`;
-  if (opts.date) params += `&date=${opts.date}`;
-  if (opts.duration) params += `&duration=${opts.duration}`;
-  if (opts.type) params += `&type=${opts.type}`;
-  if (opts.features) params += `&features=${opts.features}`;
-  if (opts.region) params += `&region=${opts.region}`;
+  let queryURL = `${instance.url}/api/v1/search?q=${query}`;
+  if (opts.page) queryURL += `&page=${opts.page}`;
+  if (opts.sorting) queryURL += `&sort_by=${opts.sorting}`;
+  if (opts.date) queryURL += `&date=${opts.date}`;
+  if (opts.duration) queryURL += `&duration=${opts.duration}`;
+  if (opts.type) queryURL += `&type=${opts.type}`;
+  if (opts.features) queryURL += `&features=${opts.features}`;
+  if (opts.region) queryURL += `&region=${opts.region}`;
   let results: Array<Channel | Playlist | Video> = [];
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       res.data.forEach((result: any) => {
         if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
@@ -806,12 +814,12 @@ async function fetchTrending(
     throw new InvalidArgumentError(
       "Limit is invalid - must be a number greater than 0!"
     );
-  let params = `${instance.url}/api/v1/trending`;
-  if (opts.region) params += `?region=${opts.region}`;
-  if (opts.type) params += `&type=${opts.type}`;
+  let queryURL = `${instance.url}/api/v1/trending`;
+  if (opts.region) queryURL += `?region=${opts.region}`;
+  if (opts.type) queryURL += `&type=${opts.type}`;
   let results: Array<Video> = [];
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       res.data.forEach((result: any) => {
         if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
@@ -853,10 +861,10 @@ async function fetchPopular(
     throw new InvalidArgumentError(
       "Limit is invalid - must be a number greater than 0!"
     );
-  let params = `${instance.url}/api/v1/popular`;
+  let queryURL = `${instance.url}/api/v1/popular`;
   let results: Array<Video> = [];
   await axios
-    .get(params)
+    .get(queryURL)
     .then((res) => {
       res.data.forEach((result: any) => {
         if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
@@ -895,9 +903,9 @@ async function validateSource(
     throw new MissingArgumentError(
       "You must provide a valid video or audio source to fetch a stream from!"
     );
-  let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
+  let queryURL = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
   try {
-    let lengthQuery = await axios.get(params, {
+    let lengthQuery = await axios.get(queryURL, {
       headers: { Range: `bytes=0-0` },
     });
     let length = lengthQuery.headers["content-range"].split("/")[1];
@@ -953,9 +961,9 @@ async function fetchSource(
       "A source must be downloaded in at least a single part!"
     );
   if (opts.parts && opts.parts > 10) opts.parts = 10;
-  let params = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
+  let queryURL = `${instance.url}/latest_version?id=${video.id}&itag=${source.tag}`;
   try {
-    let lengthQuery = await axios.get(params, {
+    let lengthQuery = await axios.get(queryURL, {
       headers: { Range: `bytes=0-0` },
     });
     let length = lengthQuery.headers["content-range"].split("/")[1];
@@ -969,7 +977,7 @@ async function fetchSource(
       positions.forEach((position) => {
         let range = `bytes=${position}-${position + parts - 1}`;
         promises.push(
-          axios.get(params, {
+          axios.get(queryURL, {
             headers: { Range: range },
             responseType: "arraybuffer",
           })
