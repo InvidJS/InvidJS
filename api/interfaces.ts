@@ -151,18 +151,3 @@ export interface StreamOptions {
   parts?: number;
   path?: string;
 }
-
-export class QueryParams {
-  fields?: string;
-  region?: string;
-  sort_by?: string;
-  limit?: number;
-  q?: string;
-  page?: number;
-  date?: string;
-  duration?: string;
-  type?: string;
-  features?: string;
-  id?: string;
-  itag?: string;
-}

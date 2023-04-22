@@ -29,7 +29,6 @@ import {
   TrendingOptions,
   PopularOptions,
   StreamOptions,
-  QueryParams,
 } from "./api/interfaces";
 import {
   MissingArgumentError,
@@ -53,6 +52,7 @@ import {
 } from "./api/classes";
 import { convertToString } from "./utils/LengthConverter";
 import { addFormats, addThumbnails } from "./utils/ObjectCreator";
+import { QueryParams } from "./utils/Query";
 import axios from "axios";
 import fs from "fs-extra";
 
@@ -226,7 +226,9 @@ async function fetchVideo(
       switch (opts.type) {
         case "full": {
           let lengthString = convertToString(res.data.lengthSeconds);
-          let formats = addFormats(res.data.formatStreams.concat(res.data.adaptiveFormats));
+          let formats = addFormats(
+            res.data.formatStreams.concat(res.data.adaptiveFormats)
+          );
           let thumbnails = addThumbnails(res.data.videoThumbnails);
           info = new Video(
             res.data.title,
@@ -248,7 +250,9 @@ async function fetchVideo(
         case "basic":
         default: {
           let lengthString = convertToString(res.data.lengthSeconds);
-          let formats = addFormats(res.data.formatStreams.concat(res.data.adaptiveFormats));
+          let formats = addFormats(
+            res.data.formatStreams.concat(res.data.adaptiveFormats)
+          );
           info = new Video(
             res.data.title,
             id,
@@ -377,12 +381,13 @@ async function fetchPlaylist(
       break;
     }
     case FetchTypes.Full: {
-      params.fields = "title,playlistId,videos,author,authorId,description,playlistThumbnail";
+      params.fields =
+        "title,playlistId,videos,author,authorId,description,playlistThumbnail";
       break;
     }
   }
   await axios
-    .get(queryURL, {params: params})
+    .get(queryURL, { params: params })
     .then((res) => {
       switch (opts.type) {
         case "full": {
