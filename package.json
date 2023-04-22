@@ -19,7 +19,7 @@
   "version": "1.0.2",
   "description": "An attempt to add Invidious support to Node.js",
   "scripts": {
-    "prettier": "npx prettier index.ts ./api/* ./tests/* --write",
+    "prettier": "npx prettier index.ts ./api/* ./tests/* ./utils/* --write",
     "test": "jest ./tests/ --verbose",
     "build": "tsup index.ts --format cjs,esm --dts --clean && cp package.json dist && cp README.md dist",
     "docs:build": "npx typedoc --plugin typedoc-plugin-missing-exports --name InvidJS --cleanOutputDir false"

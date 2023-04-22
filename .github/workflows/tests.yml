@@ -8,6 +8,7 @@ on:
       - 'jest.config.js'
       - 'api/**'
       - 'tests/**'
+      - 'utils/**'
   workflow_dispatch:
 
 jobs:
