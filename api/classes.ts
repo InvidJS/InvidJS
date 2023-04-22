@@ -45,7 +45,7 @@ export class Instance {
  * @param {number} users_total - Total users.
  * @param {number} users_active_halfyear - Users active in the last 6 months.
  * @param {number} users_active_month - Users active in the last month.
- * @param {boolean} registrations - Is registration allowed?
+ * @param {boolean} reg_allowed - Is registration allowed?
  */
 export class InstanceStats {
   public software_name: string;
@@ -54,7 +54,7 @@ export class InstanceStats {
   public users_total: number;
   public users_active_halfyear: number;
   public users_active_month: number;
-  public registrations: boolean;
+  public reg_allowed: boolean;
   constructor(
     software_name: string,
     software_version: string,
@@ -62,7 +62,7 @@ export class InstanceStats {
     users_total: number,
     users_active_halfyear: number,
     users_active_month: number,
-    registrations: boolean
+    reg_allowed: boolean
   ) {
     this.software_name = software_name;
     this.software_version = software_version;
@@ -70,7 +70,7 @@ export class InstanceStats {
     this.users_total = users_total;
     this.users_active_halfyear = users_active_halfyear;
     this.users_active_month = users_active_month;
-    this.registrations = registrations;
+    this.reg_allowed = reg_allowed;
   }
 }
 
@@ -161,12 +161,12 @@ export class Playlist {
  * @param {string} title - Title of the video.
  * @param {string} id - ID of the video.
  * @param {Array<Format>} [formats] - List of available formats (basic or full only).
- * @param {number} [length] - Length of the video in seconds (basic or full only).
- * @param {number} [lengthString] - Humanly-readable length of the video (basic or full only).
+ * @param {number} [lengthSeconds] - Length of the video in seconds (basic or full only).
+ * @param {number} [length] - Humanly-readable length of the video (basic or full only).
  * @param {string} [author] - Author username. (full only).
  * @param {string} [author_id] - Author ID. (full only).
  * @param {string} [description] - Description of the video (full only).
- * @param {string} [published] - Date of publishing (full only).
+ * @param {string} [date] - Date of publishing (full only).
  * @param {number} [views] - Number of views (full only).
  * @param {number} [likes] - Number of likes (full only).
  * @param {number} [dislikes] - Number of dislikes (full only).
@@ -176,12 +176,12 @@ export class Video {
   public title: string;
   public id: string;
   public formats?: Array<Format>;
-  public length?: number;
-  public lengthString?: string;
+  public lengthSeconds?: number;
+  public length?: string;
   public author?: string;
   public author_id?: string;
   public description?: string;
-  public published?: string;
+  public date?: string;
   public views?: number;
   public likes?: number;
   public dislikes?: number;
@@ -190,12 +190,12 @@ export class Video {
     title: string,
     id: string,
     formats?: Array<Format>,
-    length?: number,
-    lengthString?: string,
+    lengthSeconds?: number,
+    length?: string,
     author?: string,
     author_id?: string,
     description?: string,
-    published?: string,
+    date?: string,
     views?: number,
     likes?: number,
     dislikes?: number,
@@ -204,12 +204,12 @@ export class Video {
     this.title = title;
     this.id = id;
     this.formats = formats;
+    this.lengthSeconds = lengthSeconds;
     this.length = length;
-    this.lengthString = lengthString;
     this.author = author;
     this.author_id = author_id;
     this.description = description;
-    this.published = published;
+    this.date = date;
     this.views = views;
     this.likes = likes;
     this.dislikes = dislikes;
@@ -221,7 +221,7 @@ export class Video {
  * @name Format
  * @description Video or audio format.
  *
- * @param {string} url - URL of the format source.
+ * @param {string} source - Source of the format.
  * @param {string} tag - ID of the format.
  * @param {string} type - Type of the format (codecs).
  * @param {string} container - Container of the format (mp4, webm, etc.).
@@ -230,7 +230,7 @@ export class Video {
  * @param {number} [audio_channels] - Number of channels (audio only).
  */
 export class Format {
-  public url: string;
+  public source: string;
   public tag: string;
   public type: string;
   public container: string;
@@ -238,7 +238,7 @@ export class Format {
   public audio_sampleRate?: number;
   public audio_channels?: number;
   constructor(
-    url: string,
+    source: string,
     tag: string,
     type: string,
     container: string,
@@ -246,7 +246,7 @@ export class Format {
     audio_sampleRate?: number,
     audio_channels?: number
   ) {
-    this.url = url;
+    this.source = source;
     this.tag = tag;
     this.type = type;
     this.container = container;
@@ -263,7 +263,7 @@ export class Format {
  * @param {string} url - Image URL.
  * @param {number} width - Image width.
  * @param {number} height - Image height.
- * @param {Enums.ImageQuality} [quality] - Image quality (thumbnails only)
+ * @param {Enums.ImageQuality} [quality] - Image quality (thumbnails only).
  */
 export class Image {
   public url: string;
