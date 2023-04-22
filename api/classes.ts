@@ -39,37 +39,60 @@ export class Instance {
  * @name InstanceStats
  * @description Statistics about an instance.
  *
- * @param {string} software_name - Name of the software (usually Invidious).
- * @param {string} software_version - Version of the software.
- * @param {string} software_branch - Cloned branch.
- * @param {number} users_total - Total users.
- * @param {number} users_active_halfyear - Users active in the last 6 months.
- * @param {number} users_active_month - Users active in the last month.
- * @param {boolean} reg_allowed - Is registration allowed?
+ * @param {SoftwareStats} software - Software stats.
+ * @param {UserStats} users - User stats.
  */
 export class InstanceStats {
-  public software_name: string;
-  public software_version: string;
-  public software_branch: string;
-  public users_total: number;
-  public users_active_halfyear: number;
-  public users_active_month: number;
+  public software: SoftwareStats;
+  public users: UserStats;
+  constructor(software: SoftwareStats, users: UserStats) {
+    this.software = software;
+    this.users = users;
+  }
+}
+
+/**
+ * @name SoftwareStats
+ * @description Statistics about software.
+ *
+ * @param {string} name - Name of the software (usually Invidious).
+ * @param {string} version - Version of the software.
+ * @param {string} branch - Cloned branch.
+ */
+export class SoftwareStats {
+  public name: string;
+  public version: string;
+  public branch: string;
+  constructor(name: string, version: string, branch: string) {
+    this.name = name;
+    this.version = version;
+    this.branch = branch;
+  }
+}
+
+/**
+ * @name UserStats
+ * @description Statistics about users.
+ *
+ * @param {number} total - Total users.
+ * @param {number} halfYear - Users active in the last 6 months.
+ * @param {number} month - Users active in the last month.
+ * @param {boolean} reg_allowed - Is registration allowed?
+ */
+export class UserStats {
+  public total: number;
+  public halfYear: number;
+  public month: number;
   public reg_allowed: boolean;
   constructor(
-    software_name: string,
-    software_version: string,
-    software_branch: string,
-    users_total: number,
-    users_active_halfyear: number,
-    users_active_month: number,
+    total: number,
+    halfYear: number,
+    month: number,
     reg_allowed: boolean
   ) {
-    this.software_name = software_name;
-    this.software_version = software_version;
-    this.software_branch = software_branch;
-    this.users_total = users_total;
-    this.users_active_halfyear = users_active_halfyear;
-    this.users_active_month = users_active_month;
+    this.total = total;
+    this.halfYear = halfYear;
+    this.month = month;
     this.reg_allowed = reg_allowed;
   }
 }
@@ -270,7 +293,12 @@ export class Image {
   public width: number;
   public height: number;
   public quality?: Enums.ImageQuality;
-  constructor(url: string, width: number, height: number, quality?: Enums.ImageQuality) {
+  constructor(
+    url: string,
+    width: number,
+    height: number,
+    quality?: Enums.ImageQuality
+  ) {
     this.url = url;
     this.width = width;
     this.height = height;
