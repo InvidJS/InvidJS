@@ -41,6 +41,8 @@ import {
 import {
   Instance,
   InstanceStats,
+  SoftwareStats,
+  UserStats,
   Channel,
   Playlist,
   Video,
@@ -146,15 +148,18 @@ async function fetchStats(instance: Instance): Promise<InstanceStats> {
   await axios
     .get(`${instance.url}/api/v1/stats`)
     .then((res) => {
-      stats = new InstanceStats(
+      let software = new SoftwareStats(
         res.data.software.name,
         res.data.software.version,
-        res.data.software.branch,
+        res.data.software.branch
+      );
+      let users = new UserStats(
         res.data.usage.users.total,
         res.data.usage.users.activeHalfyear,
         res.data.usage.users.activeMonth,
         res.data.openRegistrations
       );
+      stats = new InstanceStats(software, users);
     })
     .catch((err) => {
       if (err.name === "AxiosError") {
@@ -1037,5 +1042,5 @@ export {
   ChannelVideosSorting,
   SaveSourceTo,
   AudioQuality,
-  ImageQuality
+  ImageQuality,
 };
