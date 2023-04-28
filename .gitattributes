@@ -1,0 +1,4 @@
+.github/* merge=ours
+package-lock.json merge=ours
+package.json merge=ours
+README.md merge=ours
