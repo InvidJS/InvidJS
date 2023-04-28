@@ -2,6 +2,7 @@ import {
   ErrorCodes,
   FetchTypes,
   InstanceTypes,
+  InstanceSorting,
   ContentTypes,
   TrendingTypes,
   VideoSorting,
@@ -123,11 +124,25 @@ async function fetchInstances(
         throw new APIError(err.message);
       }
     });
-  instances.sort((a, b) => {
-    if (a.health && b.health && a.health < b.health) return 1;
-    if (a.health && b.health && a.health > b.health) return -1;
-    return 0;
-  });
+    switch (opts.sorting) {
+      case InstanceSorting.Health: 
+      default: {
+        instances.sort((a, b) => {
+          if (a.health === undefined || isNaN(a.health)) return 1;
+          if (b.health === undefined || isNaN(b.health)) return -1;
+          return b.health - a.health;
+        });
+        break;
+      }
+      case InstanceSorting.API: {
+        //API-enabled instances come first. API-disabled instances come last. Other values go last.
+        instances.sort((a, b) => {
+          if (a.api_allowed === true && b.api_allowed === false) return -1;
+          if (a.api_allowed === false && b.api_allowed === true) return 1;
+          return 0;
+        })
+      }
+    }
   return instances;
 }
 

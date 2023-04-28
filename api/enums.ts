@@ -33,6 +33,15 @@ export enum InstanceTypes {
 }
 
 /**
+ * @name InstanceSorting
+ * @description Lists all possible sorting options of Invidious instances.
+ */
+export enum InstanceSorting {
+  Health = "health",
+  API = "api"
+}
+
+/**
  * @name ContentTypes
  * @description Lists all types of Invidious content.
  */

@@ -1,3 +1,4 @@
+import { InstanceSorting } from "../api/enums";
 import * as InvidJS from "../index";
 
 jest.retryTimes(5);
@@ -38,7 +39,7 @@ describe("Instance fetch test", () => {
   }, 50000);
 
   test("Instances health should be respected.", async () => {
-    const instances = await InvidJS.fetchInstances({ health: 95 });
+    const instances = await InvidJS.fetchInstances({ health: 90 });
     expect(instances[0].health).toBeGreaterThanOrEqual(90);
   }, 50000);
 
