@@ -73,7 +73,7 @@ export enum VideoSorting {
   Relevance = "relevance",
   Rating = "rating",
   UploadDate = "upload_date",
-  ViewCount = "view_count",
+  Views = "view_count",
 }
 
 /**
