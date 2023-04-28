@@ -21,10 +21,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - name: Get version
-        run: git rev-parse --short HEAD
-        id: ver
-      - run: npm version 1.0.3-${{steps.ver.outputs.*}}    
+      - run: npm version 1.0.3-${{github.sha}} --no-git-tag-version   
       - run: npm install
       - run: npm run build
       - run: cd dist && npm publish --provenance --access public
@@ -42,10 +39,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - name: Get version
-        run: git rev-parse --short HEAD
-        id: ver
-      - run: npm version 1.0.3-${{steps.ver.outputs.*}}        
+      - run: npm version 1.0.3-${{github.sha}} --no-git-tag-version       
       - run: npm install
       - run: npm run build
       - run: cd dist && npm publish --access public
