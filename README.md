@@ -1,24 +1,26 @@
-# InvidJS
+# InvidJS (Bleeding Edge)
 
 [![CI - Run tests](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml)
 [![CI - Build docs](https://github.com/InvidJS/InvidJS/actions/workflows/docs.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/docs.yml)
-[![CI - Publish](https://github.com/InvidJS/InvidJS/actions/workflows/stable-publish.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/npm-publish.yml)
+[![CI - Publish](https://github.com/InvidJS/InvidJS/actions/workflows/bleeding-publish.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/bleeding-publish.yml)
 
 An attempt to bring Invidious support to Node.js.
 
 # Installation and usage
 
+**ALERT!** This version may be unstable. Please use at your own risk.
+
 Your Node.js version must be 16.9.0 or greater.
 
 You can check your version by typing `node -v` in the terminal.
 
-To install InvidJS, type `npm install @invidjs/invid-js` in your terminal.
+To install InvidJS, type `npm install @invidjs/invid-js-test` in your terminal.
 
 After installing, insert the following in your code:
 
 ```js
-import * as InvidJS from "@invidjs/invid-js" //TypeScript, ESM Node.js
-const InvidJS = require("@invidjs/invid-js") //CSM Node.js
+import * as InvidJS from "@invidjs/invid-js-test" //TypeScript, ESM Node.js
+const InvidJS = require("@invidjs/invid-js-test") //CSM Node.js
 ```
 
 # Changes from the stock Invidious API
