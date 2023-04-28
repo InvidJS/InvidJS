@@ -1,0 +1,53 @@
+name: CI - Publish (bleeding-edge)
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'index.ts'
+      - 'jest.config.js'
+      - 'api/**'
+      - 'tests/**'
+      - 'utils/**'
+  workflow_dispatch:
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - name: Get version
+        run: git rev-parse --short HEAD
+        id: ver
+      - run: npm version 1.0.3-${{steps.ver.outputs.*}}    
+      - run: npm install
+      - run: npm run build
+      - run: cd dist && npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  publish-gpr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+      - name: Get version
+        run: git rev-parse --short HEAD
+        id: ver
+      - run: npm version 1.0.3-${{steps.ver.outputs.*}}        
+      - run: npm install
+      - run: npm run build
+      - run: cd dist && npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GH_TOKEN}}
