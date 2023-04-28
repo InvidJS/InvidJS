@@ -1,5 +1,5 @@
 import * as InvidJS from "../index";
-import fs from "fs-extra";
+import fs from "fs";
 
 jest.retryTimes(5);
 describe("Source fetch test", () => {
@@ -14,9 +14,9 @@ describe("Source fetch test", () => {
       await InvidJS.fetchSource(instances[0], video, source, {
         parts: 10,
       });
-      let exists = await fs.exists(`${video.id}.${source.container}`);
+      let exists = fs.existsSync(`${video.id}.${source.container}`);
       expect(exists).toBe(true);
-      fs.unlink(`${video.id}.${source.container}`);
+      fs.unlinkSync(`${video.id}.${source.container}`);
     }
   }, 500000);
 });

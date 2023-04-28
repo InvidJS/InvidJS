@@ -52,9 +52,9 @@ import {
 } from "./api/classes";
 import { convertToString } from "./utils/LengthConverter";
 import { addFormats, addThumbnails, fillMixData } from "./utils/ObjectCreator";
-import {  QueryParams } from "./utils/Query";
+import { QueryParams } from "./utils/Query";
 import axios from "axios";
-import fs from "fs-extra";
+import fs from "fs";
 
 /**
  * @name fetchInstances
