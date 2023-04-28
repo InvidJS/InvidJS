@@ -3,7 +3,7 @@ name: CI - Publish (bleeding-edge)
 on:
   push:
     branches:
-      - master
+      - bleeding-edge
     paths:
       - 'index.ts'
       - 'jest.config.js'
