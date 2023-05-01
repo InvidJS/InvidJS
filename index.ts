@@ -71,6 +71,7 @@ async function fetchInstances(
     region: "all",
     api_allowed: "any",
     limit: 0,
+    sorting: InstanceSorting.Health
   }
 ): Promise<Instance[]> {
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
