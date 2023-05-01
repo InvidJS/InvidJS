@@ -39,7 +39,8 @@ export enum InstanceTypes {
  */
 export enum InstanceSorting {
   Health = "health",
-  API = "api"
+  API = "api",
+  Type = "type"
 }
 
 /**

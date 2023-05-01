@@ -16,8 +16,6 @@ import {
   ImageQuality,
 } from "./api/enums";
 import {
-  CommonOptions,
-  ContentOptions,
   InstanceFetchOptions,
   PlaylistFetchOptions,
   VideoFetchOptions,
@@ -136,12 +134,18 @@ async function fetchInstances(
         break;
       }
       case InstanceSorting.API: {
-        //API-enabled instances come first. API-disabled instances come last. Other values go last.
         instances.sort((a, b) => {
           if (a.api_allowed === true && b.api_allowed === false) return -1;
           if (a.api_allowed === false && b.api_allowed === true) return 1;
           return 0;
         })
+      }
+      case InstanceSorting.Type: {
+        instances.sort((a, b) => {
+          if (a.type === InstanceTypes.https && b.type === InstanceTypes.tor) return -1;
+          if (a.type === InstanceTypes.tor && b.type === InstanceTypes.i2p) return -1;
+          return 0;
+        });
       }
     }
   return instances;
