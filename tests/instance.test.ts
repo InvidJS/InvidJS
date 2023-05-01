@@ -1,4 +1,3 @@
-import { InstanceSorting } from "../api/enums";
 import * as InvidJS from "../index";
 
 jest.retryTimes(5);
