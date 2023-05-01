@@ -1,11 +1,16 @@
 name: CI - Publish (bleeding-edge)
 
 on:
-  workflow_run:
-    workflows: [CI - Run tests]
-    branches: [bleeding-edge]
-    types:
-      - completed
+  push:
+    branches:
+      - bleeding-edge
+    paths:
+      - 'index.ts'
+      - 'jest.config.js'
+      - 'api/**'
+      - 'tests/**'
+      - 'utils/**'
+  workflow_dispatch:
 
 jobs:
   publish-npm:
