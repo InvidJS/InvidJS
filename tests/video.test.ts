@@ -10,7 +10,7 @@ describe("Video fetch test", () => {
     expect(
       await InvidJS.fetchVideo(instances[0], "jNQXAC9IVRw")
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch minimal video.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -24,7 +24,7 @@ describe("Video fetch test", () => {
         })
       ).id
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch basic video.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -38,7 +38,7 @@ describe("Video fetch test", () => {
         })
       ).formats
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch full video.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -52,5 +52,5 @@ describe("Video fetch test", () => {
         })
       ).thumbnails
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 });

@@ -13,7 +13,7 @@ describe("Playlist fetch test", () => {
         "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN"
       )
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -29,7 +29,7 @@ describe("Playlist fetch test", () => {
         )
       ).videos
     ).toHaveLength(5);
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch minimal playlist.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -45,7 +45,7 @@ describe("Playlist fetch test", () => {
         )
       ).id
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch basic playlist.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -61,7 +61,7 @@ describe("Playlist fetch test", () => {
         )
       ).videos
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch full playlist.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -77,7 +77,7 @@ describe("Playlist fetch test", () => {
         )
       ).description
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch a mix and fill it with data.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -91,5 +91,5 @@ describe("Playlist fetch test", () => {
         })
       ).description
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 });

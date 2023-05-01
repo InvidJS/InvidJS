@@ -13,5 +13,5 @@ describe("Source validation test", () => {
       let result = await InvidJS.validateSource(instances[0], video, source);
       expect(result).toBe(true);
     }
-  }, 500000);
+  }, 60000);
 });
