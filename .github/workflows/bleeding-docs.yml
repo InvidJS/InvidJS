@@ -43,5 +43,6 @@ jobs:
           cd ../docs
           git config user.email actions@github.com
           git config user.name GitHub Actions
+          git add -A
           git commit -a -m "CI: Rebuild docs (bleeding-edge)"
           git push
