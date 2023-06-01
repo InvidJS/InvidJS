@@ -57,20 +57,6 @@ export class APIError extends Error {
 }
 
 /**
- * @name RateLimitedError
- * @description Error thrown when you send too many requests.
- */
-export class RateLimitedError extends Error {
-  code: number;
-  constructor(message: string) {
-    super(message);
-    this.name = "RateLimitedError";
-    this.code = Enums.ErrorCodes.RateLimited;
-    Object.setPrototypeOf(this, RateLimitedError.prototype);
-  }
-}
-
-/**
  * @name BlockedVideoError
  * @description Error thrown when the video is blocked.
  */
