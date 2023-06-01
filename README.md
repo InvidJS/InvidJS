@@ -1,7 +1,7 @@
 # InvidJS (Bleeding Edge)
 
 [![CI - Run tests](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml)
-[![CI - Build docs](https://github.com/InvidJS/InvidJS/actions/workflows/docs.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/bleeding-docs.yml)
+[![CI - Build docs](https://github.com/InvidJS/InvidJS/actions/workflows/bleeding-docs.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/bleeding-docs.yml)
 [![CI - Publish](https://github.com/InvidJS/InvidJS/actions/workflows/bleeding-publish.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/bleeding-publish.yml)
 
 An attempt to bring Invidious support to Node.js.
