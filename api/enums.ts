@@ -29,7 +29,16 @@ export enum InstanceTypes {
   https = "https",
   tor = "onion",
   i2p = "i2p",
-  ALL = "all",
+}
+
+/**
+ * @name InstanceSorting
+ * @description Lists all possible sorting options of Invidious instances.
+ */
+export enum InstanceSorting {
+  Health = "health",
+  API = "api",
+  Type = "type",
 }
 
 /**
@@ -42,7 +51,6 @@ export enum ContentTypes {
   Channel = "channel",
   Movie = "movie",
   Show = "show",
-  ALL = "all",
 }
 
 /**
@@ -64,7 +72,7 @@ export enum VideoSorting {
   Relevance = "relevance",
   Rating = "rating",
   UploadDate = "upload_date",
-  ViewCount = "view_count",
+  Views = "view_count",
 }
 
 /**

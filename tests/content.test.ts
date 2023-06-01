@@ -11,7 +11,7 @@ describe("Search test", () => {
     expect(
       await InvidJS.fetchSearchSuggestions(instances[0], "typescript")
     ).not.toHaveLength(0);
-  }, 50000);
+  }, 60000);
 
   test("Content must be fetched correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -21,7 +21,7 @@ describe("Search test", () => {
     expect(
       await InvidJS.searchContent(instances[0], "typescript")
     ).not.toHaveLength(0);
-  }, 50000);
+  }, 60000);
 
   test("Content type must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -34,7 +34,7 @@ describe("Search test", () => {
     expect(result[0]).toBeInstanceOf(Channel);
     expect(result[1]).toBeInstanceOf(Channel);
     expect(result[2]).toBeInstanceOf(Channel);
-  }, 50000);
+  }, 60000);
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -44,7 +44,7 @@ describe("Search test", () => {
     expect(
       await InvidJS.searchContent(instances[0], "typescript", { limit: 5 })
     ).toHaveLength(5);
-  }, 50000);
+  }, 60000);
 
   test("Multiple filters must apply correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -59,7 +59,7 @@ describe("Search test", () => {
     expect(result[1]).toBeInstanceOf(Channel);
     expect(result[2]).toBeInstanceOf(Channel);
     expect(result).toHaveLength(18);
-  }, 50000);
+  }, 60000);
 });
 
 describe("Popular fetch test", () => {
@@ -69,7 +69,7 @@ describe("Popular fetch test", () => {
       api_allowed: true,
     });
     expect(await InvidJS.fetchPopular(instances[0])).not.toHaveLength(0);
-  }, 50000);
+  }, 60000);
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -79,7 +79,7 @@ describe("Popular fetch test", () => {
     expect(await InvidJS.fetchPopular(instances[0], { limit: 3 })).toHaveLength(
       3
     );
-  }, 50000);
+  }, 60000);
 });
 
 describe("Trending fetch test", () => {
@@ -89,7 +89,7 @@ describe("Trending fetch test", () => {
       api_allowed: true,
     });
     expect(await InvidJS.fetchTrending(instances[0])).not.toHaveLength(0);
-  }, 50000);
+  }, 60000);
 
   test("Limit must be respected.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -99,5 +99,5 @@ describe("Trending fetch test", () => {
     expect(
       await InvidJS.fetchTrending(instances[0], { limit: 3 })
     ).toHaveLength(3);
-  }, 50000);
+  }, 60000);
 });

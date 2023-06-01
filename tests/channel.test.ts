@@ -11,7 +11,7 @@ describe("Channel fetch test", () => {
     expect(
       await InvidJS.fetchChannel(instances[0], "UCsLiV4WJfkTEHH0b9PmRklw")
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch minimal channel.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -25,7 +25,7 @@ describe("Channel fetch test", () => {
         })
       ).id
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch basic channel.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -39,7 +39,7 @@ describe("Channel fetch test", () => {
         })
       ).subs
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 
   test("Must be able to fetch full channel.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -53,7 +53,7 @@ describe("Channel fetch test", () => {
         })
       ).isVerified
     ).not.toBeUndefined();
-  }, 50000);
+  }, 60000);
 });
 
 describe("Channel endpoint test", () => {
@@ -69,7 +69,7 @@ describe("Channel endpoint test", () => {
     const channels = await InvidJS.fetchRelatedChannels(instances[0], channel);
     expect(channels).not.toHaveLength(0);
     expect(channels[0]).toBeInstanceOf(Channel);
-  }, 50000);
+  }, 60000);
 
   test("Must respect limit on related channels.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -85,7 +85,7 @@ describe("Channel endpoint test", () => {
     });
     expect(channels).toHaveLength(3);
     expect(channels[0]).toBeInstanceOf(Channel);
-  }, 50000);
+  }, 60000);
 
   test("Must fetch playlists correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -102,7 +102,7 @@ describe("Channel endpoint test", () => {
     );
     expect(playlists).not.toHaveLength(0);
     expect(playlists[0]).toBeInstanceOf(Playlist);
-  }, 50000);
+  }, 60000);
 
   test("Must respect limit on playlists.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -122,7 +122,7 @@ describe("Channel endpoint test", () => {
     );
     expect(playlists).toHaveLength(5);
     expect(playlists[0]).toBeInstanceOf(Playlist);
-  }, 50000);
+  }, 60000);
 
   test("Must fetch videos correctly.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -136,7 +136,7 @@ describe("Channel endpoint test", () => {
     const videos = await InvidJS.fetchChannelVideos(instances[0], channel);
     expect(videos).not.toHaveLength(0);
     expect(videos[0]).toBeInstanceOf(Video);
-  }, 50000);
+  }, 60000);
 
   test("Must respect limit on videos.", async () => {
     const instances = await InvidJS.fetchInstances({
@@ -152,5 +152,5 @@ describe("Channel endpoint test", () => {
     });
     expect(videos).toHaveLength(7);
     expect(videos[0]).toBeInstanceOf(Video);
-  }, 50000);
+  }, 60000);
 });

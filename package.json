@@ -16,7 +16,7 @@
   "engines": {
     "node": ">=16.9.0"
   },
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "An attempt to add Invidious support to Node.js",
   "scripts": {
     "prettier": "npx prettier index.ts ./api/* ./tests/* ./utils/* --write",
@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
-    "@types/node": "^18.16.0",
+    "@types/node": "^20.2.5",
     "jest": "^29.5.0",
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.0",

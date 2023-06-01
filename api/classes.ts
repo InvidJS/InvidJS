@@ -9,7 +9,7 @@ import * as Enums from "./enums";
  * @param {boolean} api_allowed  - Is API allowed?
  * @param {Enums.InstanceTypes} type  - Type of the instance.
  * @param {string} url  - URL of the instance.
- * @param {string} health - Latest reported health of the instance.
+ * @param {number} [health] - Latest reported health of the instance.
  */
 export class Instance {
   public region: string;
