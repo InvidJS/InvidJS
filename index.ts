@@ -65,7 +65,7 @@ import fs from "fs";
  */
 async function fetchInstances(
   opts: InstanceFetchOptions = {
-    type: InstanceTypes.ALL,
+    type: "all",
     region: "all",
     api_allowed: "any",
     limit: 0,

@@ -22,7 +22,7 @@ export interface ContentOptions {
  * @name InstanceFetchOptions
  * @description Instance fetch filter.
  * @param {string | undefined} url - URL of the instance to search.
- * @param {InstanceTypes | undefined} type - Type of the instances to search.
+ * @param {InstanceTypes | "all" | undefined} type - Type of the instances to search.
  * @param {string | undefined} region - Region of the instances to search.
  * @param {boolean | "any" | undefined} api_allowed - API access value to search.
  * @param {number | undefined} health - Filter instances by health.
@@ -31,7 +31,7 @@ export interface ContentOptions {
  */
 export interface InstanceFetchOptions extends CommonOptions {
   url?: string;
-  type?: Enums.InstanceTypes;
+  type?: Enums.InstanceTypes | "all";
   region?: string;
   api_allowed?: boolean | "any";
   health?: number | "any";

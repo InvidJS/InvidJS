@@ -29,7 +29,6 @@ export enum InstanceTypes {
   https = "https",
   tor = "onion",
   i2p = "i2p",
-  ALL = "all",
 }
 
 /**
@@ -52,7 +51,6 @@ export enum ContentTypes {
   Channel = "channel",
   Movie = "movie",
   Show = "show",
-  ALL = "all",
 }
 
 /**
