@@ -495,7 +495,7 @@ async function fetchChannel(
       "The instance you provided does not support API requests or is offline!"
     );
   let info!: Channel;
-  const queryURL = `${instance.url}/api/v1/channels/${id}?fields=author,authorId,subCount,totalViews,description,authorVerified,latestVideos`;
+  const queryURL = `${instance.url}/api/v1/channels/${id}`;
   let params = new QueryParams();
   switch (opts.type) {
     case FetchTypes.Minimal: {
