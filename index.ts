@@ -69,7 +69,7 @@ async function fetchInstances(
     region: "all",
     api_allowed: "any",
     limit: 0,
-    sorting: InstanceSorting.Health
+    sorting: InstanceSorting.Health,
   }
 ): Promise<Instance[]> {
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
@@ -123,31 +123,33 @@ async function fetchInstances(
         throw new APIError(err.message);
       }
     });
-    switch (opts.sorting) {
-      case InstanceSorting.Health: 
-      default: {
-        instances.sort((a, b) => {
-          if (a.health === undefined || isNaN(a.health)) return 1;
-          if (b.health === undefined || isNaN(b.health)) return -1;
-          return b.health - a.health;
-        });
-        break;
-      }
-      case InstanceSorting.API: {
-        instances.sort((a, b) => {
-          if (a.api_allowed === true && b.api_allowed === false) return -1;
-          if (a.api_allowed === false && b.api_allowed === true) return 1;
-          return 0;
-        })
-      }
-      case InstanceSorting.Type: {
-        instances.sort((a, b) => {
-          if (a.type === InstanceTypes.https && b.type === InstanceTypes.tor) return -1;
-          if (a.type === InstanceTypes.tor && b.type === InstanceTypes.i2p) return -1;
-          return 0;
-        });
-      }
+  switch (opts.sorting) {
+    case InstanceSorting.Health:
+    default: {
+      instances.sort((a, b) => {
+        if (a.health === undefined || isNaN(a.health)) return 1;
+        if (b.health === undefined || isNaN(b.health)) return -1;
+        return b.health - a.health;
+      });
+      break;
     }
+    case InstanceSorting.API: {
+      instances.sort((a, b) => {
+        if (a.api_allowed === true && b.api_allowed === false) return -1;
+        if (a.api_allowed === false && b.api_allowed === true) return 1;
+        return 0;
+      });
+    }
+    case InstanceSorting.Type: {
+      instances.sort((a, b) => {
+        if (a.type === InstanceTypes.https && b.type === InstanceTypes.tor)
+          return -1;
+        if (a.type === InstanceTypes.tor && b.type === InstanceTypes.i2p)
+          return -1;
+        return 0;
+      });
+    }
+  }
   return instances;
 }
 
@@ -416,7 +418,11 @@ async function fetchPlaylist(
             if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
               videos.push(new Video(video.title, video.videoId));
           });
-          let data = fillMixData(res.data.author, res.data.authorId, res.data.description)
+          let data = fillMixData(
+            res.data.author,
+            res.data.authorId,
+            res.data.description
+          );
           info = new Playlist(
             res.data.title,
             id,

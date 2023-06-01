@@ -8,7 +8,7 @@ export enum ErrorCodes {
   APIBlocked = 10002,
   APIError = 10003,
   BlockedVideo = 10004,
-  InvalidContent = 10005
+  InvalidContent = 10005,
 }
 
 /**
@@ -38,7 +38,7 @@ export enum InstanceTypes {
 export enum InstanceSorting {
   Health = "health",
   API = "api",
-  Type = "type"
+  Type = "type",
 }
 
 /**
