@@ -1,13 +1,14 @@
 name: CI - Run tests
 
 on:
+  release:
+    types: [published]
   pull_request:
     branches:
       - master
       - bleeding-edge
   push:
     branches:
-      - master
       - bleeding-edge
     paths:
       - "index.ts"

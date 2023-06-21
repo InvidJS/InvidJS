@@ -1,13 +1,11 @@
 name: CI - Publish (bleeding-edge)
 
 on:
-  push:
-    branches:
-      - bleeding-edge
-    paths:
-      - 'index.ts'
-      - 'api/**'
-      - 'utils/**'
+  workflow_run:
+    workflows: ["CI - Run tests"]
+    branches: [bleeding-edge]
+    types: 
+      - completed    
   workflow_dispatch:
 
 jobs:
