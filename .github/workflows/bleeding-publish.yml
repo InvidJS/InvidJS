@@ -6,9 +6,7 @@ on:
       - bleeding-edge
     paths:
       - 'index.ts'
-      - 'jest.config.js'
       - 'api/**'
-      - 'tests/**'
       - 'utils/**'
   workflow_dispatch:
 
