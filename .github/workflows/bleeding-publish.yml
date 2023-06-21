@@ -1,15 +1,11 @@
 name: CI - Publish (bleeding-edge)
 
 on:
-  push:
-    branches:
-      - bleeding-edge
-    paths:
-      - 'index.ts'
-      - 'jest.config.js'
-      - 'api/**'
-      - 'tests/**'
-      - 'utils/**'
+  workflow_run:
+    workflows: ["CI - Run tests"]
+    branches: [bleeding-edge]
+    types: 
+      - completed    
   workflow_dispatch:
 
 jobs:
@@ -39,7 +35,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - run: npm version 1.0.3-${{github.sha}} --no-git-tag-version       
+      - run: npm version 1.0.4-${{github.sha}} --no-git-tag-version       
       - run: npm install
       - run: npm run build
       - run: cd dist && npm publish --access public

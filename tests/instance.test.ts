@@ -9,10 +9,10 @@ describe("Instance fetch test", () => {
 
   test("Only a single instance should be fetched if a URL is given.", async () => {
     const instances = await InvidJS.fetchInstances({
-      url: "https://invidious.snopyta.org",
+      url: "https://vid.puffyan.us",
     });
     expect(instances).toHaveLength(1);
-    expect(instances[0].url).toBe("https://invidious.snopyta.org");
+    expect(instances[0].url).toBe("https://vid.puffyan.us");
   }, 60000);
 
   test("Instances type should be respected.", async () => {
