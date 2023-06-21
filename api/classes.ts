@@ -307,6 +307,34 @@ export class Image {
 }
 
 /**
+ * @name CommunityPost
+ * @description Community post object.
+ *
+ * @param {string} author - Author username.
+ * @param {string} author_id - Author ID.
+ * @param {string} text - Post text.
+ * @param {Array<Video | Playlist | Image | Poll>} [attachments] - List of attachments.
+ * @param {string} [date] - Date of publishing.
+ * @param {number} [likes] - Number of likes.
+ */
+export class CommunityPost {
+  public author: string;
+  public author_id: string;
+  public text: string;
+  public attachments?: Array<Video | Playlist | Image | Poll>;
+  public date?: string;
+  public likes?: number;
+  constructor(author: string, author_id: string, text: string, attachments?: Array<Video | Playlist | Image | Poll>, date?: string, likes?: number) {
+    this.author = author;
+    this.author_id = author_id;
+    this.text = text;
+    this.attachments = attachments;
+    this.date = date;
+    this.likes = likes;
+  }
+}
+
+/**
  * @name Comment
  * @description Comment object.
  *
@@ -322,5 +350,38 @@ export class Comment {
     this.author = author;
     this.author_id = author_id;
     this.text = text;
+  }
+}
+
+/**
+ * @name Poll
+ * @description Community Post poll object.
+ * 
+ * @param {number} votes - Number of votes.
+ * @param {Array<PollChoice>} choices - List of choices.
+ **/
+export class Poll {
+  public votes: number;
+  public choices: Array<PollChoice>;
+  constructor(votes: number, choices: Array<PollChoice>) {
+    this.votes = votes;
+    this.choices = choices;
+  }
+}
+
+
+/**
+ * @name PollChoice
+ * @description A choice of a Community Post poll.
+ *
+ * @param {string} text - Choice text.
+ * @param {string} [image] - Image URL.
+ */
+export class PollChoice {
+  public text: string;
+  public image?: Image;
+  constructor(text: string, image?: Image) {
+    this.text = text;
+    this.image = image;
   }
 }
