@@ -24,7 +24,7 @@ describe("Instance fetch test", () => {
 
   test("Instances region should be respected.", async () => {
     const instances = await InvidJS.fetchInstances({ region: "US" });
-    expect(instances[0].region).toBe("PL");
+    expect(instances[0].region).toBe("US");
   }, 60000);
 
   test("Instance API status should be respected.", async () => {
