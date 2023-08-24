@@ -1,4 +1,6 @@
+import axios from "axios";
 import * as Enums from "./enums";
+import { APINotAvailableError, APIError } from "./errors";
 
 /**
  * @name Instance
@@ -32,6 +34,42 @@ export class Instance {
     this.type = type;
     this.url = url;
     this.health = health;
+  }
+
+  /**
+ * @name fetchStats
+ * @description Fetches stats of an instance.
+ * @example await instance.fetchStats();
+ * @returns {Promise<InstanceStats>} Instance stats object.
+ */
+  async fetchStats(): Promise<InstanceStats> {
+    if (this.api_allowed === false || this.api_allowed === null)
+    throw new APINotAvailableError(
+      "The instance you provided does not support API requests or is offline!"
+    );
+  let stats!: InstanceStats;
+  await axios
+    .get(`${this.url}/api/v1/stats`)
+    .then((res) => {
+      let software = new SoftwareStats(
+        res.data.software.name,
+        res.data.software.version,
+        res.data.software.branch
+      );
+      let users = new UserStats(
+        res.data.usage.users.total,
+        res.data.usage.users.activeHalfyear,
+        res.data.usage.users.activeMonth,
+        res.data.openRegistrations
+      );
+      stats = new InstanceStats(software, users);
+    })
+    .catch((err) => {
+      if (err.name === "AxiosError") {
+        throw new APIError(err.message);
+      }
+    });
+  return stats;
   }
 }
 

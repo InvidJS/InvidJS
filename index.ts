@@ -154,47 +154,6 @@ async function fetchInstances(
 }
 
 /**
- * @name fetchStats
- * @description Fetches stats of an instance.
- * @param {Instance} instance - Instance to fetch data from.
- * @example await InvidJS.fetchStats(instance);
- * @returns {Promise<InstanceStats>} Instance stats object.
- */
-async function fetchStats(instance: Instance): Promise<InstanceStats> {
-  if (!instance)
-    throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
-    );
-  if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
-    );
-  let stats!: InstanceStats;
-  await axios
-    .get(`${instance.url}/api/v1/stats`)
-    .then((res) => {
-      let software = new SoftwareStats(
-        res.data.software.name,
-        res.data.software.version,
-        res.data.software.branch
-      );
-      let users = new UserStats(
-        res.data.usage.users.total,
-        res.data.usage.users.activeHalfyear,
-        res.data.usage.users.activeMonth,
-        res.data.openRegistrations
-      );
-      stats = new InstanceStats(software, users);
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
-    });
-  return stats;
-}
-
-/**
  * @name fetchVideo
  * @description Fetches video data.
  * @param {Instance} instance - Instance to fetch data from.
@@ -1084,7 +1043,6 @@ async function fetchSource(
 
 export {
   fetchInstances,
-  fetchStats,
   fetchVideo,
   fetchComments,
   fetchPlaylist,

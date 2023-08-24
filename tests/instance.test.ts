@@ -23,7 +23,7 @@ describe("Instance fetch test", () => {
   }, 60000);
 
   test("Instances region should be respected.", async () => {
-    const instances = await InvidJS.fetchInstances({ region: "PL" });
+    const instances = await InvidJS.fetchInstances({ region: "US" });
     expect(instances[0].region).toBe("PL");
   }, 60000);
 
@@ -60,6 +60,6 @@ describe("Instance stats fetch test", () => {
       health: 95,
       api_allowed: true,
     });
-    expect(await InvidJS.fetchStats(instances[0])).not.toBeUndefined();
+    expect(await instances[0].fetchStats()).not.toBeUndefined();
   }, 60000);
 });
