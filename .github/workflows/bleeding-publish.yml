@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm version 1.0.4-${{github.sha}} --no-git-tag-version   
+      - run: npm version 1.0.4-${{github.run_id}} --no-git-tag-version   
       - run: npm install
       - run: npm run build
       - run: cd dist && npm publish --provenance --access public
@@ -39,7 +39,7 @@ jobs:
         with:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
-      - run: npm version 1.0.4-${{github.sha}} --no-git-tag-version       
+      - run: npm version 1.0.4-${{github.run_id}} --no-git-tag-version       
       - run: npm install
       - run: npm run build
       - run: cd dist && npm publish --access public
