@@ -946,7 +946,7 @@ async function validateSource(
  * @param {StreamOptions} [opts] - Options for fetching the source.
  * @example await InvidJS.fetchSource(instance, video, format);
  * @example await InvidJS.fetchSource(instance, video, format, {saveTo: SaveSourceTo.Memory});
- * @returns {Promise<ReadableStream | string>} Memory stream or file path of the source.
+ * @returns {Promise<Blob | string>} Memory stream or file path of the source.
  */
 async function fetchSource(
   instance: Instance,
@@ -957,7 +957,7 @@ async function fetchSource(
     path: "./",
     parts: 5,
   }
-): Promise<ReadableStream | string> {
+): Promise<Blob | string> {
   if (!instance)
     throw new MissingArgumentError(
       "You must provide an instance to fetch data from!"
@@ -1017,7 +1017,7 @@ async function fetchSource(
       switch (opts.saveTo) {
         case SaveSourceTo.Memory: {
           let blob = new Blob([buffer], { type: source.type.split("/")[0] });
-          return blob.stream();
+          return blob;
         }
         case SaveSourceTo.File:
         default: {
