@@ -41,15 +41,15 @@ name: Publish to NPM
 
 steps:
   - name: Publish
-    image: plugins/npm
-    settings:
-      token: 
-        from_secret: npm_token
+    image: node
     commands:
       - npm install
       - npm run build
+      - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
       - cd dist && npm publish --provenance --access public
+    environment:
+    NPM_TOKEN:
+      from_secret: npm_token
     trigger:
     event:
       - tag
-
