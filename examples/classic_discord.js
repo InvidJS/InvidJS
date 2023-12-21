@@ -1,18 +1,21 @@
 //This example uses classic text commands. Make sure you have the Privileged Message Content intent enabled.
+//Use `type: "module"` in your package.json.
 
 //Dependencies: Discord.js + the voice library and InvidJS
-const Discord = require("discord.js");
-const InvidJS = require("@invidjs/invid-js");
-const {
+import 'dotenv/config';
+
+import Discord from "discord.js";
+import * as InvidJS from "@invidjs/invid-js";
+import {
   joinVoiceChannel,
   createAudioPlayer,
   createAudioResource,
   getVoiceConnection,
   AudioPlayerStatus,
-} = require("@discordjs/voice");
+} from "@discordjs/voice";
 
 //Your token goes here. You may edit it in directly as well.
-const token = process.env.BOT_TOKEN || process.argv[2];
+const token = process.env.BOT_TOKEN;
 
 //Creating a client
 const client = new Discord.Client({
@@ -32,7 +35,6 @@ client.on("ready", () => {
 
 //Commands
 client.on("messageCreate", async (message) => {
-
   //Play command
   if (message.content.startsWith("!play")) {
     if (!message.member.voice.channel)
@@ -54,10 +56,7 @@ client.on("messageCreate", async (message) => {
     );
 
     //Fetching the given stream.
-    let stream = await InvidJS.fetchSource(instance, video, format, {
-      saveTo: InvidJS.SaveSourceTo.Memory,
-      parts: 10,
-    });
+    let stream = await InvidJS.saveStream(instance, video, format);
 
     //Creating a player.
     let connection = joinVoiceChannel({

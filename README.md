@@ -1,8 +1,7 @@
 # InvidJS
 
-[![CI - Run tests](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/tests.yml)
-[![CI - Build docs](https://github.com/InvidJS/InvidJS/actions/workflows/stable-docs.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/stable-docs.yml)
-[![CI - Publish](https://github.com/InvidJS/InvidJS/actions/workflows/stable-publish.yml/badge.svg)](https://github.com/InvidJS/InvidJS/actions/workflows/stable-publish.yml)
+[![npm version](https://badge.fury.io/js/@invidjs%2Finvid-js.svg)](https://badge.fury.io/js/@invidjs%2Finvid-js)
+![npm](https://img.shields.io/npm/dt/%40invidjs/invid-js)
 
 An attempt to bring Invidious support to Node.js.
 
@@ -17,14 +16,13 @@ To install InvidJS, type `npm install @invidjs/invid-js` in your terminal.
 After installing, insert the following in your code:
 
 ```js
-import * as InvidJS from "@invidjs/invid-js" //TypeScript, ESM Node.js
-const InvidJS = require("@invidjs/invid-js") //CSM Node.js
+import * as InvidJS from "@invidjs/invid-js"
 ```
 
 # Changes from the stock Invidious API
-- Useless/broken endpoints, such as annotations and captions are not carried over. This might be reconsidered in the future.
-- To reduce noise, only the most important data is fetched in the case of big objects.
-- Some data is filled in for you and/or made humanly-readable where possible. Examples of this include mixes and formats with undefined containers.
+- Useless or broken endpoints are not carried over. Previously working endpoints are marked as deprecated.
+- Only the most important data is fetched for big objects.
+- Some data is filled in for you and/or made humanly-readable where possible.
 - Minimal and basic versions of objects are available to be consistent with different outputs.
 - Limit options are provided where they're not normally supported by the API.
 - Some objects and outputs are combined, for example:
@@ -35,4 +33,4 @@ const InvidJS = require("@invidjs/invid-js") //CSM Node.js
 # Building from source
 To build the package, clone this repository and execute `npm run build` in your terminal.
 
-[Documentation](https://invidjs.github.io/docs/)
+[Documentation](https://invidjs.js.org/)

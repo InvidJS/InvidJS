@@ -1,4 +1,4 @@
-import * as Enums from "./enums";
+import * as Enums from "./enums.js";
 
 /**
  * @name CommonOptions
@@ -57,13 +57,6 @@ export interface VideoFetchOptions extends ContentOptions {
 }
 
 /**
- * @name ChannelFetchOptions
- * @description Options for fetching channels.
- * @param {FetchTypes | undefined} type - Type of the channel to return.
- */
-export interface ChannelFetchOptions extends ContentOptions {}
-
-/**
  * @name CommentFetchOptions
  * @description Options for fetching channels.
  * @param {CommentSorting | undefined} sorting - Sort by...
@@ -81,7 +74,7 @@ export interface CommentFetchOptions extends CommonOptions {
  * @param {DateValues | undefined} date - Get videos by a certain date.
  * @param {Duration | undefined} duration - Duration of a video.
  * @param {ContentTypes | undefined} type - Type of the content to search.
- * @param {string | undefined} features - Comma-separated features of a video. Possible values: "hd", "subtitles", "creative_commons", "3d", "live", "purchased", "4k", "360", "location", "hdr", "vr180"
+ * @param {Enums.VideoFeatures[] | undefined} features - Comma-separated features of a video.
  * @param {string | undefined} region - Region to fetch the video as.
  * @param {number | undefined} limit - How many videos to return.
  */
@@ -91,7 +84,7 @@ export interface SearchOptions extends CommonOptions {
   date?: Enums.DateValues;
   duration?: Enums.Duration;
   type?: Enums.ContentTypes;
-  features?: string;
+  features?: Enums.VideoFeatures[];
   region?: string;
 }
 
@@ -106,20 +99,6 @@ export interface TrendingOptions extends CommonOptions {
   region?: string;
   type?: Enums.TrendingTypes;
 }
-
-/**
- * @name PopularOptions
- * @description Options for fetching popular content.
- * @param {number | undefined} limit - How many videos to return.
- */
-export interface PopularOptions extends CommonOptions {}
-
-/**
- * @name ChannelRelatedOptions
- * @description Options for fetching related channels.
- * @param {number | undefined} limit - How many channels to return.
- */
-export interface ChannelRelatedOptions extends CommonOptions {}
 
 /**
  * @name ChannelVideosOptions
@@ -144,12 +123,10 @@ export interface ChannelPlaylistsOptions extends CommonOptions {
 /**
  * @name StreamOptions
  * @description Options for downloading a stream.
- * @param {SaveSourceTo | undefined} saveTo - Where to save the stream.
- * @param {number | undefined} parts - Number of parts to split the stream into.
- * @param {string | undefined} path - Path to save the stream to. If not specified, the stream will be saved to the current directory.
+ * @param {number} parts - Number of parts to split the stream into.
+ * @param {string | undefined} path - Path to save the stream to (current directory by default).
  */
 export interface StreamOptions {
-  saveTo?: Enums.SaveSourceTo;
-  parts?: number;
+  parts: number;
   path?: string;
 }

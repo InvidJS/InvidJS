@@ -1,10 +1,10 @@
-export function convertToString(time: number) {
-  let hours = Math.floor(time / 3600);
-  let minutes = Math.floor(time / 60) % 60;
-  let seconds = time % 60;
-  let length = [hours, minutes, seconds]
+export const convertToString = (time: number): string => {
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor(time / 60) % 60;
+  const seconds = time % 60;
+  const length = [hours, minutes, seconds]
     .map((v) => (v < 10 ? "0" + v : v))
     .filter((v, i) => v !== "00" || i > 0)
     .join(":");
   return length;
-}
+};

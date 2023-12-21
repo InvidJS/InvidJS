@@ -1,14 +1,15 @@
-import { Format, Image } from "../api/classes";
+import { Format } from "../api/classes/Format.js";
+import { Image } from "../api/classes/Image.js";
 
-export function addFormats(formats: any) {
-  let formatArray: Array<Format> = [];
+export const addFormats = (formats: any): Format[] => {
+  const formatArray: Array<Format> = [];
   formats.forEach((format: any) => {
-    let container = format.container
+    const container = format.container
       ? format.container
       : format.type.split("/")[1].split(";")[0];
     if (!format.type.startsWith("audio")) {
       formatArray.push(
-        new Format(format.url, format.itag, format.type, container)
+        new Format(format.url, format.itag, format.type, container),
       );
     } else {
       formatArray.push(
@@ -19,29 +20,29 @@ export function addFormats(formats: any) {
           container,
           format.audioQuality,
           format.audioSampleRate,
-          format.audioChannels
-        )
+          format.audioChannels,
+        ),
       );
     }
   });
   return formatArray;
-}
+};
 
-export function addThumbnails(thumbnails: any) {
-  let thumbnailsArray: Array<Image> = [];
+export const addThumbnails = (thumbnails: any): Image[] => {
+  const thumbnailsArray: Array<Image> = [];
   thumbnails.forEach((thumb: any) => {
     thumbnailsArray.push(
-      new Image(thumb.url, thumb.width, thumb.height, thumb.quality)
+      new Image(thumb.url, thumb.width, thumb.height, thumb.quality),
     );
   });
   return thumbnailsArray;
-}
+};
 
-export function fillMixData(author: any, author_id: any, description: any) {
-  let mixAuthor = author ? author : "SYSTEM";
-  let authorId = author_id ? author_id : "-1";
-  let mixDescription = description
+export const fillMixData = (author: any, author_id: any, description: any) => {
+  const mixAuthor = author ? author : "SYSTEM";
+  const authorId = author_id ? author_id : "-1";
+  const mixDescription = description
     ? description
     : "This playlist was created by the system.";
   return { mixAuthor, authorId, mixDescription };
-}
+};

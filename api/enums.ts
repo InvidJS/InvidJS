@@ -9,11 +9,15 @@ export enum ErrorCodes {
   APIError = 10003,
   BlockedVideo = 10004,
   InvalidContent = 10005,
+  UnknownError = 10006,
 }
 
 /**
  * @name FetchTypes
- * @description Use this to determine how verbose you need your output to be. Minimal contains only the title and the ID. Basic, depending on the type, will contain all the objects necessary to have the fetched content work. Full will make all the fields available to you.
+ * @description Use this to determine how verbose you need your output to be.
+ * @description Mimimal includes the title and the ID.
+ * @description Basic includes the most common parameters.
+ * @description Full includes all parametres of an object.
  */
 export enum FetchTypes {
   Minimal = "minimal",
@@ -36,6 +40,8 @@ export enum InstanceTypes {
  * @description Lists all possible sorting options of Invidious instances.
  */
 export enum InstanceSorting {
+  DailyHealth = "daily_health",
+  MonthlyHealth = "monthly_health",
   Health = "health",
   API = "api",
   Type = "type",
@@ -73,6 +79,24 @@ export enum VideoSorting {
   Rating = "rating",
   UploadDate = "upload_date",
   Views = "view_count",
+}
+
+/**
+ * @name VideoFeatures
+ * @description Possible features of a video.
+ */
+export enum VideoFeatures {
+  HD = "hd",
+  Subtitles = "subtitles",
+  CCLicense = "creative_commons",
+  Format_3D = "3d",
+  Live = "live",
+  Purchased = "purchased",
+  Format_4K = "4k",
+  Format_360 = "360",
+  Location = "location",
+  HDR = "hdr",
+  VR = "vr180",
 }
 
 /**
@@ -124,15 +148,6 @@ export enum ChannelPlaylistsSorting {
   Newest = "newest",
   Popular = "popular",
   Last = "last",
-}
-
-/**
- * @name SaveSourceTo
- * @description Possible values on where to save the source.
- */
-export enum SaveSourceTo {
-  Memory = "memory",
-  File = "file",
 }
 
 /**

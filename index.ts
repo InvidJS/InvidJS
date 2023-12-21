@@ -1,3 +1,10 @@
+import { Channel } from "./api/classes/Channel.js";
+import { Format } from "./api/classes/Format.js";
+import { Instance } from "./api/classes/Instance.js";
+import { Playlist } from "./api/classes/Playlist.js";
+import { Video } from "./api/classes/Video.js";
+import { Comment } from "./api/classes/Comment.js";
+import { Image } from "./api/classes/Image.js";
 import {
   ErrorCodes,
   FetchTypes,
@@ -11,49 +18,40 @@ import {
   DateValues,
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
-  SaveSourceTo,
   AudioQuality,
   ImageQuality,
-} from "./api/enums";
+} from "./api/enums.js";
+import { APIError } from "./api/errors/APIError.js";
+import { APINotAvailableError } from "./api/errors/APINotAvailableError.js";
+import { BlockedVideoError } from "./api/errors/BlockedVideoError.js";
+import { InvalidArgumentError } from "./api/errors/InvalidArgumentError.js";
+import { MissingArgumentError } from "./api/errors/MissingArgumentError.js";
+import { NotFoundError } from "./api/errors/NotFoundError.js";
+import { UnknownError } from "./api/errors/UnknownError.js";
 import {
   InstanceFetchOptions,
   PlaylistFetchOptions,
   VideoFetchOptions,
-  ChannelFetchOptions,
-  ChannelPlaylistsOptions,
-  ChannelRelatedOptions,
-  ChannelVideosOptions,
   CommentFetchOptions,
   SearchOptions,
   TrendingOptions,
-  PopularOptions,
   StreamOptions,
-} from "./api/interfaces";
+  ContentOptions,
+  CommonOptions,
+} from "./api/interfaces.js";
+import { convertToString } from "./utils/LengthConverter.js";
 import {
-  MissingArgumentError,
-  InvalidArgumentError,
-  APINotAvailableError,
-  APIError,
-  BlockedVideoError,
-  NotFoundError,
-} from "./api/errors";
-import {
-  Instance,
-  InstanceStats,
-  SoftwareStats,
-  UserStats,
-  Channel,
-  Playlist,
-  Video,
-  Format,
-  Image,
-  Comment,
-} from "./api/classes";
-import { convertToString } from "./utils/LengthConverter";
-import { addFormats, addThumbnails, fillMixData } from "./utils/ObjectCreator";
-import { QueryParams } from "./utils/Query";
-import axios from "axios";
-import fs from "fs";
+  addFormats,
+  addThumbnails,
+  fillMixData,
+} from "./utils/ObjectCreator.js";
+import { QueryParams } from "./utils/Query.js";
+import got, { HTTPError, RequestError } from "got";
+import { PassThrough, Stream } from "stream";
+import https from "https";
+
+const useragent =
+  "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0";
 
 /**
  * @name fetchInstances
@@ -63,67 +61,92 @@ import fs from "fs";
  * @example await InvidJS.fetchInstances({limit: 10});
  * @returns {Promise<Instance[]>} Array of instance objects.
  */
-async function fetchInstances(
+const fetchInstances = async (
   opts: InstanceFetchOptions = {
-    type: "all",
-    region: "all",
     api_allowed: "any",
     limit: 0,
+    region: "all",
     sorting: InstanceSorting.Health,
-  }
-): Promise<Instance[]> {
+    type: "all",
+  },
+): Promise<Instance[]> => {
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
+      "Limit is invalid - must be a number greater than 0!",
     );
   if (opts.health && (typeof opts.health !== "number" || opts.health < 0))
     throw new InvalidArgumentError(
-      "Health is invalid - must be a number greater than 0!"
+      "Health is invalid - must be a number greater than 0!",
     );
-  let instances: Array<Instance> = [];
-  await axios
-    .get("https://api.invidious.io/instances.json")
-    .then((res) => {
-      res.data.forEach((instance: any) => {
-        let health = undefined;
-        if (instance[1].monitor !== null) {
-          health = instance[1].monitor.dailyRatios[0].ratio;
-        }
-        if (
-          (!opts.url || opts.url === instance[1].uri) &&
-          (!opts.type ||
-            opts.type === "all" ||
-            instance[1].type === opts.type) &&
-          (!opts.region ||
-            opts.region === "all" ||
-            instance[1].region === opts.region) &&
-          (opts.api_allowed === undefined ||
-            opts.api_allowed === "any" ||
-            instance[1].api === opts.api_allowed) &&
-          (!opts.health ||
-            opts.health === "any" ||
-            parseFloat(health) >= opts.health) &&
-          (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
-        ) {
-          instances.push(
-            new Instance(
-              instance[1].region,
-              instance[1].cors,
-              instance[1].api,
-              instance[1].type,
-              instance[1].uri,
-              parseFloat(health)
-            )
-          );
-        } else return false;
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
+  const instances: Array<Instance> = [];
+  try {
+    const res = await got.get("https://api.invidious.io/instances.json", {
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    json.forEach((instance: any) => {
+      let daily_health = undefined;
+      let monthly_health = undefined;
+      let health = undefined;
+      if (instance[1].monitor !== null) {
+        daily_health = instance[1].monitor.dailyRatios[0].ratio;
+        monthly_health = instance[1].monitor["30dRatio"].ratio;
+        health = instance[1].monitor["90dRatio"].ratio;
+      }
+      if (
+        (!opts.url || opts.url === instance[1].uri) &&
+        (!opts.type || opts.type === "all" || instance[1].type === opts.type) &&
+        (!opts.region ||
+          opts.region === "all" ||
+          instance[1].region === opts.region) &&
+        (opts.api_allowed === undefined ||
+          opts.api_allowed === "any" ||
+          instance[1].api === opts.api_allowed) &&
+        (!opts.health ||
+          opts.health === "any" ||
+          parseFloat(health) >= opts.health) &&
+        (!opts.limit || opts.limit === 0 || instances.length < opts.limit)
+      ) {
+        instances.push(
+          new Instance(
+            instance[1].region,
+            instance[1].cors,
+            instance[1].api,
+            instance[1].type,
+            instance[1].uri,
+            parseFloat(daily_health),
+            parseFloat(monthly_health),
+            parseFloat(health),
+          ),
+        );
+      } else return false;
+    });
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   switch (opts.sorting) {
+    case InstanceSorting.DailyHealth: {
+      instances.sort((a, b) => {
+        if (a.daily_health === undefined || isNaN(a.daily_health)) return 1;
+        if (b.daily_health === undefined || isNaN(b.daily_health)) return -1;
+        return b.daily_health - a.daily_health;
+      });
+      break;
+    }
+    case InstanceSorting.MonthlyHealth: {
+      instances.sort((a, b) => {
+        if (a.monthly_health === undefined || isNaN(a.monthly_health)) return 1;
+        if (b.monthly_health === undefined || isNaN(b.monthly_health))
+          return -1;
+        return b.monthly_health - a.monthly_health;
+      });
+      break;
+    }
     case InstanceSorting.Health:
     default: {
       instances.sort((a, b) => {
@@ -151,7 +174,7 @@ async function fetchInstances(
     }
   }
   return instances;
-}
+};
 
 /**
  * @name fetchVideo
@@ -163,27 +186,27 @@ async function fetchInstances(
  * @example await InvidJS.fetchVideo(instance, "id", {region: "US"});
  * @returns {Promise<Video>} Video object.
  */
-async function fetchVideo(
+const fetchVideo = async (
   instance: Instance,
   id: string,
   opts: VideoFetchOptions = {
     region: "US",
     type: FetchTypes.Basic,
-  }
-): Promise<Video> {
+  },
+): Promise<Video> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (!id)
     throw new MissingArgumentError("You must provide a video ID to fetch it!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
   let info!: Video;
   const queryURL = `${instance.url}/api/v1/videos/${id}`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   switch (opts.type) {
     case FetchTypes.Minimal: {
       params.fields = "title,videoId";
@@ -201,63 +224,69 @@ async function fetchVideo(
     }
   }
   if (opts.region) params.region = opts.region;
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      switch (opts.type) {
-        case FetchTypes.Full: {
-          let lengthString = convertToString(res.data.lengthSeconds);
-          let formats = addFormats(
-            res.data.formatStreams.concat(res.data.adaptiveFormats)
-          );
-          let thumbnails = addThumbnails(res.data.videoThumbnails);
-          info = new Video(
-            res.data.title,
-            id,
-            formats,
-            res.data.lengthSeconds,
-            lengthString,
-            res.data.author,
-            res.data.authorId,
-            res.data.description,
-            res.data.publishedText,
-            res.data.viewCount,
-            res.data.likeCount,
-            res.data.dislikeCount,
-            thumbnails
-          );
-          break;
-        }
-        case FetchTypes.Basic:
-        default: {
-          let lengthString = convertToString(res.data.lengthSeconds);
-          let formats = addFormats(
-            res.data.formatStreams.concat(res.data.adaptiveFormats)
-          );
-          info = new Video(
-            res.data.title,
-            id,
-            formats,
-            res.data.lengthSeconds,
-            lengthString
-          );
-          break;
-        }
-        case FetchTypes.Minimal: {
-          info = new Video(res.data.title, id);
-          break;
-        }
-      }
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        if (err.message.includes("404"))
-          throw new NotFoundError("The video you provided was not found!");
-        else throw new APIError(err.message);
-      }
+  const searchParams = new URLSearchParams(Object.entries(params));
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    switch (opts.type) {
+      case FetchTypes.Full: {
+        const lengthString = convertToString(json.lengthSeconds);
+        const formats = addFormats(
+          json.formatStreams.concat(json.adaptiveFormats),
+        );
+        const thumbnails = addThumbnails(json.videoThumbnails);
+        info = new Video(
+          json.title,
+          id,
+          formats,
+          json.lengthSeconds,
+          lengthString,
+          json.author,
+          json.authorId,
+          json.description,
+          json.publishedText,
+          json.viewCount,
+          json.likeCount,
+          json.dislikeCount,
+          thumbnails,
+        );
+        break;
+      }
+      case FetchTypes.Basic:
+      default: {
+        const lengthString = convertToString(json.lengthSeconds);
+        const formats = addFormats(
+          json.formatStreams.concat(json.adaptiveFormats),
+        );
+        info = new Video(
+          json.title,
+          id,
+          formats,
+          json.lengthSeconds,
+          lengthString,
+        );
+        break;
+      }
+      case FetchTypes.Minimal: {
+        info = new Video(json.title, id);
+        break;
+      }
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      if (err.message.includes("404"))
+        throw new NotFoundError("The video you provided was not found!");
+      else throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   return info;
-}
+};
 
 /**
  * @name fetchComments
@@ -269,51 +298,57 @@ async function fetchVideo(
  * @example await InvidJS.fetchComments(instance, video, {limit: 5});
  * @returns {Promise<Comment[]>} Comments array.
  */
-async function fetchComments(
+const fetchComments = async (
   instance: Instance,
   video: Video,
   opts: CommentFetchOptions = {
-    sorting: CommentSorting.Top,
     limit: 0,
-  }
-): Promise<Comment[]> {
+    sorting: CommentSorting.Top,
+  },
+): Promise<Comment[]> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (!video)
     throw new MissingArgumentError(
-      "You must provide a video to fetch comments!"
+      "You must provide a video to fetch comments!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
+      "Limit is invalid - must be a number greater than 0!",
     );
-  let comments: Array<Comment> = [];
+  const comments: Array<Comment> = [];
   const queryURL = `${instance.url}/api/v1/comments/${video.id}`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   if (opts.sorting) params.sort_by = opts.sorting;
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      res.data.comments.forEach((comment: any) => {
-        if (!opts.limit || opts.limit === 0 || comments.length < opts.limit)
-          comments.push(
-            new Comment(comment.author, comment.authorId, comment.content)
-          );
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
+  const searchParams = new URLSearchParams(Object.entries(params));
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    json.comments.forEach((comment: any) => {
+      if (!opts.limit || opts.limit === 0 || comments.length < opts.limit)
+        comments.push(
+          new Comment(comment.author, comment.authorId, comment.content),
+        );
+    });
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   return comments;
-}
+};
 
 /**
  * @name fetchPlaylist
@@ -322,36 +357,36 @@ async function fetchComments(
  * @param {string} id - Playlist ID.
  * @param {PlaylistFetchOptions} [opts] - Playlist fetch options.
  * @example await InvidJS.fetchPlaylist(instance, "id");
- * @example await InvidJS.fetchPlaylist(instance, "id". {limit: 10});
+ * @example await InvidJS.fetchPlaylist(instance, "id", {limit: 10});
  * @returns {Promise<Playlist>} Playlist object.
  */
-async function fetchPlaylist(
+const fetchPlaylist = async (
   instance: Instance,
   id: string,
   opts: PlaylistFetchOptions = {
-    type: FetchTypes.Basic,
     limit: 0,
-  }
-): Promise<Playlist> {
+    type: FetchTypes.Basic,
+  },
+): Promise<Playlist> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (!id)
     throw new MissingArgumentError(
-      "You must provide a playlist ID to fetch it!"
+      "You must provide a playlist ID to fetch it!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
+      "Limit is invalid - must be a number greater than 0!",
     );
   let info!: Playlist;
   const queryURL = `${instance.url}/api/v1/playlists/${id}`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   switch (opts.type) {
     case FetchTypes.Minimal: {
       params.fields = "title,playlistId";
@@ -367,95 +402,92 @@ async function fetchPlaylist(
       break;
     }
   }
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      switch (opts.type) {
-        case FetchTypes.Full: {
-          let videos: Array<Video> = [];
-          res.data.videos.forEach((video: any) => {
-            if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-              videos.push(new Video(video.title, video.videoId));
-          });
-          let data = fillMixData(
-            res.data.author,
-            res.data.authorId,
-            res.data.description
-          );
-          info = new Playlist(
-            res.data.title,
-            id,
-            videos,
-            res.data.videos.length,
-            data.mixAuthor,
-            data.authorId,
-            data.mixDescription,
-            new Image(res.data.playlistThumbnail, 168, 94, ImageQuality.High)
-          );
-          break;
-        }
-        case FetchTypes.Basic:
-        default: {
-          let videos: Array<Video> = [];
-          res.data.videos.forEach((video: any) => {
-            if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-              videos.push(new Video(video.title, video.videoId));
-          });
-          info = new Playlist(
-            res.data.title,
-            id,
-            videos,
-            res.data.videos.length
-          );
-          break;
-        }
-        case FetchTypes.Minimal: {
-          info = new Playlist(res.data.title, id);
-          break;
-        }
-      }
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        if (err.message.includes("404"))
-          throw new NotFoundError("The playlist you provided was not found!");
-        else throw new APIError(err.message);
-      }
+  const searchParams = new URLSearchParams(Object.entries(params));
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    switch (opts.type) {
+      case FetchTypes.Full: {
+        const videos: Array<Video> = [];
+        json.videos.forEach((video: any) => {
+          if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
+            videos.push(new Video(video.title, video.videoId));
+        });
+        const data = fillMixData(json.author, json.authorId, json.description);
+        info = new Playlist(
+          json.title,
+          id,
+          videos,
+          json.videos.length,
+          data.mixAuthor,
+          data.authorId,
+          data.mixDescription,
+          new Image(json.playlistThumbnail, 168, 94, ImageQuality.High),
+        );
+        break;
+      }
+      case FetchTypes.Basic:
+      default: {
+        const videos: Array<Video> = [];
+        json.videos.forEach((video: any) => {
+          if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
+            videos.push(new Video(video.title, video.videoId));
+        });
+        info = new Playlist(json.title, id, videos, json.videos.length);
+        break;
+      }
+      case FetchTypes.Minimal: {
+        info = new Playlist(json.title, id);
+        break;
+      }
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      if (err.message.includes("404"))
+        throw new NotFoundError("The playlist you provided was not found!");
+      else throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   return info;
-}
+};
 
 /**
  * @name fetchChannel
  * @description Fetches channel data.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {string} id - Channel ID.
- * @param {ChannelFetchOptions} [opts] - Channel fetch options.
+ * @param {ContentOptions} [opts] - Channel fetch options.
  * @example await InvidJS.fetchChannel(instance, "id");
  * @returns {Promise<Channel>} Channel object.
  */
-async function fetchChannel(
+const fetchChannel = async (
   instance: Instance,
   id: string,
-  opts: ChannelFetchOptions = {
+  opts: ContentOptions = {
     type: FetchTypes.Basic,
-  }
-): Promise<Channel> {
+  },
+): Promise<Channel> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (!id)
     throw new MissingArgumentError(
-      "You must provide a channel ID to fetch it!"
+      "You must provide a channel ID to fetch it!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
   let info!: Channel;
   const queryURL = `${instance.url}/api/v1/channels/${id}`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   switch (opts.type) {
     case FetchTypes.Minimal: {
       params.fields = "author,authorId";
@@ -471,205 +503,48 @@ async function fetchChannel(
       break;
     }
   }
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      switch (opts.type) {
-        case FetchTypes.Full: {
-          info = new Channel(
-            res.data.author,
-            res.data.authorId,
-            res.data.subCount,
-            res.data.description,
-            res.data.totalViews,
-            res.data.authorVerified,
-            res.data.latestVideos
-          );
-          break;
-        }
-        case FetchTypes.Basic:
-        default: {
-          info = new Channel(
-            res.data.author,
-            res.data.authorId,
-            res.data.subCount
-          );
-          break;
-        }
-        case FetchTypes.Minimal: {
-          info = new Channel(res.data.author, res.data.authorId);
-          break;
-        }
-      }
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        if (err.message.includes("404"))
-          throw new NotFoundError("The channel you provided was not found!");
-        else throw new APIError(err.message);
-      }
+  const searchParams = new URLSearchParams(Object.entries(params));
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    switch (opts.type) {
+      case FetchTypes.Full: {
+        info = new Channel(
+          json.author,
+          json.authorId,
+          json.subCount,
+          json.description,
+          json.totalViews,
+          json.authorVerified,
+          json.latestVideos,
+        );
+        break;
+      }
+      case FetchTypes.Basic:
+      default: {
+        info = new Channel(json.author, json.authorId, json.subCount);
+        break;
+      }
+      case FetchTypes.Minimal: {
+        info = new Channel(json.author, json.authorId);
+        break;
+      }
+    }
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      if (err.message.includes("404"))
+        throw new NotFoundError("The channel you provided was not found!");
+      else throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   return info;
-}
-
-/**
- * @name fetchRelatedChannels
- * @description Fetches related channels.
- * @param {Instance} instance - Instance to fetch data from.
- * @param {Channel} channel - Channel object.
- * @param {ChannelRelatedOptions} [opts] - Related fetch options.
- * @example await InvidJS.fetchRelatedChannels(instance, channel);
- * @example await InvidJS.fetchRelatedChannels(instance, channel, {limit: 5});
- * @returns {Promise<Array<Channel>>} Array of related channels.
- */
-async function fetchRelatedChannels(
-  instance: Instance,
-  channel: Channel,
-  opts: ChannelRelatedOptions = {
-    limit: 0,
-  }
-): Promise<Array<Channel>> {
-  if (!instance)
-    throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
-    );
-  if (!channel)
-    throw new MissingArgumentError(
-      "You must provide a channel to fetch related channels!"
-    );
-  if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
-    );
-  if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
-    throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
-    );
-  let channels: Array<Channel> = [];
-  const queryURL = `${instance.url}/api/v1/channels/${channel.id}/channels`;
-  await axios
-    .get(queryURL)
-    .then((res) => {
-      res.data.relatedChannels.forEach((channel: any) => {
-        if (!opts.limit || opts.limit === 0 || channels.length < opts.limit)
-          channels.push(new Channel(channel.author, channel.authorId));
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
-    });
-  return channels;
-}
-
-/**
- * @name fetchChannelPlaylists
- * @description Fetches latest channel playlists.
- * @param {Instance} instance - Instance to fetch data from.
- * @param {Channel} channel - Channel object.
- * @param {ChannelPlaylistsOptions} [opts] -  Playlist fetch options.
- * @example await InvidJS.fetchChannelPlaylists(instance, channel);
- * @example await InvidJS.fetchChannelPlaylists(instance, channel, {limit: 3});
- * @returns {Promise<Array<Playlist>>} Array of channel playlists.
- */
-async function fetchChannelPlaylists(
-  instance: Instance,
-  channel: Channel,
-  opts: ChannelPlaylistsOptions = {
-    sorting: ChannelPlaylistsSorting.Newest,
-    limit: 0,
-  }
-): Promise<Array<Playlist>> {
-  if (!instance)
-    throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
-    );
-  if (!channel)
-    throw new MissingArgumentError(
-      "You must provide a channel to fetch playlists!"
-    );
-  if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
-    );
-  if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
-    throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
-    );
-  let playlists: Array<Playlist> = [];
-  const queryURL = `${instance.url}/api/v1/channels/${channel.id}/playlists`;
-  let params = new QueryParams();
-  if (opts.sorting) params.sort_by = opts.sorting;
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      res.data.playlists.forEach((playlist: any) => {
-        if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
-          playlists.push(new Playlist(playlist.title, playlist.playlistId));
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
-    });
-  return playlists;
-}
-
-/**
- * @name fetchChannelVideos
- * @description Fetches latest channel videos.
- * @param {Instance} instance - Instance to fetch data from.
- * @param {Channel} channel - Channel object.
- * @param {ChannelVideosOptions} [opts] - Video fetch options.
- * @example await InvidJS.fetchChannelVideos(instance, channel);
- * @example await InvidJS.fetchChannelVideos(instance, channel, {limit: 7});
- * @returns {Promise<Array<Video>>} Array of channel videos.
- */
-async function fetchChannelVideos(
-  instance: Instance,
-  channel: Channel,
-  opts: ChannelVideosOptions = {
-    sorting: ChannelVideosSorting.Newest,
-    limit: 0,
-  }
-): Promise<Array<Video>> {
-  if (!instance)
-    throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
-    );
-  if (!channel)
-    throw new MissingArgumentError(
-      "You must provide a channel to fetch videos!"
-    );
-  if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
-    );
-  if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
-    throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
-    );
-  let videos: Array<Video> = [];
-  const queryURL = `${instance.url}/api/v1/channels/${channel.id}/videos`;
-  let params = new QueryParams();
-  if (opts.sorting) params.sort_by = opts.sorting;
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      res.data.videos.forEach((video: any) => {
-        if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-          videos.push(new Video(video.title, video.videoId));
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
-    });
-  return videos;
-}
+};
 
 /**
  * @name fetchSearchSuggestions
@@ -679,38 +554,44 @@ async function fetchChannelVideos(
  * @example await InvidJS.fetchSearchSuggestions(instance, "search");
  * @returns {Promise<Array<string>>} Array of search suggestions.
  */
-async function fetchSearchSuggestions(
+const fetchSearchSuggestions = async (
   instance: Instance,
-  query: string
-): Promise<Array<string>> {
+  query: string,
+): Promise<Array<string>> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (!query)
     throw new MissingArgumentError("You must provide a search query!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
-  let suggestions: Array<string> = [];
+  const suggestions: Array<string> = [];
   const queryURL = `${instance.url}/api/v1/search/suggestions`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   params.q = query;
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      res.data.suggestions.forEach((suggestion: any) => {
-        suggestions.push(suggestion);
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
+  const searchParams = new URLSearchParams(Object.entries(params));
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    json.suggestions.forEach((suggestion: any) => {
+      suggestions.push(suggestion);
+    });
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   return suggestions;
-}
+};
 
 /**
  * @name searchContent
@@ -722,78 +603,82 @@ async function fetchSearchSuggestions(
  * @example await InvidJS.searchContent(instance, "search", {type: ContentTypes.Playlist});
  * @returns {Promise<Array<Channel | Playlist | Video>>} Array of search results (channels, playlists, videos).
  */
-async function searchContent(
+const searchContent = async (
   instance: Instance,
   query: string,
   opts: SearchOptions = {
+    limit: 0,
     page: 1,
+    region: "US",
     sorting: VideoSorting.Relevance,
     type: ContentTypes.Video,
-    region: "US",
-    limit: 0,
-  }
-): Promise<Array<Channel | Playlist | Video>> {
+  },
+): Promise<Array<Channel | Playlist | Video>> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (!query)
     throw new MissingArgumentError("You must provide a search query!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
+      "Limit is invalid - must be a number greater than 0!",
     );
   const queryURL = `${instance.url}/api/v1/search?q=${query}`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   params.q = query;
   if (opts.page) params.page = opts.page;
   if (opts.sorting) params.sort_by = opts.sorting;
   if (opts.date) params.date = opts.date;
   if (opts.duration) params.duration = opts.duration;
   if (opts.type) params.type = opts.type;
-  if (opts.features) params.features = opts.features;
+  if (opts.features) params.features = opts.features.toString();
   if (opts.region) params.region = opts.region;
-  let results: Array<Channel | Playlist | Video> = [];
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      res.data.forEach((result: any) => {
-        if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
-          switch (result.type) {
-            case "video": {
-              results.push(new Video(result.title, result.videoId));
-              break;
-            }
-            case "playlist": {
-              let videos: Video[] = [];
-              result.videos.forEach((video: any) => {
-                videos.push(new Video(video.title, video.videoId));
-              });
-              results.push(
-                new Playlist(result.title, result.playlistId, videos)
-              );
-              break;
-            }
-            case "channel": {
-              results.push(
-                new Channel(result.author, result.authorId, result.subCount)
-              );
-              break;
-            }
-          }
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
+  const results: Array<Channel | Playlist | Video> = [];
+  const searchParams = new URLSearchParams(Object.entries(params));
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    json.forEach((result: any) => {
+      if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
+        switch (result.type) {
+          case "video": {
+            results.push(new Video(result.title, result.videoId));
+            break;
+          }
+          case "playlist": {
+            const videos: Video[] = [];
+            result.videos.forEach((video: any) => {
+              videos.push(new Video(video.title, video.videoId));
+            });
+            results.push(new Playlist(result.title, result.playlistId, videos));
+            break;
+          }
+          case "channel": {
+            results.push(
+              new Channel(result.author, result.authorId, result.subCount),
+            );
+            break;
+          }
+        }
+    });
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   return results;
-}
+};
 
 /**
  * @name fetchTrending
@@ -804,242 +689,276 @@ async function searchContent(
  * @example await InvidJS.fetchTrending(instance, {limit: 6});
  * @returns {Promise<Array<Video>>} Array of trending videos.
  */
-async function fetchTrending(
+const fetchTrending = async (
   instance: Instance,
   opts: TrendingOptions = {
+    limit: 0,
     region: "US",
     type: TrendingTypes.Music,
-    limit: 0,
-  }
-): Promise<Array<Video>> {
+  },
+): Promise<Array<Video>> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
+      "Limit is invalid - must be a number greater than 0!",
     );
   const queryURL = `${instance.url}/api/v1/trending`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   if (opts.region) params.region = opts.region;
   if (opts.type) params.type = opts.type;
-  let results: Array<Video> = [];
-  await axios
-    .get(queryURL, { params: params })
-    .then((res) => {
-      res.data.forEach((result: any) => {
-        if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
-          results.push(new Video(result.title, result.videoId));
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
+  const results: Array<Video> = [];
+  const searchParams = new URLSearchParams(Object.entries(params));
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
     });
+    const json = await JSON.parse(res.body);
+    json.forEach((result: any) => {
+      if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
+        results.push(new Video(result.title, result.videoId));
+    });
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
+    }
+  }
   return results;
-}
+};
 
 /**
  * @name fetchPopular
  * @description Fetches popular videos.
  * @param {Instance} instance - Instance to fetch data from.
- * @param {PopularOptions} [opts] - Popular fetch options.
+ * @param {CommonOptions} [opts] - Popular fetch options.
  * @example await InvidJS.fetchPopular(instance);
  * @example await InvidJS.fetchPopular(instance, {limit: 10});
  * @returns {Promise<Array<Video>>} Array of popular videos.
  */
-async function fetchPopular(
+const fetchPopular = async (
   instance: Instance,
-  opts: PopularOptions = {
+  opts: CommonOptions = {
     limit: 0,
-  }
-): Promise<Array<Video>> {
+  },
+): Promise<Array<Video>> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APINotAvailableError(
-      "The instance you provided does not support API requests or is offline!"
+      "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
     throw new InvalidArgumentError(
-      "Limit is invalid - must be a number greater than 0!"
+      "Limit is invalid - must be a number greater than 0!",
     );
   const queryURL = `${instance.url}/api/v1/popular`;
-  let results: Array<Video> = [];
-  await axios
-    .get(queryURL)
-    .then((res) => {
-      res.data.forEach((result: any) => {
-        if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
-          results.push(new Video(result.title, result.videoId));
-      });
-    })
-    .catch((err) => {
-      if (err.name === "AxiosError") {
-        throw new APIError(err.message);
-      }
-    });
-  return results;
-}
-
-/**
- * @name validateSource
- * @description Validates length of a format stream.
- * @param {Instance} instance - Instance to fetch data from.
- * @param {Video} video - Video to fetch stream from.
- * @param {Format} source - Format to validate.
- * @example await InvidJS.validateSource(instance, video, format);
- * @returns {Promise<boolean | undefined>} Is source valid?
- */
-async function validateSource(
-  instance: Instance,
-  video: Video,
-  source: Format
-): Promise<boolean | undefined> {
-  if (!instance)
-    throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
-    );
-  if (!video)
-    throw new MissingArgumentError("You must provide a valid video object!");
-  if (!source)
-    throw new MissingArgumentError(
-      "You must provide a valid video or audio source to fetch a stream from!"
-    );
-  const queryURL = `${instance.url}/latest_version`;
-  let params = new QueryParams();
-  params.id = video.id;
-  params.itag = source.tag;
+  const results: Array<Video> = [];
   try {
-    let lengthQuery = await axios.get(queryURL, {
-      params: params,
-      headers: { Range: `bytes=0-0` },
+    const res = await got.get(queryURL, {
+      headers: { "User-Agent": useragent },
     });
-    let length = lengthQuery.headers["content-range"].split("/")[1];
-    if (parseInt(length) > 0) return true;
-    if (!length || length === undefined) return false;
-  } catch (err: any) {
-    if (err.name === "AxiosError") {
-      if (err.message.includes("403")) {
-        throw new BlockedVideoError(
-          "Not allowed to download this video! Perhaps it's from a generated channel?"
-        );
-      } else throw new APIError(err.message);
+    const json = await JSON.parse(res.body);
+    json.forEach((result: any) => {
+      if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
+        results.push(new Video(result.title, result.videoId));
+    });
+  } catch (err) {
+    if (err instanceof HTTPError) {
+      throw new APIError(err.message);
+    }
+    if (err instanceof RequestError) {
+      throw new UnknownError(err.message);
     }
   }
-}
+  return results;
+};
 
 /**
- * @name fetchSource
- * @description Fetches a video stream for later use in memory or as a file.
+ * @name saveBlob
+ * @description Fetches a video as a Blob.
  * @param {Instance} instance - Instance to fetch data from.
  * @param {Video} video - Video to fetch stream from.
  * @param {Format} source - Format to download.
- * @param {StreamOptions} [opts] - Options for fetching the source.
- * @example await InvidJS.fetchSource(instance, video, format);
- * @example await InvidJS.fetchSource(instance, video, format, {saveTo: SaveSourceTo.Memory});
- * @returns {Promise<Blob | string>} Memory stream or file path of the source.
+ * @param {StreamOptions} [opts] - Save options.
+ * @example await InvidJS.saveBlob(instance, video, format);
+ * @example await InvidJS.saveBlob(instance, video, format, {parts: 5});
+ * @returns {Promise<Blob>} A blob with the content.
  */
-async function fetchSource(
+const saveBlob = async (
   instance: Instance,
   video: Video,
   source: Format,
   opts: StreamOptions = {
-    saveTo: SaveSourceTo.File,
-    path: "./",
     parts: 5,
-  }
-): Promise<Blob | string> {
+  },
+): Promise<Blob> => {
   if (!instance)
     throw new MissingArgumentError(
-      "You must provide an instance to fetch data from!"
+      "You must provide an instance to fetch data from!",
     );
   if (!video)
     throw new MissingArgumentError("You must provide a valid video object!");
   if (!source)
     throw new MissingArgumentError(
-      "You must provide a valid video or audio source to fetch a stream from!"
+      "You must provide a valid video or audio source to fetch a stream from!",
     );
-  if (opts && !opts.saveTo) opts.saveTo = SaveSourceTo.File;
-  if (opts && opts.saveTo === SaveSourceTo.File && !opts.path) opts.path = "./";
   if (opts && !opts.parts) opts.parts = 1;
   if (opts.parts && opts.parts < 1)
     throw new InvalidArgumentError(
-      "A source must be downloaded in at least a single part!"
+      "A source must be downloaded in at least a single part!",
     );
   if (opts.parts && opts.parts > 10) opts.parts = 10;
   const queryURL = `${instance.url}/latest_version`;
-  let params = new QueryParams();
+  const params = new QueryParams();
   params.id = video.id;
   params.itag = source.tag;
-  try {
-    let lengthQuery = await axios.get(queryURL, {
-      params: params,
-      headers: { Range: `bytes=0-0` },
-    });
-    let length = lengthQuery.headers["content-range"].split("/")[1];
-    if (opts.parts) {
-      let parts = Math.ceil(parseInt(length) / opts.parts);
-      let positions: Array<number> = [];
-      for (let i = 0; i < opts.parts; i++) {
-        positions.push(i * parts);
-      }
-      let promises: Array<Promise<any>> = [];
-      positions.forEach((position) => {
-        let range = `bytes=${position}-${position + parts - 1}`;
-        promises.push(
-          axios.get(queryURL, {
-            params: params,
-            headers: { Range: range },
-            responseType: "arraybuffer",
-          })
-        );
-      });
-      let responses = await axios.all(promises);
-      let buffer = new ArrayBuffer(parseInt(length));
-      let view = new DataView(buffer);
-      let offset = 0;
-      responses.forEach((response) => {
-        let array = new Uint8Array(response.data);
-        for (let i = 0; i < array.length; i++) {
-          view.setUint8(offset + i, array[i]);
-        }
-        offset += array.length;
-      });
-      switch (opts.saveTo) {
-        case SaveSourceTo.Memory: {
-          let blob = new Blob([buffer], { type: source.type.split("/")[0] });
-          return blob;
-        }
-        case SaveSourceTo.File:
-        default: {
-          let file = fs.createWriteStream(
-            `${opts.path}${video.id}.${source.container}`
+  const searchParams = new URLSearchParams(Object.entries(params));
+  let length = 0;
+  await got
+    .get(queryURL, {
+      headers: { Range: `bytes=0-0`, "User-Agent": useragent },
+      searchParams: searchParams,
+    })
+    .then((res) => {
+      if (res.headers["content-range"])
+        length = parseInt(res.headers["content-range"]?.split("/")[1]);
+    })
+    .catch((err) => {
+      if (err instanceof HTTPError) {
+        if (err.message.includes("403")) {
+          throw new BlockedVideoError(
+            "Not allowed to download this video! Perhaps it's from a generated channel?",
           );
-          file.write(Buffer.from(buffer));
-          return `${opts.path}${video.id}.${source.container}`;
-        }
+        } else throw new APIError(err.message);
       }
-    } else return "";
-  } catch (err: any) {
-    if (err.name === "AxiosError") {
+      if (err instanceof RequestError) {
+        throw new UnknownError(err.message);
+      }
+    });
+  return new Promise(async (resolve, reject) => {
+    const parts = Math.ceil(length / opts.parts);
+    const positions: Array<number> = [];
+    for (let i = 0; i < opts.parts; i++) {
+      positions.push(i * parts);
+    }
+    const promises: Array<Promise<any>> = [];
+    positions.forEach((position) => {
+      const range = `bytes=${position}-${position + parts - 1}`;
+      promises.push(
+        got.get(queryURL, {
+          headers: { Range: range, "User-Agent": useragent },
+          responseType: "buffer",
+          searchParams: searchParams,
+        }),
+      );
+    });
+    const responses = await Promise.all(promises);
+    const buffer = new ArrayBuffer(length);
+    const view = new DataView(buffer);
+    let offset = 0;
+    responses.forEach((response: any) => {
+      const array = new Uint8Array(response.body);
+      for (let i = 0; i < array.length; i++) {
+        view.setUint8(offset + i, array[i]);
+      }
+      offset += array.length;
+    });
+    const blob = new Blob([buffer], {
+      type: source.type.split("/")[0],
+    });
+    resolve(blob);
+  });
+};
+
+/**
+ * @name saveStream
+ * @description Fetches a video as a Stream.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {Video} video - Video to fetch stream from.
+ * @param {Format} source - Format to download.
+ * @example await InvidJS.saveStream(instance, video, format);
+ * @returns {Promise<Stream>} Memory stream.
+ */
+const saveStream = async (
+  instance: Instance,
+  video: Video,
+  source: Format,
+): Promise<Stream> => {
+  if (!instance)
+    throw new MissingArgumentError(
+      "You must provide an instance to fetch data from!",
+    );
+  if (!video)
+    throw new MissingArgumentError("You must provide a valid video object!");
+  if (!source)
+    throw new MissingArgumentError(
+      "You must provide a valid video or audio source to fetch a stream from!",
+    );
+  const queryURL = `${instance.url}/latest_version`;
+  const params = new QueryParams();
+  params.id = video.id;
+  params.itag = source.tag;
+  const searchParams = new URLSearchParams(Object.entries(params));
+  let length = 0;
+  await got
+    .get(queryURL, {
+      headers: { Range: `bytes=0-0`, "User-Agent": useragent },
+      searchParams: searchParams,
+    })
+    .then((res) => {
+      if (res.headers["content-range"])
+        length = parseInt(res.headers["content-range"]?.split("/")[1]);
+    })
+    .catch((err) => {
+      if (err instanceof HTTPError) {
+        if (err.message.includes("403")) {
+          throw new BlockedVideoError(
+            "Not allowed to download this video! Perhaps it's from a generated channel?",
+          );
+        } else throw new APIError(err.message);
+      }
+      if (err instanceof RequestError) {
+        throw new UnknownError(err.message);
+      }
+    });
+  return new Promise((resolve, reject) => {
+    const stream = got.stream(queryURL, {
+      searchParams: searchParams,
+      headers: { Connection: "keep-alive", "User-Agent": useragent },
+      agent: {
+        https: new https.Agent({ keepAlive: true }),
+      },
+      http2: true,
+    });
+    const pass = new PassThrough({
+      highWaterMark: length,
+    });
+    stream.pipe(pass);
+    stream.on("error", (err) => {
+      reject();
       if (err.message.includes("403")) {
         throw new BlockedVideoError(
-          "Not allowed to download this video! Perhaps it's from a generated channel?"
+          "Not allowed to download this video! Perhaps it's from a generated channel?",
         );
       } else throw new APIError(err.message);
-    }
-  }
-  return "";
-}
+    });
+    stream.on("end", () => {
+      resolve(pass);
+    });
+  });
+};
 
 export {
   fetchInstances,
@@ -1047,15 +966,12 @@ export {
   fetchComments,
   fetchPlaylist,
   fetchChannel,
-  fetchRelatedChannels,
-  fetchChannelPlaylists,
-  fetchChannelVideos,
   fetchSearchSuggestions,
   searchContent,
   fetchTrending,
   fetchPopular,
-  validateSource,
-  fetchSource,
+  saveBlob,
+  saveStream,
   ErrorCodes,
   FetchTypes,
   InstanceTypes,
@@ -1063,11 +979,11 @@ export {
   TrendingTypes,
   VideoSorting,
   CommentSorting,
+  InstanceSorting,
   Duration,
   DateValues,
   ChannelPlaylistsSorting,
   ChannelVideosSorting,
-  SaveSourceTo,
   AudioQuality,
   ImageQuality,
 };
