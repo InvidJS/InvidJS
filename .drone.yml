@@ -9,8 +9,8 @@ steps:
       - npm install
       - npm test
     trigger:
-    event:
-      - tag
+      event:
+        - tag
 
 ---
 kind: pipeline
@@ -31,8 +31,8 @@ steps:
       - git commit -a -m "CI - Rebuild docs"
       - git push
     trigger:
-    event:
-      - tag
+      event:
+        - tag
 
 ---
 kind: pipeline
@@ -43,13 +43,14 @@ steps:
   - name: Publish
     image: node
     commands:
+      - echo $NPM_TOKEN
       - npm install
       - npm run build
       - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
       - cd dist && npm publish --provenance --access public
     environment:
-    NPM_TOKEN:
-      from_secret: npm_token
+      NPM_TOKEN:
+        from_secret: npm_token
     trigger:
-    event:
-      - tag
+      event:
+        - tag
