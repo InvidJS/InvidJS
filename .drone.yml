@@ -43,11 +43,10 @@ steps:
   - name: Publish
     image: node
     commands:
-      - echo $NPM_TOKEN
       - npm install
       - npm run build
       - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-      - cd dist && npm publish --provenance --access public
+      - cd dist && npm publish --access public
     environment:
       NPM_TOKEN:
         from_secret: npm_token
