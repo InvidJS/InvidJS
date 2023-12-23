@@ -8,9 +8,10 @@ steps:
     commands:
       - npm install
       - npm test
-    trigger:
-      event:
-        - tag
+
+trigger:
+  event:
+  - tag
 
 ---
 kind: pipeline
@@ -30,9 +31,10 @@ steps:
       - git add -A
       - git commit -a -m "CI - Rebuild docs"
       - git push
-    trigger:
-      event:
-        - tag
+
+trigger:
+  event:
+  - tag
 
 ---
 kind: pipeline
@@ -50,6 +52,7 @@ steps:
     environment:
       NPM_TOKEN:
         from_secret: npm_token
-    trigger:
-      event:
-        - tag
+        
+trigger:
+  event:
+  - tag
