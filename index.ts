@@ -224,7 +224,7 @@ const fetchVideo = async (
     }
   }
   if (opts.region) params.region = opts.region;
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   try {
     const res = await got.get(queryURL, {
       searchParams: searchParams,
@@ -326,7 +326,7 @@ const fetchComments = async (
   const queryURL = `${instance.url}/api/v1/comments/${video.id}`;
   const params = new QueryParams();
   if (opts.sorting) params.sort_by = opts.sorting;
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   try {
     const res = await got.get(queryURL, {
       searchParams: searchParams,
@@ -402,7 +402,7 @@ const fetchPlaylist = async (
       break;
     }
   }
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   try {
     const res = await got.get(queryURL, {
       searchParams: searchParams,
@@ -503,7 +503,7 @@ const fetchChannel = async (
       break;
     }
   }
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   try {
     const res = await got.get(queryURL, {
       searchParams: searchParams,
@@ -572,7 +572,7 @@ const fetchSearchSuggestions = async (
   const queryURL = `${instance.url}/api/v1/search/suggestions`;
   const params = new QueryParams();
   params.q = query;
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   try {
     const res = await got.get(queryURL, {
       searchParams: searchParams,
@@ -639,7 +639,7 @@ const searchContent = async (
   if (opts.features) params.features = opts.features.toString();
   if (opts.region) params.region = opts.region;
   const results: Array<Channel | Playlist | Video> = [];
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   try {
     const res = await got.get(queryURL, {
       searchParams: searchParams,
@@ -714,7 +714,7 @@ const fetchTrending = async (
   if (opts.region) params.region = opts.region;
   if (opts.type) params.type = opts.type;
   const results: Array<Video> = [];
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   try {
     const res = await got.get(queryURL, {
       searchParams: searchParams,
@@ -824,7 +824,7 @@ const saveBlob = async (
   const params = new QueryParams();
   params.id = video.id;
   params.itag = source.tag;
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   let length = 0;
   await got
     .get(queryURL, {
@@ -910,7 +910,7 @@ const saveStream = async (
   const params = new QueryParams();
   params.id = video.id;
   params.itag = source.tag;
-  const searchParams = new URLSearchParams(Object.entries(params));
+  const searchParams = params.createQuery();
   let length = 0;
   await got
     .get(queryURL, {

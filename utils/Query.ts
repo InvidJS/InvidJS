@@ -11,4 +11,11 @@ export class QueryParams {
   public features?: string;
   public id?: string;
   public itag?: string;
+
+  public createQuery() {
+    let query = Object.fromEntries(
+      Object.entries(this).filter(([key, value]) => value !== undefined)
+    );
+    return new URLSearchParams(query);
+  }
 }

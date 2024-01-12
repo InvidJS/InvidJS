@@ -135,7 +135,7 @@ export class Channel {
     const queryURL = `${instance.url}/api/v1/channels/${this.id}/playlists`;
     const params = new QueryParams();
     if (opts.sorting) params.sort_by = opts.sorting;
-    const searchParams = new URLSearchParams(Object.entries(params));
+    const searchParams = params.createQuery();
     const res = await got.get(queryURL, {
       searchParams: searchParams,
       headers: { "User-Agent": useragent },
@@ -189,7 +189,7 @@ export class Channel {
     const queryURL = `${instance.url}/api/v1/channels/${this.id}/videos`;
     const params = new QueryParams();
     if (opts.sorting) params.sort_by = opts.sorting;
-    const searchParams = new URLSearchParams(Object.entries(params));
+    const searchParams = params.createQuery();
     const res = await got.get(queryURL, {
       searchParams: searchParams,
       headers: { "User-Agent": useragent },
