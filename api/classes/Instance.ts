@@ -19,7 +19,6 @@ const useragent =
  * @param {boolean} api_allowed  - Is API allowed?
  * @param {Enums.InstanceTypes} type  - Type of the instance.
  * @param {string} url  - URL of the instance.
- * @param {number} [daily_health] - Latest reported health of the instance.
  * @param {number} [monthly_health] - Health of the instance (last 30 days).
  * @param {number} [health] - Health of the instance (last 90 days).
  */
@@ -29,7 +28,6 @@ export class Instance {
   public api_allowed: boolean;
   public type: Enums.InstanceTypes;
   public url: string;
-  public daily_health?: number;
   public monthly_health?: number;
   public health?: number;
   constructor(
@@ -38,7 +36,6 @@ export class Instance {
     api_allowed: boolean,
     type: Enums.InstanceTypes,
     url: string,
-    daily_health?: number,
     monthly_health?: number,
     health?: number,
   ) {
@@ -47,7 +44,6 @@ export class Instance {
     this.api_allowed = api_allowed;
     this.type = type;
     this.url = url;
-    this.daily_health = daily_health;
     this.monthly_health = monthly_health;
     this.health = health;
   }

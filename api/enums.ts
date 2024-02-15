@@ -40,7 +40,6 @@ export enum InstanceTypes {
  * @description Lists all possible sorting options of Invidious instances.
  */
 export enum InstanceSorting {
-  DailyHealth = "daily_health",
   MonthlyHealth = "monthly_health",
   Health = "health",
   API = "api",
