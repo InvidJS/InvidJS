@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'node:latest' }
+    }
     stages {
         stage('Run tests') {
             steps {
