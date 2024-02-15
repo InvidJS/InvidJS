@@ -6,6 +6,12 @@ pipeline {
         NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
     }
     stages {
+        stage('Setup') {
+            steps {
+                echo 'Setting up the work dir...'
+                echo "${WORKSPACE}"
+            }
+        }
         stage('Run tests') {
             steps {
                 echo 'Running tests...'
