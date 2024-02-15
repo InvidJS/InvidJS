@@ -86,7 +86,7 @@ test("Must throw an error if health is invalid", async () => {
 test("Instance stats must be fetched correctly", async () => {
   const instances = await InvidJS.fetchInstances({
     api_allowed: true,
-    health: 100,
+    health: 99,
   });
   assert.is.not(await instances[0].fetchStats(), undefined);
 });
