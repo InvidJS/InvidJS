@@ -5,6 +5,9 @@ pipeline {
     environment {
         NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
     }
+    options { 
+        checkoutToSubdirectory('code') 
+    }
     stages {
         stage('Setup') {
             steps {
