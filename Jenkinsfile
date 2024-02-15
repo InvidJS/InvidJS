@@ -1,7 +1,8 @@
 pipeline {
     agent { docker { image 'node:latest' } }
     environment {
-        HOME = '.'
+        HOME = "${WORKSPACE}"
+        NPM_CONFIG_CACHE = "${WORKSPACE}/.npm"
     }
     stages {
         stage('Run tests') {
