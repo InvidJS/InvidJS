@@ -8,7 +8,7 @@ pipeline {
         stage('Run tests') {
             steps {
                 echo 'Running tests...'
-                sh 'npm install'
+                sh 'npm install --verbose'
                 sh 'npm test'
             }
         }
