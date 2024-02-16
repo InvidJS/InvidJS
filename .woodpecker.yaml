@@ -9,7 +9,7 @@ steps:
   - name: Build documentation
     image: node
     commands:
-      - git clone https://jsbox.xyz/InvidJS/docs ../docs
+      - git clone https://ci-bot:$CI_PASSWORD@jsbox.xyz/InvidJS/docs ../docs
       - npm install
       - npm run docs:build
       - cd ../docs
@@ -19,7 +19,8 @@ steps:
       - git commit -a -m "CI - Rebuild docs"
       - git push
     when:
-      - event: tag      
+      - event: tag
+    secrets: [ ci_password ]      
   - name: Publish
     image: node
     commands:
