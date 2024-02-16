@@ -10,6 +10,7 @@ steps:
     image: node
     commands:
       - git clone https://jsbox.xyz/InvidJS/docs ../docs
+      - npm install
       - npm run docs:build
       - cd ../docs
       - git config user.email ci-bot@jsbox.xyz
@@ -22,7 +23,6 @@ steps:
   - name: Publish
     image: node
     commands:
-      - npm install
       - npm run build
       - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
       - cd dist && npm publish --access public
