@@ -1,29 +1,15 @@
-kind: pipeline
-type: docker
-name: Run tests
-
 steps:
   - name: Run all tests
     image: node
     commands:
       - npm install
       - npm test
-
-trigger:
-  event:
-  - tag
-
----
-kind: pipeline
-type: docker
-name: Build documentation
-
-steps:
+    when:
+      - event: push
   - name: Build documentation
     image: node
     commands:
       - git clone https://jsbox.xyz/InvidJS/docs ../docs
-      - npm install
       - npm run docs:build
       - cd ../docs
       - git config user.email ci-bot@jsbox.xyz
@@ -31,17 +17,8 @@ steps:
       - git add -A
       - git commit -a -m "CI - Rebuild docs"
       - git push
-
-trigger:
-  event:
-  - tag
-
----
-kind: pipeline
-type: docker
-name: Publish to NPM
-
-steps:
+    when:
+      - event: tag      
   - name: Publish
     image: node
     commands:
@@ -49,10 +26,7 @@ steps:
       - npm run build
       - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
       - cd dist && npm publish --access public
-    environment:
-      NPM_TOKEN:
-        from_secret: npm_token
-        
-trigger:
-  event:
-  - tag
+    secrets: [ npm_token ]
+    when:
+      - event: tag 
+
