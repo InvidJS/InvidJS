@@ -38,7 +38,7 @@
   "bugs": {
     "url": "https://github.com/InvidJS/InvidJS/issues"
   },
-  "homepage": "https://invidjs.github.io/docs/",
+  "homepage": "https://invidjs.js.org/",
   "devDependencies": {
     "@types/node": "^20.10.0",
     "loadr": "^0.1.1",
