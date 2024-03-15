@@ -46,7 +46,7 @@
     "tsm": "^2.3.0",
     "tsup": "^8.0.0",
     "typedoc": "^0.25.0",
-    "typedoc-plugin-coverage": "^2.2.0",
+    "typedoc-plugin-coverage": "^3.1.0",
     "typedoc-plugin-extras": "^3.0.0",
     "typedoc-plugin-missing-exports": "^2.0.0",
     "typescript": "^5.2.0",
