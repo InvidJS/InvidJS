@@ -48,6 +48,7 @@ import {
 import { QueryParams } from "./utils/Query.js";
 import got, { HTTPError, RequestError } from "got";
 import { PassThrough, Stream } from "stream";
+import { ReReadable } from "rereadable-stream";
 import https from "https";
 
 const useragent =
@@ -934,7 +935,8 @@ const saveStream = async (
     const pass = new PassThrough({
       highWaterMark: length,
     });
-    stream.pipe(pass);
+    const result = new ReReadable();
+    stream.pipe(pass).pipe(result);
     stream.on("error", (err) => {
       reject();
       if (err.message.includes("403")) {
@@ -944,7 +946,7 @@ const saveStream = async (
       } else throw new APIError(err.message);
     });
     stream.on("end", () => {
-      resolve(pass);
+      resolve(result);
     });
   });
 };
