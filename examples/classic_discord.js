@@ -65,7 +65,7 @@ client.on("messageCreate", async (message) => {
       adapterCreator: message.guild.voiceAdapterCreator,
     });
     let player = createAudioPlayer();
-    let resource = createAudioResource(stream, {
+    let resource = createAudioResource(stream.rewind(), {
       inputType: stream.type,
     });
     player.play(resource);
