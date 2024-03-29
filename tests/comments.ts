@@ -51,8 +51,4 @@ test("Must fail if limit is invalid", async () => {
   }
 });
 
-try {
-  test.run();
-} catch (err) {
-  test.run();
-}
+test.run();
