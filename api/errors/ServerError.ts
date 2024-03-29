@@ -2,7 +2,7 @@ import * as Enums from "../enums.js";
 
 /**
  * @name ServerError
- * @description Error thrown when the server returns a 500.
+ * @description Error thrown when the server returns an internal error.
  */
 export class ServerError extends Error {
   protected code: number;

@@ -2,7 +2,7 @@ import * as Enums from "../enums.js";
 
 /**
  * @name InvalidArgumentError
- * @description Error thrown when an argument is invalid.
+ * @description Error thrown when a required argument is invalid.
  */
 export class InvalidArgumentError extends Error {
   protected code: number;

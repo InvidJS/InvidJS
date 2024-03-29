@@ -2,7 +2,7 @@ import * as Enums from "../enums.js";
 
 /**
  * @name APIDownError
- * @description Error thrown when the API is not available.
+ * @description Error thrown when the API is down.
  */
 export class APIDownError extends Error {
   protected code: number;

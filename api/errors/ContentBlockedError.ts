@@ -2,7 +2,7 @@ import * as Enums from "../enums.js";
 
 /**
  * @name ContentBlockedError
- * @description Error thrown when the video is blocked.
+ * @description Error thrown when the requested content is blocked.
  */
 export class ContentBlockedError extends Error {
   protected code: number;

@@ -2,7 +2,7 @@ import * as Enums from "../enums.js";
 
 /**
  * @name NotFoundError
- * @description Error thrown when the content is invalid.
+ * @description Error thrown when the requested content is not found.
  */
 export class NotFoundError extends Error {
   protected code: number;
