@@ -123,7 +123,7 @@ const fetchInstances = async (
   } catch (err) {
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
-        throw new ServerError("Internal Server Error");  
+        throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
