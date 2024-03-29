@@ -50,6 +50,7 @@ import got, { HTTPError, RequestError } from "got";
 import { PassThrough, Stream } from "stream";
 import { ReReadable } from "rereadable-stream";
 import https from "https";
+import { ServerError } from "./api/errors/ServerError.js";
 
 const useragent =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0";
@@ -121,7 +122,9 @@ const fetchInstances = async (
     });
   } catch (err) {
     if (err instanceof HTTPError) {
-      throw new APIError(err.message);
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");  
+      else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
       throw new UnknownError(err.message);
@@ -269,6 +272,8 @@ const fetchVideo = async (
     if (err instanceof HTTPError) {
       if (err.message.includes("404"))
         throw new NotFoundError("The video you provided was not found!");
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
@@ -331,7 +336,9 @@ const fetchComments = async (
     });
   } catch (err) {
     if (err instanceof HTTPError) {
-      throw new APIError(err.message);
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
+      else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
       throw new UnknownError(err.message);
@@ -438,6 +445,8 @@ const fetchPlaylist = async (
     if (err instanceof HTTPError) {
       if (err.message.includes("404"))
         throw new NotFoundError("The playlist you provided was not found!");
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
@@ -527,6 +536,8 @@ const fetchChannel = async (
     if (err instanceof HTTPError) {
       if (err.message.includes("404"))
         throw new NotFoundError("The channel you provided was not found!");
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
@@ -574,7 +585,9 @@ const fetchSearchSuggestions = async (
     });
   } catch (err) {
     if (err instanceof HTTPError) {
-      throw new APIError(err.message);
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
+      else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
       throw new UnknownError(err.message);
@@ -661,7 +674,9 @@ const searchContent = async (
     });
   } catch (err) {
     if (err instanceof HTTPError) {
-      throw new APIError(err.message);
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
+      else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
       throw new UnknownError(err.message);
@@ -717,7 +732,9 @@ const fetchTrending = async (
     });
   } catch (err) {
     if (err instanceof HTTPError) {
-      throw new APIError(err.message);
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
+      else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
       throw new UnknownError(err.message);
@@ -766,7 +783,9 @@ const fetchPopular = async (
     });
   } catch (err) {
     if (err instanceof HTTPError) {
-      throw new APIError(err.message);
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
+      else throw new APIError(err.message);
     }
     if (err instanceof RequestError) {
       throw new UnknownError(err.message);
@@ -831,7 +850,10 @@ const saveBlob = async (
           throw new BlockedVideoError(
             "Not allowed to download this video! Perhaps it's from a generated channel?",
           );
-        } else throw new APIError(err.message);
+        }
+        if (err.message.includes("500"))
+          throw new ServerError("Internal Server Error");
+        else throw new APIError(err.message);
       }
       if (err instanceof RequestError) {
         throw new UnknownError(err.message);
@@ -917,7 +939,10 @@ const saveStream = async (
           throw new BlockedVideoError(
             "Not allowed to download this video! Perhaps it's from a generated channel?",
           );
-        } else throw new APIError(err.message);
+        }
+        if (err.message.includes("500"))
+          throw new ServerError("Internal Server Error");
+        else throw new APIError(err.message);
       }
       if (err instanceof RequestError) {
         throw new UnknownError(err.message);

@@ -14,6 +14,7 @@ import {
 import { Instance } from "./Instance.js";
 import { Playlist } from "./Playlist.js";
 import { Video } from "./Video.js";
+import { ServerError } from "../errors/ServerError.js";
 
 const useragent =
   "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0";
@@ -94,7 +95,9 @@ export class Channel {
       });
     } catch (err) {
       if (err instanceof HTTPError) {
-        throw new APIError(err.message);
+        if (err.message.includes("500"))
+          throw new ServerError("Internal Server Error");
+        else throw new APIError(err.message);
       }
       if (err instanceof RequestError) {
         throw new UnknownError(err.message);
@@ -148,7 +151,9 @@ export class Channel {
       });
     } catch (err) {
       if (err instanceof HTTPError) {
-        throw new APIError(err.message);
+        if (err.message.includes("500"))
+          throw new ServerError("Internal Server Error");
+        else throw new APIError(err.message);
       }
       if (err instanceof RequestError) {
         throw new UnknownError(err.message);
@@ -202,7 +207,9 @@ export class Channel {
       });
     } catch (err) {
       if (err instanceof HTTPError) {
-        throw new APIError(err.message);
+        if (err.message.includes("500"))
+          throw new ServerError("Internal Server Error");
+        else throw new APIError(err.message);
       }
       if (err instanceof RequestError) {
         throw new UnknownError(err.message);

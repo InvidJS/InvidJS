@@ -14,7 +14,7 @@ export class QueryParams {
 
   public createQuery() {
     let query = Object.fromEntries(
-      Object.entries(this).filter(([key, value]) => value !== undefined)
+      Object.entries(this).filter(([key, value]) => value !== undefined),
     );
     return new URLSearchParams(query);
   }

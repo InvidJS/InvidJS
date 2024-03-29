@@ -7,9 +7,10 @@ export enum ErrorCodes {
   InvalidArgument = 10001,
   APIBlocked = 10002,
   APIError = 10003,
-  BlockedVideo = 10004,
-  InvalidContent = 10005,
-  UnknownError = 10006,
+  ServerError = 10004,
+  BlockedVideo = 10005,
+  InvalidContent = 10006,
+  UnknownError = 10007,
 }
 
 /**
