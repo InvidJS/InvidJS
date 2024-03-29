@@ -5,7 +5,7 @@
 export enum ErrorCodes {
   MissingArgument = 10000,
   InvalidArgument = 10001,
-  APIBlocked = 10002,
+  APIDown = 10002,
   APIError = 10003,
   ServerError = 10004,
   BlockedVideo = 10005,

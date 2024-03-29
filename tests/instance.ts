@@ -1,4 +1,4 @@
-import { APINotAvailableError } from "../api/errors/APINotAvailableError.js";
+import { APIDownError } from "../api/errors/APIDownError.js";
 import { InvalidArgumentError } from "../api/errors/InvalidArgumentError.js";
 import * as InvidJS from "../index.js";
 
@@ -96,7 +96,7 @@ test("Should throw an error if instance doesn't support API requests", async () 
     const instances = await InvidJS.fetchInstances({ api_allowed: false });
     await instances[0].fetchStats();
   } catch (err) {
-    assert.instance(err, APINotAvailableError);
+    assert.instance(err, APIDownError);
   }
 });
 

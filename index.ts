@@ -22,7 +22,7 @@ import {
   ImageQuality,
 } from "./api/enums.js";
 import { APIError } from "./api/errors/APIError.js";
-import { APINotAvailableError } from "./api/errors/APINotAvailableError.js";
+import { APIDownError } from "./api/errors/APIDownError.js";
 import { BlockedVideoError } from "./api/errors/BlockedVideoError.js";
 import { InvalidArgumentError } from "./api/errors/InvalidArgumentError.js";
 import { MissingArgumentError } from "./api/errors/MissingArgumentError.js";
@@ -194,7 +194,7 @@ const fetchVideo = async (
   if (!id)
     throw new MissingArgumentError("You must provide a video ID to fetch it!");
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   let info!: Video;
@@ -310,7 +310,7 @@ const fetchComments = async (
       "You must provide a video to fetch comments!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
@@ -374,7 +374,7 @@ const fetchPlaylist = async (
       "You must provide a playlist ID to fetch it!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
@@ -481,7 +481,7 @@ const fetchChannel = async (
       "You must provide a channel ID to fetch it!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   let info!: Channel;
@@ -566,7 +566,7 @@ const fetchSearchSuggestions = async (
   if (!query)
     throw new MissingArgumentError("You must provide a search query!");
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   const suggestions: Array<string> = [];
@@ -624,7 +624,7 @@ const searchContent = async (
   if (!query)
     throw new MissingArgumentError("You must provide a search query!");
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
@@ -707,7 +707,7 @@ const fetchTrending = async (
       "You must provide an instance to fetch data from!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
@@ -763,7 +763,7 @@ const fetchPopular = async (
       "You must provide an instance to fetch data from!",
     );
   if (instance.api_allowed === false || instance.api_allowed === null)
-    throw new APINotAvailableError(
+    throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
     );
   if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))

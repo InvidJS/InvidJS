@@ -2,7 +2,7 @@ import got, { HTTPError, RequestError } from "got";
 import { QueryParams } from "../../utils/Query.js";
 import { ChannelPlaylistsSorting, ChannelVideosSorting } from "../enums.js";
 import { APIError } from "../errors/APIError.js";
-import { APINotAvailableError } from "../errors/APINotAvailableError.js";
+import { APIDownError } from "../errors/APIDownError.js";
 import { InvalidArgumentError } from "../errors/InvalidArgumentError.js";
 import { MissingArgumentError } from "../errors/MissingArgumentError.js";
 import { UnknownError } from "../errors/UnknownError.js";
@@ -77,7 +77,7 @@ export class Channel {
         "You must provide an instance to fetch data from!",
       );
     if (instance.api_allowed === false || instance.api_allowed === null)
-      throw new APINotAvailableError(
+      throw new APIDownError(
         "The instance you provided does not support API requests or is offline!",
       );
     if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
@@ -127,7 +127,7 @@ export class Channel {
         "You must provide an instance to fetch data from!",
       );
     if (instance.api_allowed === false || instance.api_allowed === null)
-      throw new APINotAvailableError(
+      throw new APIDownError(
         "The instance you provided does not support API requests or is offline!",
       );
     if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
@@ -183,7 +183,7 @@ export class Channel {
         "You must provide an instance to fetch data from!",
       );
     if (instance.api_allowed === false || instance.api_allowed === null)
-      throw new APINotAvailableError(
+      throw new APIDownError(
         "The instance you provided does not support API requests or is offline!",
       );
     if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))

@@ -4,7 +4,7 @@ import { InstanceStats } from "./InstanceStats.js";
 import { SoftwareStats } from "./SoftwareStats.js";
 import { UserStats } from "./UserStats.js";
 import { APIError } from "../errors/APIError.js";
-import { APINotAvailableError } from "../errors/APINotAvailableError.js";
+import { APIDownError } from "../errors/APIDownError.js";
 import { UnknownError } from "../errors/UnknownError.js";
 import { ServerError } from "../errors/ServerError.js";
 
@@ -57,7 +57,7 @@ export class Instance {
    */
   public async fetchStats(): Promise<InstanceStats> {
     if (this.api_allowed === false || this.api_allowed === null)
-      throw new APINotAvailableError(
+      throw new APIDownError(
         "The instance you provided does not support API requests or is offline!",
       );
     let stats!: InstanceStats;
