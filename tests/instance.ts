@@ -70,7 +70,7 @@ test("Sorting by type must be respected", async () => {
 test("Must throw an error if limit is invalid", async () => {
   try {
     await InvidJS.fetchInstances({ limit: -1 });
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, InvalidArgumentError);
   }
 });
@@ -78,7 +78,7 @@ test("Must throw an error if limit is invalid", async () => {
 test("Must throw an error if health is invalid", async () => {
   try {
     await InvidJS.fetchInstances({ health: -1 });
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, InvalidArgumentError);
   }
 });
@@ -95,7 +95,7 @@ test("Should throw an error if instance doesn't support API requests", async () 
   try {
     const instances = await InvidJS.fetchInstances({ api_allowed: false });
     await instances[0].fetchStats();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, APIDownError);
   }
 });

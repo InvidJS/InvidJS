@@ -28,7 +28,7 @@ test("Must fail if instance is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchComments();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -37,7 +37,7 @@ test("Must fail if video is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchComments(instance);
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -46,7 +46,7 @@ test("Must fail if limit is invalid", async () => {
   try {
     const video = await InvidJS.fetchVideo(instance, "jNQXAC9IVRw");
     await InvidJS.fetchComments(instance, video, { limit: -1 });
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, InvalidArgumentError);
   }
 });

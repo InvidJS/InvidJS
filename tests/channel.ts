@@ -102,7 +102,7 @@ test("Must fail if instance is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchChannel();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -111,7 +111,7 @@ test("Must fail if ID is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchChannel(instance);
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -119,7 +119,7 @@ test("Must fail if ID is not provided", async () => {
 test("Must fail if invalid ID is provided", async () => {
   try {
     await InvidJS.fetchChannel(instance, "UCzm1WKIw8XK4x7HNkHhOM_");
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, NotFoundError);
   }
 });

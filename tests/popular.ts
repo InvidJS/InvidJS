@@ -26,7 +26,7 @@ test("Must fail if instance is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchPopular();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -34,7 +34,7 @@ test("Must fail if instance is not provided", async () => {
 test("Must fail if limit is invalid", async () => {
   try {
     await InvidJS.fetchPopular(instance, { limit: -1 });
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, InvalidArgumentError);
   }
 });

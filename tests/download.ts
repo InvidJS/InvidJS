@@ -36,7 +36,7 @@ test("Must fail if instance is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.saveStream();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -45,7 +45,7 @@ test("Must fail if video is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.saveStream(instance);
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -55,7 +55,7 @@ test("Must fail if source is not provided", async () => {
     const video = await InvidJS.fetchVideo(instance, "jNQXAC9IVRw");
     // @ts-expect-error
     await InvidJS.saveStream(instance, video);
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -69,7 +69,7 @@ test("Must fail on forbidden videos", async () => {
       // @ts-expect-error
       video.formats[4],
     );
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, ContentBlockedError);
   }
 });

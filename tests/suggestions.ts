@@ -23,7 +23,7 @@ test("Must fail if instance is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchSearchSuggestions();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -32,7 +32,7 @@ test("Must fail if query is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchSearchSuggestions(instance);
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });

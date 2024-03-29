@@ -50,7 +50,7 @@ test("Must fail if instance is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.searchContent();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -59,7 +59,7 @@ test("Must fail if query is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.searchContent(instance);
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -67,7 +67,7 @@ test("Must fail if query is not provided", async () => {
 test("Must fail if limit is invalid", async () => {
   try {
     await InvidJS.searchContent(instance, "typescript", { limit: -1 });
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, InvalidArgumentError);
   }
 });

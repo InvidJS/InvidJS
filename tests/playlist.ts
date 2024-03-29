@@ -68,7 +68,7 @@ test("Must fail if instance is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchPlaylist();
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -77,7 +77,7 @@ test("Must fail if ID is not provided", async () => {
   try {
     // @ts-expect-error
     await InvidJS.fetchPlaylist(instance);
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, MissingArgumentError);
   }
 });
@@ -85,7 +85,7 @@ test("Must fail if ID is not provided", async () => {
 test("Must fail if invalid ID is provided", async () => {
   try {
     await InvidJS.fetchPlaylist(instance, "PLLvh8tVbc6u3EnFgzz0Q9sSjSrJLmiq1");
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, NotFoundError);
   }
 });
@@ -97,7 +97,7 @@ test("Must fail if limit is invalid", async () => {
       "PLLvh8tVbc6u0a0Gwlgkm1SudMLm-kyYPN",
       { limit: -1 },
     );
-  } catch (err) {
+  } catch (err: any) {
     assert.instance(err, InvalidArgumentError);
   }
 });

@@ -93,15 +93,12 @@ export class Channel {
         if (!opts.limit || opts.limit === 0 || channels.length < opts.limit)
           channels.push(new Channel(channel.author, channel.authorId));
       });
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof HTTPError) {
         if (err.message.includes("500"))
           throw new ServerError("Internal Server Error");
         else throw new APIError(err.message);
-      }
-      if (err instanceof RequestError) {
-        throw new UnknownError(err.message);
-      }
+      } else throw new UnknownError(err.message);
     }
     return channels;
   };
@@ -149,15 +146,12 @@ export class Channel {
         if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
           playlists.push(new Playlist(playlist.title, playlist.playlistId));
       });
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof HTTPError) {
         if (err.message.includes("500"))
           throw new ServerError("Internal Server Error");
         else throw new APIError(err.message);
-      }
-      if (err instanceof RequestError) {
-        throw new UnknownError(err.message);
-      }
+      } else throw new UnknownError(err.message);
     }
     return playlists;
   };
@@ -205,15 +199,12 @@ export class Channel {
         if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
           videos.push(new Video(video.title, video.videoId));
       });
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof HTTPError) {
         if (err.message.includes("500"))
           throw new ServerError("Internal Server Error");
         else throw new APIError(err.message);
-      }
-      if (err instanceof RequestError) {
-        throw new UnknownError(err.message);
-      }
+      } else throw new UnknownError(err.message);
     }
     return videos;
   };

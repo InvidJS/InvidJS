@@ -120,15 +120,12 @@ const fetchInstances = async (
         );
       } else return false;
     });
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   switch (opts.sorting) {
     case InstanceSorting.MonthlyHealth: {
@@ -268,17 +265,14 @@ const fetchVideo = async (
         break;
       }
     }
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("404"))
         throw new NotFoundError("The video you provided was not found!");
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return info;
 };
@@ -334,15 +328,12 @@ const fetchComments = async (
           new Comment(comment.author, comment.authorId, comment.content),
         );
     });
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return comments;
 };
@@ -441,17 +432,14 @@ const fetchPlaylist = async (
         break;
       }
     }
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("404"))
         throw new NotFoundError("The playlist you provided was not found!");
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return info;
 };
@@ -532,17 +520,14 @@ const fetchChannel = async (
         break;
       }
     }
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("404"))
         throw new NotFoundError("The channel you provided was not found!");
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return info;
 };
@@ -583,15 +568,12 @@ const fetchSearchSuggestions = async (
     json.suggestions.forEach((suggestion: any) => {
       suggestions.push(suggestion);
     });
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return suggestions;
 };
@@ -672,15 +654,12 @@ const searchContent = async (
           }
         }
     });
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return results;
 };
@@ -730,15 +709,16 @@ const fetchTrending = async (
       if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
         results.push(new Video(result.title, result.videoId));
     });
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
+      if (err.message.includes("400"))
+        throw new ContentBlockedError(
+          "Disabled by administrator - try another instance!",
+        );
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return results;
 };
@@ -781,15 +761,16 @@ const fetchPopular = async (
       if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
         results.push(new Video(result.title, result.videoId));
     });
-  } catch (err) {
+  } catch (err: any) {
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
+      if (err.message.includes("400"))
+        throw new ContentBlockedError(
+          "Disabled by administrator - try another instance!",
+        );
       else throw new APIError(err.message);
-    }
-    if (err instanceof RequestError) {
-      throw new UnknownError(err.message);
-    }
+    } else throw new UnknownError(err.message);
   }
   return results;
 };
@@ -854,10 +835,7 @@ const saveBlob = async (
         if (err.message.includes("500"))
           throw new ServerError("Internal Server Error");
         else throw new APIError(err.message);
-      }
-      if (err instanceof RequestError) {
-        throw new UnknownError(err.message);
-      }
+      } else throw new UnknownError(err.message);
     });
   return new Promise(async (resolve, reject) => {
     const parts = Math.ceil(length / opts.parts);
@@ -943,10 +921,7 @@ const saveStream = async (
         if (err.message.includes("500"))
           throw new ServerError("Internal Server Error");
         else throw new APIError(err.message);
-      }
-      if (err instanceof RequestError) {
-        throw new UnknownError(err.message);
-      }
+      } else throw new UnknownError(err.message);
     });
   return new Promise((resolve, reject) => {
     const stream = got.stream(queryURL, {

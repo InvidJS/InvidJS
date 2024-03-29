@@ -78,15 +78,12 @@ export class Instance {
         json.openRegistrations,
       );
       stats = new InstanceStats(software, users);
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof HTTPError) {
         if (err.message.includes("500"))
           throw new ServerError("Internal Server Error");
         else throw new APIError(err.message);
-      }
-      if (err instanceof RequestError) {
-        throw new UnknownError(err.message);
-      }
+      } else throw new UnknownError(err.message);
     }
     return stats;
   }
