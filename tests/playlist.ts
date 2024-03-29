@@ -8,7 +8,7 @@ import * as assert from "uvu/assert";
 
 const instances = await InvidJS.fetchInstances({
   api_allowed: true,
-  health: 99,
+  health: 100,
 });
 const instance = instances[Math.floor(Math.random() * instances.length)];
 console.log("Testing on instance: " + instance.url);
