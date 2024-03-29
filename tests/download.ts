@@ -1,4 +1,4 @@
-import { BlockedVideoError } from "../api/errors/BlockedVideoError.js";
+import { ContentBlockedError } from "../api/errors/ContentBlockedError.js";
 import { MissingArgumentError } from "../api/errors/MissingArgumentError.js";
 import * as InvidJS from "../index.js";
 
@@ -70,7 +70,7 @@ test("Must fail on forbidden videos", async () => {
       video.formats[4],
     );
   } catch (err) {
-    assert.instance(err, BlockedVideoError);
+    assert.instance(err, ContentBlockedError);
   }
 });
 

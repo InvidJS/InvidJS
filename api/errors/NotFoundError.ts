@@ -10,7 +10,7 @@ export class NotFoundError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "NotFoundError";
-    this.code = Enums.ErrorCodes.InvalidContent;
+    this.code = Enums.ErrorCodes.NotFound;
     this.isFatal = true;
     Object.setPrototypeOf(this, NotFoundError.prototype);
   }

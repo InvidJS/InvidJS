@@ -23,7 +23,7 @@ import {
 } from "./api/enums.js";
 import { APIError } from "./api/errors/APIError.js";
 import { APIDownError } from "./api/errors/APIDownError.js";
-import { BlockedVideoError } from "./api/errors/BlockedVideoError.js";
+import { ContentBlockedError } from "./api/errors/ContentBlockedError.js";
 import { InvalidArgumentError } from "./api/errors/InvalidArgumentError.js";
 import { MissingArgumentError } from "./api/errors/MissingArgumentError.js";
 import { NotFoundError } from "./api/errors/NotFoundError.js";
@@ -847,7 +847,7 @@ const saveBlob = async (
     .catch((err) => {
       if (err instanceof HTTPError) {
         if (err.message.includes("403")) {
-          throw new BlockedVideoError(
+          throw new ContentBlockedError(
             "Not allowed to download this video! Perhaps it's from a generated channel?",
           );
         }
@@ -936,7 +936,7 @@ const saveStream = async (
     .catch((err) => {
       if (err instanceof HTTPError) {
         if (err.message.includes("403")) {
-          throw new BlockedVideoError(
+          throw new ContentBlockedError(
             "Not allowed to download this video! Perhaps it's from a generated channel?",
           );
         }
@@ -965,7 +965,7 @@ const saveStream = async (
     stream.on("error", (err) => {
       reject();
       if (err.message.includes("403")) {
-        throw new BlockedVideoError(
+        throw new ContentBlockedError(
           "Not allowed to download this video! Perhaps it's from a generated channel?",
         );
       } else throw new APIError(err.message);

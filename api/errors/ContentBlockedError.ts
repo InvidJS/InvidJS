@@ -1,17 +1,17 @@
 import * as Enums from "../enums.js";
 
 /**
- * @name BlockedVideoError
+ * @name ContentBlockedError
  * @description Error thrown when the video is blocked.
  */
-export class BlockedVideoError extends Error {
+export class ContentBlockedError extends Error {
   protected code: number;
   protected isFatal: boolean;
   constructor(message: string) {
     super(message);
-    this.name = "BlockedVideoError";
-    this.code = Enums.ErrorCodes.BlockedVideo;
+    this.name = "ContentBlockedError";
+    this.code = Enums.ErrorCodes.ContentBlocked;
     this.isFatal = true;
-    Object.setPrototypeOf(this, BlockedVideoError.prototype);
+    Object.setPrototypeOf(this, ContentBlockedError.prototype);
   }
 }

@@ -8,8 +8,8 @@ export enum ErrorCodes {
   APIDown = 10002,
   APIError = 10003,
   ServerError = 10004,
-  BlockedVideo = 10005,
-  InvalidContent = 10006,
+  ContentBlocked = 10005,
+  NotFound = 10006,
   UnknownError = 10007,
 }
 
