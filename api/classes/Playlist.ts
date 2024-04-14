@@ -7,6 +7,7 @@ import { Image } from "./Image.js";
  *
  * @param {string} title - Title of the playlist.
  * @param {string} id - ID of the playlist.
+ * @param {string} url - URL of the playlist.
  * @param {Array<Video>} [videos] - Videos in the playlist (basic or full only).
  * @param {number} [videoCount] - Number of videos in the playlist (basic or full only).
  * @param {string} [author] - Author username (full only).

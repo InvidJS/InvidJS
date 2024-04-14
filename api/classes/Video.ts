@@ -6,6 +6,7 @@ import { Image } from "./Image.js";
  * @description Video object. Can be Minimal, Basic or Full.
  * @param {string} title - Title of the video.
  * @param {string} id - ID of the video.
+ * @param {string} url - URL of the video.
  * @param {Array<Format>} [formats] - List of available formats (basic or full only).
  * @param {number} [lengthSeconds] - Length of the video in seconds (basic or full only).
  * @param {number} [length] - Humanly-readable length of the video (basic or full only).
