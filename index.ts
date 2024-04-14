@@ -195,6 +195,7 @@ const fetchVideo = async (
       "The instance you provided does not support API requests or is offline!",
     );
   let info!: Video;
+  let url = `${instance.url}/watch?v=${id}`;
   const queryURL = `${instance.url}/api/v1/videos/${id}`;
   const params = new QueryParams();
   switch (opts.type) {
@@ -231,6 +232,7 @@ const fetchVideo = async (
         info = new Video(
           json.title,
           id,
+          url,
           formats,
           json.lengthSeconds,
           lengthString,
@@ -254,6 +256,7 @@ const fetchVideo = async (
         info = new Video(
           json.title,
           id,
+          url,
           formats,
           json.lengthSeconds,
           lengthString,
@@ -261,7 +264,7 @@ const fetchVideo = async (
         break;
       }
       case FetchTypes.Minimal: {
-        info = new Video(json.title, id);
+        info = new Video(json.title, id, url);
         break;
       }
     }
@@ -373,6 +376,7 @@ const fetchPlaylist = async (
       "Limit is invalid - must be a number greater than 0!",
     );
   let info!: Playlist;
+  let url = `${instance.url}/playlist?list=${id}`;
   const queryURL = `${instance.url}/api/v1/playlists/${id}`;
   const params = new QueryParams();
   switch (opts.type) {
@@ -401,13 +405,15 @@ const fetchPlaylist = async (
       case FetchTypes.Full: {
         const videos: Array<Video> = [];
         json.videos.forEach((video: any) => {
+          let videoUrl = `${instance.url}/watch?v=${video.videoId}`;
           if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-            videos.push(new Video(video.title, video.videoId));
+            videos.push(new Video(video.title, video.videoId, videoUrl));
         });
         const data = fillMixData(json.author, json.authorId, json.description);
         info = new Playlist(
           json.title,
           id,
+          url,
           videos,
           json.videos.length,
           data.mixAuthor,
@@ -421,14 +427,15 @@ const fetchPlaylist = async (
       default: {
         const videos: Array<Video> = [];
         json.videos.forEach((video: any) => {
+          let videoUrl = `${instance.url}/watch?v=${video.videoId}`;
           if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-            videos.push(new Video(video.title, video.videoId));
+            videos.push(new Video(video.title, video.videoId, videoUrl));
         });
-        info = new Playlist(json.title, id, videos, json.videos.length);
+        info = new Playlist(json.title, id, url, videos, json.videos.length);
         break;
       }
       case FetchTypes.Minimal: {
-        info = new Playlist(json.title, id);
+        info = new Playlist(json.title, id, url);
         break;
       }
     }
@@ -635,15 +642,25 @@ const searchContent = async (
       if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
         switch (result.type) {
           case "video": {
-            results.push(new Video(result.title, result.videoId));
+            let videoUrl = `${instance.url}/watch?v=${result.videoId}`;
+            results.push(new Video(result.title, result.videoId, videoUrl));
             break;
           }
           case "playlist": {
             const videos: Video[] = [];
+            let playlistUrl = `${instance.url}/playlist?list=${result.playlistId}`;
             result.videos.forEach((video: any) => {
-              videos.push(new Video(video.title, video.videoId));
+              let videoUrl = `${instance.url}/watch?v=${video.videoId}`;
+              videos.push(new Video(video.title, video.videoId, videoUrl));
             });
-            results.push(new Playlist(result.title, result.playlistId, videos));
+            results.push(
+              new Playlist(
+                result.title,
+                result.playlistId,
+                playlistUrl,
+                videos,
+              ),
+            );
             break;
           }
           case "channel": {
@@ -706,8 +723,9 @@ const fetchTrending = async (
     });
     const json = await JSON.parse(res.body);
     json.forEach((result: any) => {
+      let videoUrl = `${instance.url}/watch?v=${result.videoId}`;
       if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
-        results.push(new Video(result.title, result.videoId));
+        results.push(new Video(result.title, result.videoId, videoUrl));
     });
   } catch (err: any) {
     if (err instanceof HTTPError) {
@@ -758,8 +776,9 @@ const fetchPopular = async (
     });
     const json = await JSON.parse(res.body);
     json.forEach((result: any) => {
+      let videoUrl = `${instance.url}/watch?v=${result.videoId}`;
       if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
-        results.push(new Video(result.title, result.videoId));
+        results.push(new Video(result.title, result.videoId, videoUrl));
     });
   } catch (err: any) {
     if (err instanceof HTTPError) {

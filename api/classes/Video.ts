@@ -21,6 +21,7 @@ import { Image } from "./Image.js";
 export class Video {
   public title: string;
   public id: string;
+  public url: string;
   public formats?: Array<Format>;
   public lengthSeconds?: number;
   public length?: string;
@@ -35,6 +36,7 @@ export class Video {
   constructor(
     title: string,
     id: string,
+    url: string,
     formats?: Array<Format>,
     lengthSeconds?: number,
     length?: string,
@@ -49,6 +51,7 @@ export class Video {
   ) {
     this.title = title;
     this.id = id;
+    this.url = url;
     this.formats = formats;
     this.lengthSeconds = lengthSeconds;
     this.length = length;

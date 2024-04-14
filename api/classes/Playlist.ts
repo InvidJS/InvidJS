@@ -17,6 +17,7 @@ import { Image } from "./Image.js";
 export class Playlist {
   public title: string;
   public id: string;
+  public url: string;
   public videos?: Array<Video>;
   public videoCount?: number;
   public author?: string;
@@ -26,6 +27,7 @@ export class Playlist {
   constructor(
     title: string,
     id: string,
+    url: string,
     videos?: Array<Video>,
     videoCount?: number,
     author?: string,
@@ -35,6 +37,7 @@ export class Playlist {
   ) {
     this.title = title;
     this.id = id;
+    this.url = url;
     this.videos = videos;
     this.videoCount = videoCount;
     this.author = author;

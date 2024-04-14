@@ -143,8 +143,11 @@ export class Channel {
     const json = await JSON.parse(res.body);
     try {
       json.playlists.forEach((playlist: any) => {
+        let playlistUrl = `${instance.url}/playlist?list=${playlist.playlistId}`;
         if (!opts.limit || opts.limit === 0 || playlists.length < opts.limit)
-          playlists.push(new Playlist(playlist.title, playlist.playlistId));
+          playlists.push(
+            new Playlist(playlist.title, playlist.playlistId, playlistUrl),
+          );
       });
     } catch (err: any) {
       if (err instanceof HTTPError) {
@@ -196,8 +199,9 @@ export class Channel {
     const json = await JSON.parse(res.body);
     try {
       json.videos.forEach((video: any) => {
+        let videoUrl = `${instance.url}/watch?v=${video.videoId}`;
         if (!opts.limit || opts.limit === 0 || videos.length < opts.limit)
-          videos.push(new Video(video.title, video.videoId));
+          videos.push(new Video(video.title, video.videoId, videoUrl));
       });
     } catch (err: any) {
       if (err instanceof HTTPError) {
