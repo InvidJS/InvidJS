@@ -87,11 +87,9 @@ const fetchInstances = async (
     });
     const json = await JSON.parse(res.body);
     json.forEach((instance: any) => {
-      let monthly_health = undefined;
       let health = undefined;
       if (instance[1].monitor !== null) {
-        monthly_health = instance[1].monitor["30dRatio"].ratio;
-        health = instance[1].monitor["90dRatio"].ratio;
+        health = instance[1].monitor.uptime;
       }
       if (
         (!opts.url || opts.url === instance[1].uri) &&
@@ -114,7 +112,6 @@ const fetchInstances = async (
             instance[1].api,
             instance[1].type,
             instance[1].uri,
-            parseFloat(monthly_health),
             parseFloat(health),
           ),
         );
@@ -128,15 +125,6 @@ const fetchInstances = async (
     } else throw new UnknownError(err.message);
   }
   switch (opts.sorting) {
-    case InstanceSorting.MonthlyHealth: {
-      instances.sort((a, b) => {
-        if (a.monthly_health === undefined || isNaN(a.monthly_health)) return 1;
-        if (b.monthly_health === undefined || isNaN(b.monthly_health))
-          return -1;
-        return b.monthly_health - a.monthly_health;
-      });
-      break;
-    }
     case InstanceSorting.Health:
     default: {
       instances.sort((a, b) => {
