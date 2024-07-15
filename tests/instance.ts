@@ -12,10 +12,10 @@ test("Instances should fetch correctly", async () => {
 
 test("Only a single instance should be fetched if a URL is given", async () => {
   const instances = await InvidJS.fetchInstances({
-    url: "https://vid.puffyan.us",
+    url: "https://yewtu.be",
   });
   assert.is(instances.length, 1);
-  assert.is(instances[0].url, "https://vid.puffyan.us");
+  assert.is(instances[0].url, "https://yewtu.be");
 });
 
 test("Instances type should be respected", async () => {
