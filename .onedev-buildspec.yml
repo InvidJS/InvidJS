@@ -55,3 +55,28 @@ jobs:
   maxRetries: 3
   retryDelay: 30
   timeout: 3600
+- name: Publish
+  steps:
+  - !CheckoutStep
+    name: Clone repository
+    cloneCredential: !DefaultCredential {}
+    withLfs: false
+    withSubmodules: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: Publish to NPM
+    runInContainer: true
+    image: node:lts-bookworm-slim
+    interpreter: !DefaultInterpreter
+      commands: |
+        npm run build
+        npm config set //registry.npmjs.org/:_authToken=@secret:npm_token@
+        cd dist && npm publish --access public
+    useTTY: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !TagCreateTrigger {}
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
