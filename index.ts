@@ -154,6 +154,22 @@ const fetchInstances = async (
   return instances;
 };
 
+const addInstance = async (): Promise<boolean> => {
+  return false;
+};
+
+const resolveUrl = async (): Promise<boolean> => {
+  return false;
+};
+
+const getHashtag = async (): Promise<boolean> => {
+  return false;
+};
+
+const getClip = async (): Promise<boolean> => {
+  return false;
+};
+
 /**
  * @name fetchVideo
  * @description Fetches video data.
