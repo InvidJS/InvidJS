@@ -24,3 +24,32 @@ jobs:
   maxRetries: 3
   retryDelay: 30
   timeout: 3600
+- name: Build documentation
+  steps:
+  - !CheckoutStep
+    name: Clone repository
+    cloneCredential: !DefaultCredential {}
+    withLfs: false
+    withSubmodules: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: Build docs
+    runInContainer: true
+    image: node:lts-bookworm-slim
+    interpreter: !DefaultInterpreter
+      commands: |
+        git clone https://jsbox.xyz/InvidJS/docs ../docs
+        npm install
+        npm run docs:build
+        cd ../docs
+        git add -A
+        git commit -a -m "CI - Rebuild docs"
+        git push
+    useTTY: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !TagCreateTrigger {}
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
