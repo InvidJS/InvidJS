@@ -38,10 +38,12 @@ jobs:
     image: node:lts-bookworm-slim
     interpreter: !DefaultInterpreter
       commands: |
-        git clone https://jsbox.xyz/InvidJS/docs ../docs
+        git clone https://ci-bot:@secret:ci_password@@@jsbox.xyz/InvidJS/docs ../docs
         npm install
         npm run docs:build
         cd ../docs
+        git config user.email ci-bot@@jsbox.xyz
+        git config user.name ci-bot
         git add -A
         git commit -a -m "CI - Rebuild docs"
         git push
