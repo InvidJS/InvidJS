@@ -20,8 +20,8 @@ jobs:
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
   triggers:
   - !BranchUpdateTrigger {}
-  retryCondition: never
-  maxRetries: 3
+  retryCondition: '"Log" contains "Command exited with code 1"'
+  maxRetries: 10
   retryDelay: 30
   timeout: 3600
 - name: Build documentation
