@@ -1,0 +1,26 @@
+version: 35
+jobs:
+- name: Run tests
+  steps:
+  - !CheckoutStep
+    name: Clone repository
+    cloneCredential: !DefaultCredential {}
+    withLfs: false
+    withSubmodules: false
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !CommandStep
+    name: Run tests
+    runInContainer: true
+    image: node:lts-bookworm-slim
+    interpreter: !DefaultInterpreter
+      commands: |
+        npm install
+        npm test
+    useTTY: true
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger {}
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  timeout: 3600
