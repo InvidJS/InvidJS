@@ -100,4 +100,10 @@ test("Should throw an error if instance doesn't support API requests", async () 
   }
 });
 
+test("Custom instance test", async () => {
+  const instance = await InvidJS.getInstance("https://y.hc.ws")
+  assert.is(instance.url, "https://y.hc.ws");
+});
+
+
 test.run();
