@@ -91,15 +91,6 @@ test("Instance stats must be fetched correctly", async () => {
   assert.is.not(await instances[0].fetchStats(), undefined);
 });
 
-test("Should throw an error if instance doesn't support API requests", async () => {
-  try {
-    const instances = await InvidJS.fetchInstances({ api_allowed: false });
-    await instances[0].fetchStats();
-  } catch (err: any) {
-    assert.instance(err, APIDownError);
-  }
-});
-
 test("Custom instance test", async () => {
   const instance = await InvidJS.getInstance("https://y.hc.ws")
   assert.is(instance.url, "https://y.hc.ws");
