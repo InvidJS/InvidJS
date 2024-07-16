@@ -52,10 +52,6 @@ export class Instance {
    * @returns {Promise<InstanceStats>} Instance stats object.
    */
   public async fetchStats(): Promise<InstanceStats> {
-    if (this.api_allowed === false || this.api_allowed === null)
-      throw new APIDownError(
-        "The instance you provided does not support API requests or is offline!",
-      );
     let stats!: InstanceStats;
     try {
       const res = await got.get(`${this.url}/api/v1/stats`, {
