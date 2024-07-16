@@ -107,12 +107,12 @@ const fetchInstances = async (
       ) {
         instances.push(
           new Instance(
+            instance[1].uri,
+            instance[1].type,
+            instance[1].api,
+            parseFloat(health),
             instance[1].region,
             instance[1].cors,
-            instance[1].api,
-            instance[1].type,
-            instance[1].uri,
-            parseFloat(health),
           ),
         );
       } else return false;
@@ -154,8 +154,12 @@ const fetchInstances = async (
   return instances;
 };
 
-const addInstance = async (): Promise<boolean> => {
-  return false;
+const getInstance = async (url: string): Promise<Instance> => {
+  return new Instance(
+    url,
+    InstanceTypes.https,
+    true
+  )
 };
 
 const resolveUrl = async (): Promise<boolean> => {

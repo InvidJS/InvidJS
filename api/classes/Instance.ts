@@ -15,34 +15,34 @@ const useragent =
  * @name Instance
  * @description Basic information about an instance.
  *
- * @param {string} region  - Region of the instance.
- * @param {boolean} cors_allowed  - Is CORS allowed?
- * @param {boolean} api_allowed  - Is API allowed?
- * @param {Enums.InstanceTypes} type  - Type of the instance.
  * @param {string} url  - URL of the instance.
+ * @param {Enums.InstanceTypes} type  - Type of the instance.
+ * @param {boolean} api_allowed  - Is API allowed?
  * @param {number} [health] - Instance uptime.
+ * @param {string} [region]  - Region of the instance.
+ * @param {boolean} [cors_allowed]  - Is CORS allowed?
  */
 export class Instance {
-  public region: string;
-  public cors_allowed: boolean;
-  public api_allowed: boolean;
-  public type: Enums.InstanceTypes;
   public url: string;
+  public type: Enums.InstanceTypes;
+  public api_allowed: boolean;
   public health?: number;
+  public region?: string;
+  public cors_allowed?: boolean;
   constructor(
-    region: string,
-    cors_allowed: boolean,
-    api_allowed: boolean,
-    type: Enums.InstanceTypes,
     url: string,
+    type: Enums.InstanceTypes,
+    api_allowed: boolean,
     health?: number,
+    region?: string,
+    cors_allowed?: boolean,
   ) {
+    this.url = url;
+    this.type = type;
+    this.api_allowed = api_allowed;
+    this.health = health;
     this.region = region;
     this.cors_allowed = cors_allowed;
-    this.api_allowed = api_allowed;
-    this.type = type;
-    this.url = url;
-    this.health = health;
   }
 
   /**
