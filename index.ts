@@ -154,12 +154,35 @@ const fetchInstances = async (
   return instances;
 };
 
+/**
+ * @name getInstance
+ * @description Generates an Instance object from an Invidious URL.
+ * @param {string} url - Instance fetch options.
+ * @example await InvidJS.getInstance("https://inv.idio.us");
+ * @returns {Promise<Instance>} Instance object.
+ */
 const getInstance = async (url: string): Promise<Instance> => {
-  return new Instance(
-    url,
-    InstanceTypes.https,
-    true
-  )
+  try {
+    let api = undefined;
+    const stats = await got.get(`${url}/api/v1/stats`, {
+      headers: { "User-Agent": useragent },
+    });
+    const json = await JSON.parse(stats.body);
+    if (json.software.name !== "invidious")
+      throw new InvalidArgumentError("Please provide a valid Invidious URL!");
+    const res = await got.get(`${url}/api/v1`, {
+      headers: { "User-Agent": useragent },
+    });
+    if (res.statusCode === 200) api = true;
+    else api = false;
+    return new Instance(url, InstanceTypes.https, api);
+  } catch (err: any) {
+    if (err instanceof HTTPError) {
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
+      else throw new APIError(err.message);
+    } else throw new UnknownError(err.message);
+  }
 };
 
 const resolveUrl = async (): Promise<boolean> => {
@@ -980,6 +1003,7 @@ const saveStream = async (
 
 export {
   fetchInstances,
+  getInstance,
   fetchVideo,
   fetchComments,
   fetchPlaylist,
