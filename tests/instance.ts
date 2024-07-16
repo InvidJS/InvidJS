@@ -92,9 +92,8 @@ test("Instance stats must be fetched correctly", async () => {
 });
 
 test("Custom instance test", async () => {
-  const instance = await InvidJS.getInstance("https://y.hc.ws")
+  const instance = await InvidJS.getInstance("https://y.hc.ws");
   assert.is(instance.url, "https://y.hc.ws");
 });
-
 
 test.run();
