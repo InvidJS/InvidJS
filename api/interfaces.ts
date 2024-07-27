@@ -19,6 +19,15 @@ export interface ContentOptions {
 }
 
 /**
+ * @name HashtagOptions
+ * @description Options for hashtag searching.
+ * @param {number | undefined} page - Page of the search results.
+ */
+export interface HashtagOptions extends CommonOptions {
+  page?: number;
+}
+
+/**
  * @name InstanceFetchOptions
  * @description Instance fetch filter.
  * @param {string | undefined} url - URL of the instance to search.
@@ -43,8 +52,11 @@ export interface InstanceFetchOptions extends CommonOptions {
  * @description Playlist fetch filter.
  * @param {FetchTypes | undefined} type - Type of the playlist to return.
  * @param {number | undefined} limit - Amount of videos to return.
+ * @param {number | undefined} page - Page of the search results.
  */
-export interface PlaylistFetchOptions extends CommonOptions, ContentOptions {}
+export interface PlaylistFetchOptions extends CommonOptions, ContentOptions {
+  page?: number;
+}
 
 /**
  * @name VideoFetchOptions

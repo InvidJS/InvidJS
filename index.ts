@@ -38,6 +38,7 @@ import {
   StreamOptions,
   ContentOptions,
   CommonOptions,
+  HashtagOptions,
 } from "./api/interfaces.js";
 import { convertToString } from "./utils/LengthConverter.js";
 import {
@@ -183,18 +184,6 @@ const getInstance = async (url: string): Promise<Instance> => {
       else throw new APIError(err.message);
     } else throw new UnknownError(err.message);
   }
-};
-
-const resolveUrl = async (): Promise<boolean> => {
-  return false;
-};
-
-const getHashtag = async (): Promise<boolean> => {
-  return false;
-};
-
-const getClip = async (): Promise<boolean> => {
-  return false;
 };
 
 /**
@@ -410,6 +399,7 @@ const fetchPlaylist = async (
   let url = `${instance.url}/playlist?list=${id}`;
   const queryURL = `${instance.url}/api/v1/playlists/${id}`;
   const params = new QueryParams();
+  if (opts.page) params.page = opts.page;
   switch (opts.type) {
     case FetchTypes.Minimal: {
       params.fields = "title,playlistId";
@@ -826,6 +816,61 @@ const fetchPopular = async (
 };
 
 /**
+ * @name fetchHashtag
+ * @description Fetches videos that have the specified hashtag.
+ * @param {Instance} instance - Instance to fetch data from.
+ * @param {string} tag - Hashtag.
+ * @param {HashtagOptions} [opts] - Hashtag fetch options.
+ * @example await InvidJS.fetchHashtag(instance, mjd);
+ * @example await InvidJS.fetchHashtag(instance, mjd, {limit: 10});
+ * @returns {Promise<Array<Video>>} Array of videos.
+ */
+const fetchHashtag = async (
+  instance: Instance,
+  tag: string,
+  opts: HashtagOptions = {
+    limit: 0,
+  },
+): Promise<Array<Video>> => {
+  if (!instance)
+    throw new MissingArgumentError(
+      "You must provide an instance to fetch data from!",
+    );
+  if (instance.api_allowed === false || instance.api_allowed === null)
+    throw new APIDownError(
+      "The instance you provided does not support API requests or is offline!",
+    );
+  if (opts.limit && (typeof opts.limit !== "number" || opts.limit < 0))
+    throw new InvalidArgumentError(
+      "Limit is invalid - must be a number greater than 0!",
+    );
+  const queryURL = `${instance.url}/api/v1/hashtag/${tag}`;
+  const params = new QueryParams();
+  const results: Array<Video> = [];
+  const searchParams = params.createQuery();
+  if (opts.page) params.page = opts.page;
+  try {
+    const res = await got.get(queryURL, {
+      searchParams: searchParams,
+      headers: { "User-Agent": useragent },
+    });
+    const json = await JSON.parse(res.body);
+    json.forEach((result: any) => {
+      let videoUrl = `${instance.url}/watch?v=${result.videoId}`;
+      if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
+        results.push(new Video(result.title, result.videoId, videoUrl));
+    });
+  } catch (err: any) {
+    if (err instanceof HTTPError) {
+      if (err.message.includes("500"))
+        throw new ServerError("Internal Server Error");
+      else throw new APIError(err.message);
+    } else throw new UnknownError(err.message);
+  }
+  return results;
+};
+
+/**
  * @name saveBlob
  * @description Fetches a video as a Blob.
  * @param {Instance} instance - Instance to fetch data from.
@@ -1012,6 +1057,7 @@ export {
   searchContent,
   fetchTrending,
   fetchPopular,
+  fetchHashtag,
   saveBlob,
   saveStream,
   ErrorCodes,
