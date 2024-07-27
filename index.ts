@@ -752,7 +752,7 @@ const fetchTrending = async (
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
-      if (err.message.includes("400"))
+      if (err.message.includes("400") || err.message.includes("403"))
         throw new ContentBlockedError(
           "Disabled by administrator - try another instance!",
         );
@@ -805,7 +805,7 @@ const fetchPopular = async (
     if (err instanceof HTTPError) {
       if (err.message.includes("500"))
         throw new ServerError("Internal Server Error");
-      if (err.message.includes("400"))
+      if (err.message.includes("400") || err.message.includes("403"))
         throw new ContentBlockedError(
           "Disabled by administrator - try another instance!",
         );
