@@ -1,5 +1,3 @@
-import { Channel } from "../api/classes/Channel.js";
-import { Playlist } from "../api/classes/Playlist.js";
 import { InvalidArgumentError } from "../api/errors/InvalidArgumentError.js";
 import { MissingArgumentError } from "../api/errors/MissingArgumentError.js";
 import * as InvidJS from "../index.js";
