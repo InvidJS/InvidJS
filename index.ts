@@ -856,7 +856,7 @@ const fetchHashtag = async (
       headers: { "User-Agent": useragent },
     });
     const json = await JSON.parse(res.body);
-    json.forEach((result: any) => {
+    json.results.forEach((result: any) => {
       let videoUrl = `${instance.url}/watch?v=${result.videoId}`;
       if (!opts.limit || opts.limit === 0 || results.length < opts.limit)
         results.push(new Video(result.title, result.videoId, videoUrl));
