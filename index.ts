@@ -836,6 +836,7 @@ const fetchHashtag = async (
     throw new MissingArgumentError(
       "You must provide an instance to fetch data from!",
     );
+  if (!tag) throw new MissingArgumentError("You must provide a valid hashtag!");
   if (instance.api_allowed === false || instance.api_allowed === null)
     throw new APIDownError(
       "The instance you provided does not support API requests or is offline!",
