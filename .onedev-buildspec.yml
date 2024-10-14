@@ -1,4 +1,4 @@
-version: 35
+version: 36
 jobs:
 - name: Run tests
   steps:
@@ -38,6 +38,7 @@ jobs:
     image: node:lts-bookworm-slim
     interpreter: !DefaultInterpreter
       commands: |
+        apt update && apt install git -y
         git clone https://ci-bot:@secret:ci_password@@@jsbox.xyz/InvidJS/docs ../docs
         npm install
         npm run docs:build
