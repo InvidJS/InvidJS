@@ -1,5 +1,7 @@
 # InvidJS
 
+## :warning:  WARNING! Invidious instances are currently extremely unstable, and there are only a few public instances online. The package may not work as expected.
+
 [![npm version](https://badge.fury.io/js/@invidjs%2Finvid-js.svg)](https://badge.fury.io/js/@invidjs%2Finvid-js)
 ![npm](https://img.shields.io/npm/dt/%40invidjs/invid-js)
 
